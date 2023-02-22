@@ -1,0 +1,275 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Problem, Algorithm, Optimalize and Heuristic [A Simple Guide] | Euterpe</title><meta name="keywords" content="Heuristic,Optimalize"><meta name="author" content="Xiaofan Liu"><meta name="copyright" content="Xiaofan Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="写在前面  本文旨在为对优化算法有兴趣的学弟学妹们提供一个了解相关问题和求解方法的参考，由于本人水平有限，有些描述可能不太准确，欢迎通过邮箱联系我更正   1. P and NP关于P与NP问题的定义, 具体可以参考课程《可计算性与计算复杂性》关于确定性图灵机与多项式时间的描述 决策问题(Decision Problem): 一个输出为”是 &#x2F; 否”(True or False)的可计算问题P(P">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]">
+<meta property="og:url" content="http://euterpe.cc/2022/10/30/heuristicAlgorithms/index.html">
+<meta property="og:site_name" content="Euterpe">
+<meta property="og:description" content="写在前面  本文旨在为对优化算法有兴趣的学弟学妹们提供一个了解相关问题和求解方法的参考，由于本人水平有限，有些描述可能不太准确，欢迎通过邮箱联系我更正   1. P and NP关于P与NP问题的定义, 具体可以参考课程《可计算性与计算复杂性》关于确定性图灵机与多项式时间的描述 决策问题(Decision Problem): 一个输出为”是 &#x2F; 否”(True or False)的可计算问题P(P">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://euterpe.cc/img/sc1.png">
+<meta property="article:published_time" content="2022-10-30T07:11:48.000Z">
+<meta property="article:modified_time" content="2023-02-13T13:30:39.509Z">
+<meta property="article:author" content="Xiaofan Liu">
+<meta property="article:tag" content="Heuristic">
+<meta property="article:tag" content="Optimalize">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://euterpe.cc/img/sc1.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://euterpe.cc/2022/10/30/heuristicAlgorithms/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Xiaofan Liu","link":"链接: ","source":"来源: Euterpe","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: false,
+  postUpdate: '2023-02-13 21:30:39'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/me2.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="http://euterpe.cc"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="http://cstar.whu.edu.cn"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/sc1.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Euterpe</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="http://euterpe.cc"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="http://cstar.whu.edu.cn"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-30T07:11:48.000Z" title="发表于 2022-10-30 15:11:48">2022-10-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-02-13T13:30:39.509Z" title="更新于 2023-02-13 21:30:39">2023-02-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Heuristic/">Heuristic</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Heuristic/Optimalizer/">Optimalizer</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><strong>写在前面</strong></p>
+<font color = pink> 本文旨在为对优化算法有兴趣的学弟学妹们提供一个了解相关问题和求解方法的参考，由于本人水平有限，有些描述可能不太准确，欢迎通过邮箱联系我更正 </font>
+
+<p><strong>1. P and NP</strong><br><em>关于P与NP问题的定义, 具体可以参考课程《可计算性与计算复杂性》关于确定性图灵机与多项式时间的描述</em></p>
+<p>决策问题(Decision Problem): 一个输出为”是 / 否”(True or False)的可计算问题<br>P(Polynomial time) problem: 在多项式时间内可以求解的问题<br>NP(Nondeterministic Polynomial time) problem: 在多项式时间内，可以验证该问题的一个解是否为可行解<br>NP-completeness: 对所有的NP问题, 均可以通过多项式时间算法规约为NP问题B, 则称NP问题B是NP-完全的(NP-complete)[亦可翻译为NP-完备的]<br>NP-completeness: 对任意NP-完全问题A, 若A可以通过一个多项式时间算法规约为NP问题B, 则称NP问题B是NP-完全的(NP-complete)<br>NP-hard problem: 对任意NP-完全问题A, 若A可以通过一个多项式时间算法规约为问题B, 则称问题B是NP-困难的(NP-hard)[通常简称为NP难问题]</p>
+<p>一些NPC问题：<br>Boolean satisfiability problem (SAT), Knapsack problem, Travelling salesman problem, Clique problem, Vertex cover problem, Independent set problem, Dominating set problem, Graph coloring problem…</p>
+<p><em>[Stephen Cook. The Complexity of Theorem Proving Procedures. Proceedings of the third annual ACM symposium on Theory of computing. 1971: 151–158.]</em><br><em>[Richard M. Karp. Reducibility Among Combinatorial Problems. R. E. Miller and J. W. Thatcher (editors). Complexity of Computer Computations. New York: Plenum. 1972: 85–103.]</em><br><em>[M.R. Garey and D.S. Johnson. Computers and Intractability: A Guide to the Theory of NP-completeness. Freeman, San Francisco, CA, USA, 1979.]</em></p>
+<p>一些NP-hard问题:<br>Minimum Vertex Cover (MVC)<br>maximum independent set (MIS)<br>Maximum Clique (MC)</p>
+<p>这类问题往往是离散且复杂的, 无论是上述的理论问题还是其在实际工程中的运用(比如软件测试中的一些配置问题)</p>
+<p><em>Wikipedia 是一个非常好用的工具</em><br>[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Decision_problem">https://en.wikipedia.org/wiki/Decision_problem</a>]<br>[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/P_versus_NP_problem">https://en.wikipedia.org/wiki/P_versus_NP_problem</a>]<br>[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/NP_(complexity">https://en.wikipedia.org/wiki/NP_(complexity</a>)]<br>[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/NP-completeness">https://en.wikipedia.org/wiki/NP-completeness</a>]<br>[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/NP-hardness">https://en.wikipedia.org/wiki/NP-hardness</a>]<br>[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Co-NP">https://en.wikipedia.org/wiki/Co-NP</a>]</p>
+<p><strong>2. Algorithm</strong><br>求解NP-hard问题的方法主要有2种途径: 基于穷举的精确求解 与 基于随机(经验)的启发式搜索</p>
+<p><strong>2.1.精确算法</strong><br>比较常用的精确算法有分支限界(branch and bound)方法: 设计算法找到问题的一个下界(lower bound, LB), 找到问题的一个上界(upper bound, UB), 将问题分为较小的子问题求解.</p>
+<p>比如，对于最小顶点覆盖(MVC)问题, 该问题可以被描述为: 对于一个无向图G=(V,E),找出一个基数最小的顶点集合A( minimum card(A) )，使得G中每条边都至少有一个顶点属于A.<br>易证: 对任意一个最小顶点覆盖问题实例,设其顶点数为n, 其最小顶点覆盖k的下界为1，上界为(n-1). (在实际求解中，往往可以找到更逼近最优解的下界与上界).</p>
+<p>此外，还有割平面法,整数规划等.<br>目前而言，将问题转化为可满足性(SAT)问题,再通过命题逻辑推理进行精确求解是一个比较热门且有效的精确求解方向.<br>一个比较广泛使用的精确求解器：CPLEX.</p>
+<p><strong>2.2.启发式算法(Heuristic Algorithm)</strong><br>相较于直接求出问题最优解的精确算法,启发式算法在一定的计算资源（时间与空间）的限制下，对所求问题给出一个接近最优解的可行解.</p>
+<p>启发式算法没有一个比较严格的分类，有文献将其分为局部搜索(Local Search, LS)算法, 进化算法/演化算法(Evolutionary Algorithm, EA) 与 元启发式算法(meta-heuristic). 也有文献将演化算法归类为元启发式算法的一部分.</p>
+<p><em>此外，还有超启发式算法(Hyper-Heuristic Algorithm)  其大致实现为通过机器学习等方式对一系列基本的启发式规则{a,b,c}生成一个序列(eg: (a,a,c,c,b,c))，然后使用该规则序列对问题进行搜索/求解  本篇不讨论该类算法.</em></p>
+<p><strong>2.2.1. 局部搜索</strong><br>对当前生成的一个可行解(候选解)进行局部地扰动,生成一个新的可行解(移动到其相邻的候选解)<br>局部搜索的关键是定义候选解的领域结构和扰动规则。此处的描述也许比较抽象，我们举一个例子：</p>
+<p>EG:<br>集合覆盖问题(Set Covering Problem，SCP). 给定一个集合系统(R,S), 其中, R是n个元素的集合, S是R的若干子集的集合. 集合覆盖的目标是找到一个S的子集S’, 使得S’中的子集的并集等于R, 即R中的元素全部被S’所覆盖. 集合覆盖的最优化问题为求出一个满足要求的S’, 并使S’中的子集数最小,即最小集合覆盖问题(Minimum Set Covering Problem，MSCP). 最小集合覆盖问题是NP难的组合优化问题.<br>给定上述集合系统 $(R,S)$ ,设 $R$ 中元素的个数为 $m$ , $S$ 中子集的个数为 $n$ . 记 $c_j$ 为 $S$ 中的第 $j$ 个子集 $(0 \lt j \le n)$ , $e_i$ 为 $R$ 中的第 $i$ 个元素 $(0 \lt i \le m)$ . 最小集合覆盖的数学整形规划形式如下式所示:   </p>
+<script type="math/tex; mode=display">minimize \sum\limits_{c_{j} \in S} x_{j}</script><script type="math/tex; mode=display">subject \  to \sum\limits_{j:e_{i} \in c_{j}} x_{j} \geq z_{i},    e_{i} \in R</script><script type="math/tex; mode=display">\sum\limits_{e_{i} \in R} z_{i} = m</script><script type="math/tex; mode=display">z_{i} \in \{0,1\}, e_{j} \in R</script><script type="math/tex; mode=display">x_{j} \in \{0,1\}, c_{i} \in S</script><p>实例：<br>对元素 $ a,b,c,d,e,f,g,h,i $ 构成的集合 </p>
+<script type="math/tex; mode=display">Z= \{ a,b,c,d,e,f,g,h,i \}</script><p>有 $Z$ 的子集  </p>
+<script type="math/tex; mode=display">A= \{ a,b \} , B= \{ c,d \} , C= \{ e,f \} , D= \{ g,h,i \} , E= \{g,h \} , F= \{ i \}</script><p>子集集合 <script type="math/tex">S_{1} = \{ A,B,C,E,F \}</script><br>为该问题的一个集合覆盖, 是一个可行解. 一个基于交换的局部搜索策略, 倾向于对当前候选解的邻域进行搜索.<br>比如，先移除一个子集F, 并将D加入当前解, 获得可行解 <script type="math/tex">S_{2} = \{ A,B,C,E,D \}</script> .<br>这里我们发现E中所有元素都被 $ S_{2} $ 中其它的集合覆盖, 因此移除E后所得  </p>
+<script type="math/tex; mode=display">S_{3} = \{A,B,C,D\}</script><p>依然为一个可行解.<br>[在实现中，我们可以通过对每个元素被当前解中的子集的覆盖次数来计算每个子集对覆盖的收益来达成上述的效果，这其实是一个基于加权的思想]</p>
+<p>也许上面的策略还是稍微复杂了一些,我们尝试一个更加简洁的方法: 对 $ S_{2} $ , 我们移除2个子集, 再加入1个子集. 假如构成了一个新的可行解, 那么显然我们获得了一个更优秀的解. 否则，我们可以回退，重新选择加入的子集或者移除的子集.<br>那么如何选择呢？也许, 我们可以移除覆盖元素最少的子集, 并加入覆盖元素最多的子集. 比如,我们移除了 $E,F$ ,并加入了 $D$ . 问题依然没有解决: 算法可能并不会选择 $E$ 移除, 它可能会移除 $A$ 或者 $B$ . 如何尽可能地避免这种情况？</p>
+<ol>
+<li>tabu: 禁忌列表 - 若当前操作并没有改善当前解, 则在一定步数内禁止该操作, 或者禁止对该结构的操作 比如 $A$ 的移除被禁止,接下来算法就有很大概率移除 $E$ . 类似的策略有格局检测, 在很多问题中, 格局检测与列表长度为1的tabu相结合, 往往比设计一个复杂的tabu策略或者简单使用一个基础的tabu策略要有效.    </li>
+<li>加权: 每一次移动操作被采用后, 未被选取的子集权重增加(也可以增加它们覆盖的元素的权值, 此处只是一个举例).</li>
+<li>…</li>
+</ol>
+<p>P.S. 实际上, 基于交换的策略比较有效(而不是移除2个再加入1个)，并且也可以与tabu等方法结合.</p>
+<p>2.2.2.<br>元启发式搜索, 演化计算, 群智能</p>
+<p>比较好的例子有遗传算法, 粒子群算法, 蚁群算法. 此外华中科技大学的吕志鹏教授最近提出的师徒进化算法最近刷新了一些工程问题上的记录.<br>需要注意的是, 目前不再建议提出新的仿生算法, “一个改进的粒子群算法”, “基于XX策略的遗传算法”, “XX算法与XX的结合/改进/扩展” 要比 “蟑螂算法”, “羊驼算法”, “猫猫算法”更务实, 也更容易被审稿人和大多数正常人接受. (可能有太多人改了改传统方法的框架又套个名字就开始水论文, 导致风气不太好).<br>基础的遗传算法, 粒子群算法和蚁群算法并不难, 建议自行了解一下, 基本的实现也有很多对应的代码, 掌握基础的框架即可. — 改进比较容易, 真正的复杂程度往往和问题的结构有关</p>
+<p>群智能的基本思想是构建一系列的初始解, 这些解也许是完全随机生成的, 也许是由一些启发式信息(经验策略)按概率引导生成的[如蚁群中的启发式因子].(以上述集合覆盖为例, 可以在生成初始解的时候 <strong>更倾向</strong> 于加入 $D$ , 因为 $D$ 覆盖了 $3$ 个元素, 是覆盖元素数量最多的子集).</p>
+<p>然后对当前种群的所有个体进行变异, 或者重构, 生成新的子代. </p>
+<p>当然, 上述只是一个抽象的思路, 具体而言, 遗传算法有选择, 交叉, 互换 操作, 粒子群会更新速度和位置, 蚁群会基于信息素因子和启发式因子按概率重新生成子代. </p>
+<p>对于每个子代, 可以为其进行局部搜索以改进解的质量[可选, 当种群规模很大时, 也可以选择不使用局部搜索, 或者只进行少量的搜索操作]. 然后再根据这些子代生成新一轮的子代.</p>
+<p>演化计算的好处: 可并行[然而事实上,在很多问题上还是需要单线程计算性能对比结果], 多目标[群智能在多目标问题上的应用], 可扩展[传统的智能算法实现起来很简单,很容易扩展其框架.但是新的框架需要有一定的鲁棒性(一般来说，至少需要设置一组对照试验来证明策略的有效性,即策略验证)]</p>
+<p><strong>3. 实践</strong><br>这里推荐阅读蔡少伟老师的<a target="_blank" rel="noopener" href="https://github.com/SlainTroyard/papers_whn/blob/main/caiphd.pdf">博士论文</a><br>以及对应的<a target="_blank" rel="noopener" href="https://github.com/SlainTroyard/papers_whn/blob/main/NuMVC%20code.zip">代码</a><br>也许可以为理解组合优化问题的求解提供一定的帮助和启发</p>
+<p><strong>4. SAT与SMT</strong><br>这里涉及到精确求解的相关知识, 但是目前而言不用太深入了解。<br>花一天时间自行浏览一下Wikipedia和百度了解一下大概是什么问题，对应的求解器可以求解哪些问题即可。如果有不懂的地方可以邮件或者微信或者线下讨论。<br>有时候，我们可以将问题转换为SAT问题进行精确求解，可以将问题转换为SAT进行启发式求解。这样做的好处在于SAT问题的求解被研究的比较深入，技术比较成熟。</p>
+<p><strong>5. 精确算法与启发式的结合</strong><br>对于规模较大的问题，精确方法往往会需要很大的时间和空间来求解，这是一件很折磨人的事情（机器会因为内存会崩溃，科研人员会因为时间而崩溃）。但是这并不妨碍我们在大规模的实例上使用精确算法。<br>我们可以通过启发式方法，在尽量不损耗问题结构的情况下将问题简化为一些子问题，削减问题规模。而后通过精确算法求解。<br>更多的情况下，我们使用后者：即先通过精确算法对问题进行一定的约简（约简之后问题规模依旧很大），然后再用启发式算法求解。</p>
+<p>依然以上述的集合覆盖问题为例：我们注意到元素a,b,c,d等只被一个子集覆盖，那么通过精确算法可以得到一个准确的下界，即如果要满足一个集合覆盖，覆盖这些只被覆盖一次的元素的子集们必然被所有可行解包含。从而子集 $A,B,C$ 一定在最优解中。</p>
+<p><strong>6. 我想不到取什么名字了</strong><br>总而言之，一个成体系的优化求解的工作涉及到以下几个关键的步骤：</p>
+<ol>
+<li>问题的描述，约束，目标，数据结构的表示（建模）</li>
+<li>初始解的生成（随机或贪心或基于概率 + 可能的约简）</li>
+<li>算法框架的设计（群智能框架（&amp;&amp; / ||）启发式规则的结合方式）</li>
+<li>启发式规则的设计（3和4往往在一起，顺序可逆，怎么合理怎么来，但是一般的，算法框架图需要最先给出）</li>
+<li>实验（数据集的选取，与最新算法的对比，与传统算法的对比，与精确求解器的对比，策略验证等）</li>
+</ol>
+<p>需要掌握的技能：</p>
+<ol>
+<li>快速的理解能力，我们组可能并不倾向于在一个问题上不断突破/刷新记录</li>
+<li>能够将问题建模成比较容易处理的数据结构（比如矩阵），有时候，边界条件可能不太需要关注</li>
+</ol>
+<p>关于合作项目：</p>
+<ol>
+<li>可能还是得考虑一些边界条件，毕竟不是理论问题</li>
+<li>以后组里的优化问题很可能会是一些冷门的问题或者比较奇怪/罕见的问题，所以个人感觉假如有机会在前期参与一下类似的项目或者比赛锻炼一下是比较合适的。</li>
+</ol>
+<p>关于局部最优：</p>
+<ol>
+<li>前面我忘写了…想到哪写到哪不是一个好习惯…可见提纲的重要性…</li>
+<li>简单且不严谨而言，局部最优就是搜索阶段停留在一个邻域/解结构中往复循环，尽管tabu，格局检测（CC），解重构等策略都是为了在一定程度上避免算法陷入局部最优，或者”跳出局部最优”，但这依然是一个很难被避免的问题<br>对应的，如果算法陷入了局部最优，不妨尝试一下上面提到的方法</li>
+</ol>
+<p><strong>7. Thank you~</strong></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="Xiaofan Liu">Xiaofan Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://euterpe.cc/2022/10/30/heuristicAlgorithms/">http://euterpe.cc/2022/10/30/heuristicAlgorithms/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://euterpe.cc" target="_blank">Euterpe</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Heuristic/">Heuristic</a><a class="post-meta__tags" href="/tags/Optimalize/">Optimalize</a></div><div class="post_share"><div class="social-share" data-image="/img/sc1.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/02/14/Automated-Repair-of-Programs-from-Large-Language-Models/"><img class="prev-cover" src="/img/sc1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Automated Repair of Programs from Large Language Models</div></div></a></div><div class="next-post pull-right"><a href="/2022/10/22/Paper-Break-It-Fix-It-Unsupervised-Learning-for-Program-Repair/"><img class="next-cover" src="/img/sc1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Break-It-Fix-It Unsupervised Learning for Program Repair.</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/me2.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Xiaofan Liu</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/slaintroyard"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/SlainTroyard" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:xiaofanliu@whu.edu.cn" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Welcome to Euterpe - an Avalon</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/22/infor/" title="备忘：课题组日常信息 + Overleaf快速入门 + 日常工具列表"><img src="/img/sc1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="备忘：课题组日常信息 + Overleaf快速入门 + 日常工具列表"/></a><div class="content"><a class="title" href="/2023/02/22/infor/" title="备忘：课题组日常信息 + Overleaf快速入门 + 日常工具列表">备忘：课题组日常信息 + Overleaf快速入门 + 日常工具列表</a><time datetime="2023-02-22T06:06:42.000Z" title="发表于 2023-02-22 14:06:42">2023-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/14/Automated-Repair-of-Programs-from-Large-Language-Models/" title="Automated Repair of Programs from Large Language Models"><img src="/img/sc1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Automated Repair of Programs from Large Language Models"/></a><div class="content"><a class="title" href="/2023/02/14/Automated-Repair-of-Programs-from-Large-Language-Models/" title="Automated Repair of Programs from Large Language Models">Automated Repair of Programs from Large Language Models</a><time datetime="2023-02-14T00:23:22.000Z" title="发表于 2023-02-14 08:23:22">2023-02-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/30/heuristicAlgorithms/" title="Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]"><img src="/img/sc1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]"/></a><div class="content"><a class="title" href="/2022/10/30/heuristicAlgorithms/" title="Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]">Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]</a><time datetime="2022-10-30T07:11:48.000Z" title="发表于 2022-10-30 15:11:48">2022-10-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/22/Paper-Break-It-Fix-It-Unsupervised-Learning-for-Program-Repair/" title="Break-It-Fix-It Unsupervised Learning for Program Repair."><img src="/img/sc1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Break-It-Fix-It Unsupervised Learning for Program Repair."/></a><div class="content"><a class="title" href="/2022/10/22/Paper-Break-It-Fix-It-Unsupervised-Learning-for-Program-Repair/" title="Break-It-Fix-It Unsupervised Learning for Program Repair.">Break-It-Fix-It Unsupervised Learning for Program Repair.</a><time datetime="2022-10-22T09:16:37.000Z" title="发表于 2022-10-22 17:16:37">2022-10-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/20/hello%20world/" title="Welcome to Euterpe - an Avalon."><img src="/img/sabar1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Welcome to Euterpe - an Avalon."/></a><div class="content"><a class="title" href="/2022/10/20/hello%20world/" title="Welcome to Euterpe - an Avalon.">Welcome to Euterpe - an Avalon.</a><time datetime="2022-10-20T08:02:19.000Z" title="发表于 2022-10-20 16:02:19">2022-10-20</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/sc1.png')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Xiaofan Liu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Welcome to Avalon.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

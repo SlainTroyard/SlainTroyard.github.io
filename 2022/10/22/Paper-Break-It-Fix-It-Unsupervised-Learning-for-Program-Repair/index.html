@@ -1,0 +1,273 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Break-It-Fix-It Unsupervised Learning for Program Repair. | Euterpe</title><meta name="keywords" content="Michihiro Yasunaga,Percy Liang,Paper,Compiler Repair,PMLR"><meta name="author" content="Xiaofan Liu"><meta name="copyright" content="Xiaofan Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Ref: Yasunaga M, Liang P. Break-it-fix-it: Unsupervised learning for program repair[C]&#x2F;&#x2F;International Conference on Machine Learning. PMLR, 2021: 11941-11952. Code and data are available at https:&#x2F;&#x2F;gi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Break-It-Fix-It Unsupervised Learning for Program Repair.">
+<meta property="og:url" content="http://euterpe.cc/2022/10/22/Paper-Break-It-Fix-It-Unsupervised-Learning-for-Program-Repair/index.html">
+<meta property="og:site_name" content="Euterpe">
+<meta property="og:description" content="Ref: Yasunaga M, Liang P. Break-it-fix-it: Unsupervised learning for program repair[C]&#x2F;&#x2F;International Conference on Machine Learning. PMLR, 2021: 11941-11952. Code and data are available at https:&#x2F;&#x2F;gi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://euterpe.cc/img/sc1.png">
+<meta property="article:published_time" content="2022-10-22T09:16:37.000Z">
+<meta property="article:modified_time" content="2022-10-24T12:34:36.465Z">
+<meta property="article:author" content="Xiaofan Liu">
+<meta property="article:tag" content="Michihiro Yasunaga">
+<meta property="article:tag" content="Percy Liang">
+<meta property="article:tag" content="Paper">
+<meta property="article:tag" content="Compiler Repair">
+<meta property="article:tag" content="PMLR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://euterpe.cc/img/sc1.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://euterpe.cc/2022/10/22/Paper-Break-It-Fix-It-Unsupervised-Learning-for-Program-Repair/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Xiaofan Liu","link":"链接: ","source":"来源: Euterpe","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Break-It-Fix-It Unsupervised Learning for Program Repair.',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: false,
+  postUpdate: '2022-10-24 20:34:36'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/me2.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="http://euterpe.cc"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="http://cstar.whu.edu.cn"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/sc1.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Euterpe</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="http://euterpe.cc"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="http://cstar.whu.edu.cn"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Break-It-Fix-It Unsupervised Learning for Program Repair.</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-10-22T09:16:37.000Z" title="发表于 2022-10-22 17:16:37">2022-10-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-24T12:34:36.465Z" title="更新于 2022-10-24 20:34:36">2022-10-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Paper/">Paper</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Paper/Compiler-Repair/">Compiler Repair</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Break-It-Fix-It Unsupervised Learning for Program Repair."><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><strong>Ref:</strong></p>
+<p>Yasunaga M, Liang P. Break-it-fix-it: Unsupervised learning for program repair[C]//International Conference on Machine Learning. PMLR, 2021: 11941-11952.</p>
+<p><strong>Code and data are available at <a target="_blank" rel="noopener" href="https://github.com/michiyasunaga/bifi">https://github.com/michiyasunaga/bifi</a>. </strong><br><strong>Experiments are available at <a target="_blank" rel="noopener" href="https://worksheets.codalab.org/worksheets/0xfddb2ef01a9f4dc0b5d974a5a97174be">https://worksheets.codalab.org/worksheets/0xfddb2ef01a9f4dc0b5d974a5a97174be</a>.</strong></p>
+<hr>
+<p><strong>Abstract:</strong><br>We consider repair tasks: given a critic (e.g., compiler) that assesses the quality of an input, the goal is to train a fixer that converts a bad example (e.g., code with syntax errors) into a good one (e.g., code with no syntax errors). Existing works create training data consisting of (bad, good) pairs by corrupting good examples using heuristics (e.g., dropping tokens). However, fixers trained on this synthetically-generated data do not extrapolate well to the real distribution of bad inputs. To bridge this gap, we propose a new training approach, Break-It-Fix-It (BIFI), which has two key ideas: (i) we use the critic to check a fixer’s output on real bad inputs and add good (fixed) outputs to the training data, and (ii) we train a breaker to generate realistic bad code from good code. Based on these ideas, we iteratively update the breaker and the fixer while using them in conjunction to generate more paired data. We evaluate BIFI on two code repair datasets: GitHub-Python, a new dataset we introduce where the goal is to repair Python code with AST parse errors; and DeepFix, where the goal is to repair C code with compiler errors. BIFI outperforms state-of-the-art methods, obtaining 90.5% repair accuracy on GitHub-Python (+28.5%) and 71.7% on DeepFix (+5.6%). Notably, BIFI does not require any labeled data; we hope it will be a strong starting point for unsupervised learning of various repair tasks.</p>
+<hr>
+<p><strong>论文十问</strong></p>
+<p><strong>Q1. 论文试图解决什么问题？</strong><br>程序修复 编译器错误 语法错误<br>Program Repair: compiler error - syntax error.</p>
+<p><strong>Q2. 这是否是一个新问题？</strong><br>简而言之：deal with distribution of real bad examples</p>
+<p>在通过深度学习训练生成的模型性能，与输入的数据集有关，数据集由(bad, good)属性的样本对组成。<br>现有的工作基于启发式(e.g.: dropping tokens)对正确的样本进行corrupt生成错误样本。生成的错误样本与正确的样本组成的样本对加入训练集中作为模型的输入。 但是基于这种方式生成的数据集训练后的 模型/修复器 并不能很好地探索程序错误在实际项目中的真实分布。</p>
+<p><strong>Q3. 这篇文章要验证一个什么科学假设？</strong></p>
+<ol>
+<li>通过训练一个breaker（模型）从正样本（没有错误的样本）中生成的错误样本更接近实际工程中的错误样本</li>
+<li>接近实际错误样本的数据能提升solver模型的性能</li>
+</ol>
+<p><strong>Q4. 有哪些相关研究？如何归类？谁是这一课题在领域内值得关注的研究员？</strong></p>
+<p><em>DeepFix</em><br>Rahul Gupta, Soham Pal, Aditya Kanade, and Shirish Shevade. 2017. DeepFix: fixing common C language errors by deep learning. In Proceedings of the Thirty-First AAAI Conference on Artificial Intelligence (AAAI’17). AAAI Press, 1345–1351.</p>
+<p><em>[heuristic noising]</em><br><em>DrRepair</em><br>Yasunaga, M. and Liang, P. Graph-based, self-supervised program repair from diagnostic feedback. In International Conference on Machine Learning (ICML), 2020.</p>
+<p><em>[unsupervised machine translation]</em><br>Guillaume Lample, Myle Ott, Alexis Conneau, Ludovic Denoyer, and Marc’Aurelio Ranzato. 2018. [Phrase-Based &amp; Neural Unsupervised Machine Translation] (<a target="_blank" rel="noopener" href="https://aclanthology.org/D18-1549">https://aclanthology.org/D18-1549</a>). In Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing, pages 5039–5049, Brussels, Belgium. Association for Computational Linguistics.</p>
+<p><strong>error resolution records：</strong><br>Defects4J<br>René Just, Darioush Jalali, and Michael D. Ernst. 2014. Defects4J: a database of existing faults to enable controlled testing studies for Java programs. In Proceedings of the 2014 International Symposium on Software Testing and Analysis (ISSTA 2014). Association for Computing Machinery, New York, NY, USA, 437–440. <a target="_blank" rel="noopener" href="https://doi.org/10.1145/2610384.2628055">https://doi.org/10.1145/2610384.2628055</a></p>
+<p>SequenceR<br>Z. Chen, S. Kommrusch, M. Tufano, L. -N. Pouchet, D. Poshyvanyk and M. Monperrus, “SequenceR: Sequence-to-Sequence Learning for End-to-End Program Repair,” in IEEE Transactions on Software Engineering, vol. 47, no. 9, pp. 1943-1959, 1 Sept. 2021, doi: 10.1109/TSE.2019.2940179.</p>
+<p>DeepDelta<br>Ali Mesbah, Andrew Rice, Emily Johnston, Nick Glorioso, and Edward Aftandilian. 2019. DeepDelta: learning to repair compilation errors. In Proceedings of the 2019 27th ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering (ESEC/FSE 2019). Association for Computing Machinery, New York, NY, USA, 925–936. <a target="_blank" rel="noopener" href="https://doi.org/10.1145/3338906.3340455">https://doi.org/10.1145/3338906.3340455</a></p>
+<p>Graph2Diff<br>Daniel Tarlow, Subhodeep Moitra, Andrew Rice, Zimin Chen, Pierre-Antoine Manzagol, Charles Sutton, and Edward Aftandilian. 2020. Learning to Fix Build Errors with Graph2Diff Neural Networks. In Proceedings of the IEEE/ACM 42nd International Conference on Software Engineering Workshops (ICSEW’20). Association for Computing Machinery, New York, NY, USA, 19–20. <a target="_blank" rel="noopener" href="https://doi.org/10.1145/3387940.3392181">https://doi.org/10.1145/3387940.3392181</a></p>
+<p>Getafix<br>Bader, J., Scott, A., Pradel, M., &amp; Chandra, S. (2019). Getafix: Learning to fix bugs automatically. Proceedings of the ACM on Programming Languages, 3(OOPSLA), 1-27.</p>
+<p>Y. Ding, B. Ray, P. Devanbu and V. J. Hellendoorn, “Patching as Translation: the Data and the Metaphor,” 2020 35th IEEE/ACM International Conference on Automated Software Engineering (ASE), 2020, pp. 275-286.</p>
+<p><strong>learning code fixers from unlabeled or synthetic data：</strong><br>sk_p<br>Pu Y, Narasimhan K, Solar-Lezama A, et al. sk_p: a neural program corrector for MOOCs[C]//Companion Proceedings of the 2016 ACM SIGPLAN International Conference on Systems, Programming, Languages and Applications: Software for Humanity. 2016: 39-40.</p>
+<p>GradeIT<br>Parihar S, Dadachanji Z, Singh P K, et al. Automatic grading and feedback using program repair for introductory programming courses[C]//Proceedings of the 2017 ACM Conference on Innovation and Technology in Computer Science Education. 2017: 92-97.</p>
+<p>TRACER<br>Ahmed U Z, Kumar P, Karkare A, et al. Compilation error repair: for the student programs, from the student programs[C]//Proceedings of the 40th International Conference on Software Engineering: Software Engineering Education and Training. 2018: 78-87.</p>
+<p>DeepBugs<br>Pradel M, Sen K. Deepbugs: A learning approach to name-based bug detection[J]. Proceedings of the ACM on Programming Languages, 2018, 2(OOPSLA): 1-25.</p>
+<p>Dynamic Neural Program Embeddings<br>Wang K, Singh R, Su Z. Dynamic Neural Program Embeddings for Program Repair[C]//International Conference on Learning Representations. 2018.</p>
+<p>Neural Program Repair by Jointly Learning to Localize and Repair<br>Vasic M, Kanade A, Maniatis P, et al. Neural Program Repair by Jointly Learning to Localize and Repair[C]//International Conference on Learning Representations. 2018.</p>
+<p>Deep Reinforcement Learning for Syntactic Error Repair in Student Programs<br>Gupta, R., Kanade, A. and Shevade, S. 2019. Deep Reinforcement Learning for Syntactic Error Repair in Student Programs. Proceedings of the AAAI Conference on Artificial Intelligence. 33, 01 (Jul. 2019), 930-937. DOI:<a target="_blank" rel="noopener" href="https://doi.org/10.1609/aaai.v33i01.3301930">https://doi.org/10.1609/aaai.v33i01.3301930</a>.</p>
+<p>SampleFix<br>Hajipour H, Bhattacharyya A, Staicu C A, et al. SampleFix: Learning to Generate Functionally Diverse Fixes[C]//Joint European Conference on Machine Learning and Knowledge Discovery in Databases. Springer, Cham, 2021: 119-133.</p>
+<p>Ding, Y., Ray, B., Devanbu, P., and Hellendoorn, V. J. Patching as translation: the data and the metaphor. InAutomated Software Engineering (ASE), 2020.</p>
+<p><strong>Denoising autoencoding</strong></p>
+<p><strong>Domain adaptation</strong></p>
+<p><strong>Data augmentation</strong></p>
+<p><strong>Self-tranining</strong></p>
+<p><strong>Q5. 论文中提到的解决方案之关键是什么？</strong><br>通过多轮数据生成和训练同时改进fixer和breaker：（有点生成-对抗的意思）<br>核心思想<br>（1）通过编译器作为评判标准（critic），对一个真实世界中的错误样例，判断一个fixer输出的修复数据是否为正确的，若为TRUE，则将该输出作为正确样本与错误样本配对，并加入训练集中<br>（2）训练一个breaker，对正确的样本生成对应的错误样本，目标是尽可能接近真实的错误样本</p>
+<p>具体来说，给定一个在合成的配对数据集<synthetic bad, good>上训练的初始fixer，BIFI通过多轮数据生成和训练同时改进fixer和breaker：<br>（1）将fixer应用于<br>真实的错误样本，通过编译器（能否通过编译）筛选出正确的输出作为修复样本，生成配对数据加入测试集/数据集（因为数据集是可以通过k-fold等划分成测试集和训练集的，所以这里的描述差别不大），<br>（2）使用结果数据来训练breaker，<br>（3）基于正确的样本，使用训练后的breaker生成错误样本并获得更多配对数据，<br>（4）在（1）和（3）中新生成的配对数据集上训练fixer。</p>
+<p><strong>Q6. 论文中的实验是如何设计的？</strong></p>
+<ol>
+<li>初始修复器使用训练好的DrRepair作为f_0；其训练与原始论文设置相同</li>
+<li>对f_0,运行2轮BIFI（K=2）</li>
+<li>测试：对一个错误代码，循环使用训练后的fixer进行修复，截至条件为：错误被修复（可编译）||达到最大迭代次数：5（设置同DrRepair）</li>
+<li>策略验证（github-python &amp; Deepfix dataset）：a. Initial fixer：f_0的结果；b. f_0不使用Breaker生成的错误样本进行训练（FixerOnly）2遍；c. f_0 ＋ BIFI 2遍</li>
+<li>对比实验（Deepfix dataset）：4的基础上，加上与下述算法的对比<br>Deepfix    RLAssit    SampleFix    DrRepair(即Initial fixer, f_0)</li>
+</ol>
+<p><strong>Q7. 用于定量评估的数据集是什么？代码有没有开源？</strong><br>DeepFix 数据集[开源]<br>本文收集的GitHub-python数据集[<a target="_blank" rel="noopener" href="https://nlp.stanford.edu/projects/myasu/BIFI/data.zip][https://nlp.stanford.edu/projects/myasu/BIFI/data_minimal.zip">https://nlp.stanford.edu/projects/myasu/BIFI/data.zip][https://nlp.stanford.edu/projects/myasu/BIFI/data_minimal.zip</a>]<br>代码[<a target="_blank" rel="noopener" href="https://github.com/michiyasunaga/BIFI">https://github.com/michiyasunaga/BIFI</a>]</p>
+<p><strong>Q8. 论文中的实验及结果有没有很好地支持需要验证的科学假设？</strong><br>通过对比试验和策略验证，证明了所提出的breaker与fixer能通过生成更接近真实错误的代码样本，并对模型的性能起到了提升<br>GitHub-Python（Total：1.9%的性能提升于FixerOnly，Unbalanced Parentheses：1.8%；Indentation Error：2.2%，Invalid Syntax：1.5%）</p>
+<p>DeepFix-test set（BIFI: 71.7%, FixerOnly: 70.5%, DrRepair: 66.1%, SampleFix 45.3%, RLAssist: 26.6%, DeepFix: 33.4%）</p>
+<p><strong>Q9. 这篇论文到底有什么贡献？</strong><br>一方面，提出了一种break and fix 的方法，使得生成的错误测试用例更接近真实的错误代码情景<br>另一方面，验证了‘接近真实错误实例的测试样本最为数据集可也接好地提升模型性能’</p>
+<p><strong>Q10. 下一步呢？有什么工作可以继续深入？</strong></p>
+<ol>
+<li>BIFI框架对其它模型的提升？为什么只采用BIFI的训练数据对DrRepair进行增强（答案可以是本文采用的框架选用的数据解结构和DrRepair比较相似或者基本相同）？即fixer f_0如果选取其它的模型，会有怎样的效果？[一项综合性的实证研究]</li>
+<li>BIFI思路在其它问题上的运用</li>
+<li>文中的评判标准为是否可编译，如果针对其它问题，即可编译问题的缺陷定位与修复，是否可行？是否有可以运用该方法的可能？如何运用？</li>
+</ol>
+<hr>
+<p><strong>P.S. 一些参考文献的引用格式不一致，主要有：ACM引用格式，APA，GB/T 7714 等 主要是懒得统一了，阿巴阿巴~</strong></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="Xiaofan Liu">Xiaofan Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://euterpe.cc/2022/10/22/Paper-Break-It-Fix-It-Unsupervised-Learning-for-Program-Repair/">http://euterpe.cc/2022/10/22/Paper-Break-It-Fix-It-Unsupervised-Learning-for-Program-Repair/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://euterpe.cc" target="_blank">Euterpe</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Michihiro-Yasunaga/">Michihiro Yasunaga</a><a class="post-meta__tags" href="/tags/Percy-Liang/">Percy Liang</a><a class="post-meta__tags" href="/tags/Paper/">Paper</a><a class="post-meta__tags" href="/tags/Compiler-Repair/">Compiler Repair</a><a class="post-meta__tags" href="/tags/PMLR/">PMLR</a></div><div class="post_share"><div class="social-share" data-image="/img/sc1.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/10/30/heuristicAlgorithms/"><img class="prev-cover" src="/img/sc1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]</div></div></a></div><div class="next-post pull-right"><a href="/2022/10/20/hello%20world/"><img class="next-cover" src="/img/sabar1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Welcome to Euterpe - an Avalon.</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2023/02/14/Automated-Repair-of-Programs-from-Large-Language-Models/" title="Automated Repair of Programs from Large Language Models"><img class="cover" src="/img/sc1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-02-14</div><div class="title">Automated Repair of Programs from Large Language Models</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/me2.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Xiaofan Liu</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/slaintroyard"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/SlainTroyard" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:xiaofanliu@whu.edu.cn" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Welcome to Euterpe - an Avalon</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/22/infor/" title="备忘：课题组日常信息 + Overleaf快速入门 + 日常工具列表"><img src="/img/sc1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="备忘：课题组日常信息 + Overleaf快速入门 + 日常工具列表"/></a><div class="content"><a class="title" href="/2023/02/22/infor/" title="备忘：课题组日常信息 + Overleaf快速入门 + 日常工具列表">备忘：课题组日常信息 + Overleaf快速入门 + 日常工具列表</a><time datetime="2023-02-22T06:06:42.000Z" title="发表于 2023-02-22 14:06:42">2023-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/14/Automated-Repair-of-Programs-from-Large-Language-Models/" title="Automated Repair of Programs from Large Language Models"><img src="/img/sc1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Automated Repair of Programs from Large Language Models"/></a><div class="content"><a class="title" href="/2023/02/14/Automated-Repair-of-Programs-from-Large-Language-Models/" title="Automated Repair of Programs from Large Language Models">Automated Repair of Programs from Large Language Models</a><time datetime="2023-02-14T00:23:22.000Z" title="发表于 2023-02-14 08:23:22">2023-02-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/30/heuristicAlgorithms/" title="Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]"><img src="/img/sc1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]"/></a><div class="content"><a class="title" href="/2022/10/30/heuristicAlgorithms/" title="Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]">Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]</a><time datetime="2022-10-30T07:11:48.000Z" title="发表于 2022-10-30 15:11:48">2022-10-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/22/Paper-Break-It-Fix-It-Unsupervised-Learning-for-Program-Repair/" title="Break-It-Fix-It Unsupervised Learning for Program Repair."><img src="/img/sc1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Break-It-Fix-It Unsupervised Learning for Program Repair."/></a><div class="content"><a class="title" href="/2022/10/22/Paper-Break-It-Fix-It-Unsupervised-Learning-for-Program-Repair/" title="Break-It-Fix-It Unsupervised Learning for Program Repair.">Break-It-Fix-It Unsupervised Learning for Program Repair.</a><time datetime="2022-10-22T09:16:37.000Z" title="发表于 2022-10-22 17:16:37">2022-10-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/20/hello%20world/" title="Welcome to Euterpe - an Avalon."><img src="/img/sabar1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Welcome to Euterpe - an Avalon."/></a><div class="content"><a class="title" href="/2022/10/20/hello%20world/" title="Welcome to Euterpe - an Avalon.">Welcome to Euterpe - an Avalon.</a><time datetime="2022-10-20T08:02:19.000Z" title="发表于 2022-10-20 16:02:19">2022-10-20</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/sc1.png')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Xiaofan Liu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Welcome to Avalon.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

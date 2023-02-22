@@ -1,0 +1,293 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Automated Repair of Programs from Large Language Models | Euterpe</title><meta name="keywords" content="Paper,Compiler Repair,Zhiyu Fan,Xiang Gao,Martin Mirchev,Abhik Roychoudhury,Shin Hwei Tan,ICSE"><meta name="author" content="Xiaofan Liu"><meta name="copyright" content="Xiaofan Liu"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Ref:   [APA]Fan, Z., Gao, X., Mirchev, M., Roychoudhury, A., &amp; Tan, S. H. (2022). Automated Repair of Programs from Large Language Models. ICSE.[GB&#x2F;T 7714]Fan Z, Gao X, Mirchev M, et al. Automated">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Automated Repair of Programs from Large Language Models">
+<meta property="og:url" content="http://euterpe.cc/2023/02/14/Automated-Repair-of-Programs-from-Large-Language-Models/index.html">
+<meta property="og:site_name" content="Euterpe">
+<meta property="og:description" content="Ref:   [APA]Fan, Z., Gao, X., Mirchev, M., Roychoudhury, A., &amp; Tan, S. H. (2022). Automated Repair of Programs from Large Language Models. ICSE.[GB&#x2F;T 7714]Fan Z, Gao X, Mirchev M, et al. Automated">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://euterpe.cc/img/sc1.png">
+<meta property="article:published_time" content="2023-02-14T00:23:22.000Z">
+<meta property="article:modified_time" content="2023-02-15T11:08:23.583Z">
+<meta property="article:author" content="Xiaofan Liu">
+<meta property="article:tag" content="Paper">
+<meta property="article:tag" content="Compiler Repair">
+<meta property="article:tag" content="Zhiyu Fan">
+<meta property="article:tag" content="Xiang Gao">
+<meta property="article:tag" content="Martin Mirchev">
+<meta property="article:tag" content="Abhik Roychoudhury">
+<meta property="article:tag" content="Shin Hwei Tan">
+<meta property="article:tag" content="ICSE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://euterpe.cc/img/sc1.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://euterpe.cc/2023/02/14/Automated-Repair-of-Programs-from-Large-Language-Models/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: Xiaofan Liu","link":"链接: ","source":"来源: Euterpe","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Automated Repair of Programs from Large Language Models',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: false,
+  postUpdate: '2023-02-15 19:08:23'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/me2.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="http://euterpe.cc"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="http://cstar.whu.edu.cn"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/sc1.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Euterpe</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="http://euterpe.cc"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="http://cstar.whu.edu.cn"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Automated Repair of Programs from Large Language Models</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-02-14T00:23:22.000Z" title="发表于 2023-02-14 08:23:22">2023-02-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-02-15T11:08:23.583Z" title="更新于 2023-02-15 19:08:23">2023-02-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Paper/">Paper</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Paper/Automated-Repair/">Automated Repair</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Automated Repair of Programs from Large Language Models"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><strong>Ref:</strong>  </p>
+<p><strong><font color="#006666">[APA]</font></strong><br><em><font color="#006666">Fan, Z., Gao, X., Mirchev, M., Roychoudhury, A., &amp; Tan, S. H. (2022). Automated Repair of Programs from Large Language Models. ICSE.</font></em><br><strong><font color="#006666">[GB/T 7714]</font></strong><br><em><font color="#006666">Fan Z, Gao X, Mirchev M, et al. Automated Repair of Programs from Large Language Models[C]. ICSE, 2022.</font></em>  </p>
+<hr>
+<p><strong>Abstract:</strong></p>
+<p>Large language models such as Codex, have shown the capability to produce code for many programming tasks. However, the success rate of existing models is low, especially for complex programming tasks. One of the reasons is that language models lack awareness of program semantics, resulting in incorrect programs, or even programs which do not compile. In this paper, we systematically study whether automated program repair (APR) techniques can fix the incorrect solutions produced by language models in LeetCode contests. The goal is to study whether APR techniques can enhance reliability in the code produced by large language models. Our study revealed that: (1) automatically generated code shares common programming mistakes with human-crafted solutions, indicating APR techniques may have potential to fix auto-generated code; (2) given bug location information provided by a statistical fault localization approach, the newly released Codex edit mode, which supports editing code, is similar to or better than existing Java repair tools TBar and Recoder in fixing incorrect solutions. By analyzing the experimental results generated by these tools, we provide several suggestions: (1) enhancing APR tools to surpass limitations in patch space (e.g., introducing more flexible fault localization) is desirable; (2) as large language models can derive more fix patterns by training on more data, future APR tools could shift focus from adding more fix patterns to synthesis/semantics based approaches, (3) combination of language models with APR to curate patch ingredients, is worth studying.</p>
+<hr>
+<p><strong>论文十问</strong><br><strong>Q1. 论文试图解决什么问题？</strong><br>验证自动程序修复（automated program repair，ARP）是否可以提升（大规模）语言模型（（large） language model）生成代码的可靠性。<br>—can automated program repair improve the code produced by language models?<br>（”Codex edit mode,” 2022. [Online]. Available: <a target="_blank" rel="noopener" href="https://openai.com/blog/">https://openai.com/blog/</a> gpt-3-edit-insert）<br>进而细分为三个子问题：  </p>
+<ol>
+<li>What mistakes are common in auto-generated code?  </li>
+<li>Can APR tools effectively fix code from Codex?  </li>
+<li>Can Codex edit mode fix program bugs?  </li>
+</ol>
+<p><strong>Q2. 这是否是一个新问题？</strong><br>这是一项综合性研究。<br>研究自动程序修复工具能否辅助引导Codex修复程序错误<br>“study whether the side effect of APR tools, such as fault localization results, can be used to guide Codex-e, and how effective Codex-e is in fixing program bugs”</p>
+<p><strong>Q3. 这篇文章要验证一个什么科学假设？</strong><br>本文为综合性研究，主要探究了以下方面：</p>
+<ol>
+<li>语言模型生成错误代码的特点；</li>
+<li>自动程序修复技术对Codex等语言模型自动生成的错误代码的修复效果；</li>
+<li>语言模型是否可以作为ARP技术修复错误的代码；</li>
+<li>若3.可行；通过采用ARP技术，对语言模型修复缺陷项目能力是否有提升，提升的方式（如缺陷定位）和具体的ARP技术（如基于符号执行的修复、基于搜索的修复和基于学习的修复）；</li>
+<li>将ARP与language model结合的可行性和有效性分析。</li>
+</ol>
+<p><strong>Q4. 有哪些相关研究？如何归类？谁是这一课题在领域内值得关注的研究员？</strong>  </p>
+<ol>
+<li><p><font color=GREEN>Automated Program Repair(APR)</font><br>[1] Claire Le Goues, Michael Pradel, &amp; Abhik Roychoudhury (2019). Automated program repair Communications of The ACM.<br>[19年综述]<br><em><font color=RED></font></em><br><em><font color=RED>Search-based ARP tool take a buggy program and a correct criteria as inputs, and generate patches in two steps: (1) producing patches using predefined code transformation operators; and (2) searching for a patch over the patch space that satisfies a correctness criteria (e.g. passes given tests). Search-based repair can scale to large programs, but often not to large search spaces.</font></em><br>[2] Shin Hwei Tan, &amp; Abhik Roychoudhury (2015). relifix: automated repair of software regressions International Conference on Software Engineering.<br><font color=Blue>[ReliFix]  [Search-based]</font><br>[3] Shin Hwei Tan, Zhen Dong, Xiang Gao, &amp; Abhik Roychoudhury (2018). Repairing crashes in Android apps International Conference on Software Engineering.<br>[Search-based]<br>[4] Ming Wen, Junjie Chen, Rongxin Wu, Dan Hao, &amp; Shing-Chi Cheung (2018). Context-aware patch generation for better automated program repair International Conference on Software Engineering.<br>[Search-based]<br>[5] Jiajun Jiang, Yingfei Xiong, Hongyu Zhang, Qing Gao, &amp; Xiangqun Chen (2018). Shaping program repair space with existing patches and similar code International Symposium on Software Testing and Analysis.<br>[Search-based]<br>[6] Sergey Mechtaev, Xiang Gao, Shin Hwei Tan, &amp; Abhik Roychoudhury (2018). Test-Equivalence Analysis for Automatic Patch Generation ACM Transactions on Software Engineering and Methodology.<br>[Search-based]<br>[7] Kui Liu, Anil Koyuncu, Dongsun Kim, &amp; Tegawendé F. Bissyandé (2019). TBar: Revisiting Template-based Automated Program Repair arXiv: Software Engineering.<br><font color=Blue>[TBar]  [Search-based]</font><br>[8] Kui Liu, Anil Koyuncu, Dongsun Kim, &amp; Tegawendé F. Bisyandé (2018). AVATAR : Fixing Semantic Bugs with Fix Patterns of Static Analysis Violations Cornell University - arXiv.<br>[Search-based]<br>[9] Westley Weimer, ThanhVu Nguyen, Claire Le Goues, &amp; Stephanie Forrest (2009). Automatically finding patches using genetic programming International Conference on Software Engineering.<br><font color=Blue>[GenProg]  [Search-based]</font><br><em><font color=RED></font></em><br><em><font color=RED>Semantics-based APR techniques (e.g., SemFix [10], Nopol [11], and Angelix [12]) generate patches by (1) formulating a repair constraint that needs to be satisfied by a program passing a given test-suite; and (2) solving the repair constraint to generate patches.</font></em><br>[10] Hoang Duong Thien Nguyen, Dawei Qi, Abhik Roychoudhury, &amp; Satish Chandra (2013). SemFix: program repair via semantic analysis International Conference on Software Engineering.<br><font color=Blue>[SemFix] [Semantics-based]</font><br>[11] Jifeng Xuan, Matias Martinez, Favio DeMarco, Maxime Clement, Sebastian R. Lamelas Marcote, Thomas Durieux, Daniel Le Berre, &amp; Martin Monperrus (2017). Nopol: Automatic Repair of Conditional Statement Bugs in Java Programs IEEE Transactions on Software Engineering.<br><font color=Blue>[Nopol] [Semantics-based]</font><br>[12] Sergey Mechtaev, Jooyong Yi, &amp; Abhik Roychoudhury (2016). Angelix: scalable multiline program patch synthesis via symbolic analysis International Conference on Software Engineering.<br><font color=Blue>[Angelix] [Semantics-based]</font><br><em><font color=RED> </font></em><br><em><font color=RED>The application of deep learning techniques in program repair has been explored in past few years.</font></em><br><em><font color=BLUE> </font></em><br><em><font color=BLUE>DeepRepair [13] and DeepFix [14] are the early attempts to fix bugs by learning fixes from similar code.</font></em><br>[13] Martin White, Michele Tufano, Christopher Vendome, &amp; Denys Poshyvanyk (2016). Deep learning code fragments for code clone detection Automated Software Engineering.<br>[14] Rahul Gupta, Soham Pal, Aditya Kanade, &amp; Shirish Shevade (2017). DeepFix: Fixing Common C Language Errors by Deep Learning Proceedings of the … AAAI Conference on Artificial Intelligence.<br><em><font color=BLUE> </font></em><br><em><font color=BLUE>SequenceR [15] adapts neural machine translation (NMT) to generate patch, whereas CoCoNuT [16] and CURE [17] further improve the results by either encoding program context or using a programming language model.</font></em><br>[15] Zimin Chen, Steve Kommrusch, Michele Tufano, Louis-Noël Pouchet, Denys Poshyvanyk, &amp; Martin Monperrus (2021). SequenceR : Sequence-to-Sequence Learning for End-to-End Program Repair IEEE Transactions on Software Engineering.<br>[16] Thibaud Lutellier, Hung Viet Pham, Lawrence Pang, Yitong Li, Moshi Wei, &amp; Lin Tan (2020). CoCoNuT: combining context-aware neural translation models using ensemble for program repair International Symposium on Software Testing and Analysis.<br>[17] Nan Jiang, Thibaud Lutellier, &amp; Lin Tan (2021). CURE: Code-Aware Neural Machine Translation for Automatic Program Repair Cornell University - arXiv.<br><em><font color=BLUE> </font></em><br><em><font color=BLUE>DLFix [18] uses two-layer tree-based RNN to learn code transformations, and Recoder [19] designed a syntax-guided learning approach to improve the decoder of a DL model.</font></em><br>[18] Yi Li, Shaohua Wang, &amp; Tien N. Nguyen (2020). DLFix: context-based code transformation learning for automated program repair International Conference on Software Engineering.<br>[19] Qihao Zhu, Zeyu Sun, Yuan-an Xiao, Wenjie Zhang, Kang Yuan, Yingfei  Xiong, &amp; Lu Zhang (2023). A Syntax-Guided Edit Decoder for Neural Program Repair CERN European Organization for Nuclear Research - Zenodo.  </p>
+</li>
+<li><p><font color=GREEN>Database</font><br>[20] René Just, Darioush Jalali, &amp; Michael D. Ernst (2014). Defects4J: a database of existing faults to enable controlled testing studies for Java programs International Symposium on Software Testing and Analysis.  </p>
+</li>
+<li><p><font color=GREEN>Large Language Model for Code Generation</font><br>[21] Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Thomas Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Samuel McCandlish, Alec Radford, Ilya Sutskever, &amp; Dario Amodei (2020). Language Models are Few-Shot Learners arXiv: Computation and Language. <font color=blue>[NLP]</font><br>[22] Dan Hendrycks, Steven Basart, Saurav Kadavath, Mantas Mazeika, Akul Arora, Ethan Guo, Collin Burns, Samir Puranik, Horace He, Dawn Song, &amp; Jacob Steinhardt (2021). Measuring Coding Challenge Competence With APPS Cornell University - arXiv. <font color=blue>[benchmark]</font><br><em><font color=BLUE> </font></em><br><em><font color=BLUE>Later Codex [23], the back-end model that powers GitHub Copilot, Alphacode [24], Codewhisperer [25], and [26] have emerged as language model based automatic code generation platforms.</font></em><br>[23] Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde de Oliveira Pinto, Jared Kaplan, Harrison Edwards, Yuri Burda, Nicholas Joseph, Greg Brockman, Alex Ray, Raul Puri, Gretchen Krueger, Michael Petrov, Heidy Khlaaf, Girish Sastry, Pamela Mishkin, Brooke Chan, Scott Gray, Nick Ryder, Mikhail Pavlov, Alethea Power, Lukasz Kaiser, Mohammad Bavarian, Clemens Winter, Philippe Tillet, Felipe Petroski Such, Dave Cummings, Matthias Plappert, Fotios Chantzis, Elizabeth A. Barnes, Ariel Herbert-Voss, William H. Guss, Alex Nichol, Alex Paino, Nikolas Tezak, Jie Tang, Igor Babuschkin, Suchir Balaji, Shantanu Jain, William Saunders, Christopher Hesse, Andrew N. Carr, Jan Leike, Joshua Achiam, Vedant Misra, Evan Morikawa, Alec Radford, Matthew M. Knight, Miles Brundage, Mira Murati, Katie Mayer, Peter Welinder, Bob McGrew, Dario Amodei, Samuel McCandlish, Ilya Sutskever, &amp; Wojciech Zaremba (2021). Evaluating Large Language Models Trained on Code Cornell University - arXiv.  <font color=blue>[Codex]</font><br>[24] Yujia Li, David Choi, Junyoung Chung, Nate Kushman, Julian Schrittwieser, Rémi Leblond, Tom Eccles, James Keeling, Felix Gimeno, Agustin Dal Lago, Thomas Hubert, Peter Choy, Cyprien De Masson D’autume, Igor Babuschkin, Xinyun Chen, Po-Sen Huang, Johannes Welbl, Sven Gowal, Alexey Cherepanov, James Molloy, Daniel Mankowitz, Esme Robson, Pushmeet Kohli, Nando De Freitas, Koray Kavukcuoglu, &amp; Oriol Vinyals (2023). Competition-Level Code Generation with AlphaCode <font color=blue>[AlphaCode]</font><br>[25] “Amazon codewhisperer,” 2022. [Online]. Available: <a target="_blank" rel="noopener" href="https://aws">https://aws</a>. amazon.com/codewhisperer/ <font color=blue>[Codewhisperer]</font><br>[26]Jacob Austin, Augustus Odena, Maxwell Nye, Maarten Bosma, Henryk Michalewski, David Dohan, Ellen Jiang, Carrie J. Cai, Michael Terry, Quoc V. Le, &amp; Charles Sutton (2021). Program Synthesis with Large Language Models.. arXiv: Programming Languages.<br><em><font color=BLUE> </font></em><br><em><font color=BLUE>There are emerging approaches combining program synthesis with large language model on fixing API usage [27] and synthesizing regular expression [28]</font></em><br>[27] Naman Jain, Skanda Vaidyanath, Arun Iyer, Nagarajan Natarajan, Suresh Parthasarathy, Sriram Rajamani, &amp; Rahul Sharma (2023). Jigsaw: Large Language Models meet Program Synthesis<br>[28] Kia Rahmani, Mohammad Shahid Raza, Sumit Gulwani, Vu Le, Dan Morris, Arjun Radhakrishna, Gustavo Soares, &amp; Ashish Tiwari (2021). Multi-modal program inference: a marriage of pre-trained language models and component-based synthesis<br><em><font color=BLUE> </font></em><br><em><font color=BLUE>[29] evaluated the quality of code generated by Copilot on a small set of randomly selected LeetCode programming tasks (33 tasks with 132 solutions).</font></em><br>[29] Nhan Nguyen, &amp; Sarah Nadi (2023). An empirical evaluation of GitHub copilot’s code suggestions<br><em><font color=BLUE> </font></em><br><em><font color=BLUE>The most relevant papers: how language model can fix bugs?</font></em><br>[30] Hammond Pearce, Benjamin Tan, Baleegh Ahmad, Ramesh Karri, &amp; Brendan Dolan-Gavitt (2023). Can OpenAI Codex and Other Large Language Models Help Us Fix Security Bugs?.<br>[31] Julian Aron Prenner, Hlib Babii, &amp; Romain Robbes (2023). Can OpenAI’s Codex Fix Bugs? An evaluation on QuixBugs  </p>
+</li>
+</ol>
+<p><strong>Q5. 论文中提到的解决方案之关键是什么？</strong>  </p>
+<ol>
+<li>在LeetCode中构建了一个包含113个编程任务的数据集LMDefects（数据集中的任务较新，避免被Codex训练过）。<br>p.s.: 大致保证Codex的训练版本在问题之前即可。  </li>
+<li>Codex的参数设置，与问题、测试集的建模与表示。在自然语言描述中提供公共测试，以指导APR工具，而不是将它们嵌入到提示中。<br><strong><font color=red>作者手动将公共测试用例转换为JUnit测试</font></strong><br>具体而言，在给出的提示下（问题描述），运行Codex生成50个候选解，并根据Codex的最佳参选择正确概率最高的前5个解。<br>然后将解（生成的算法代码）提交LeetCode进行内部测试（私有测试）。  </li>
+<li>评估修复工具是否可以修复Codex产生的错误解决方案：使用测试驱动的修复工具（TBar和Recoder）基于公共测试用例对缺陷代码进行修复；通过提交LeetCode测试修复是否成功  </li>
+<li>通过生成程序编辑来修改现有代码，调查Codex-e是否可以作为APR工具，并将其与TBar和Recoder进行比较。</li>
+</ol>
+<p><strong>Q6. 论文中的实验是如何设计的？</strong>  </p>
+<p>RQ1. 分析Codex生成的解决方案中的典型错误来研究ARP进行缺陷修复的可行性<br>（1）对Codex在LMDefects上生成的解进行手动修复，并对错误进行归类。将这些错误与Codeflaws（编程竞赛参与者提交的错误的benchmark）<br><strong><font color=red>语法错误：（a）不完整的代码，(b)调用未定义的变量/函数/类</font></strong><br><em><font color="#006666">作者通过增加生成解的数量和生成代码段的长度（token的最大数量）来减少语法错误</font></em><br><em><font color="#006666">“Despite providing the maximum length as the bound for code generation, Codex still generates incomplete code where the average token length is 628. It is worthwhile to study the feasibility of applying code completion techniques for fixing the auto-generated incomplete code by Codex.”</font></em><br><strong><font color="#006666">“对于具有未定义函数的程序，需要合成函数体来解决编译错误”</font></strong><br><strong><font color=red>“Future research can work on using program synthesis techniques to resolve the undefined functions or invoking Codex on a function-by-function basis to synthesize the function body.”</font></strong><br><em><font color="#006666">“由于括号不匹配很容易修复（使用正则表达式匹配机制）”，作者手动修复后归类到其它类别”</font></em><br><strong>“Misaligned Algorithm”&amp;“Syntax Error”</strong></p>
+<p>P.S.: 作者发现即使在手动修复括号不匹配的错误后，这些程序依然无法通过LeetCode的保留测试（hold-out tests）。</p>
+<p>RQ2. 将ARP生成的补丁划分为似是而非补丁（Plausible patches）与正确补丁（Correct patches）。前者修复后的代码只能通过公共测试集，后者能提交并通过LeetCode的私有测试（Private tests）。<br>对每个缺陷类型，ARP工具修复的情况进行了统计分析。<em><font color="#006666">“The results show that existing APR tools are still limited in generating complex patches that require edits of multiple lines.”</font></em><br>将文中使用的ARP工具TBar与Recoder进行对比</p>
+<p><strong><font color=RED>“Existing pattern based and learning based APR are ineffective at fixing auto-generated code, challenges include: (1) limited search space; (2) unable to generate multi-edit patches; (3) lack of awareness of program dependencies.”</font></strong>  <strong>//why?//how?//</strong></p>
+<p>RQ3.<br>OpenAI发布了一种新的Codex编辑模式，它具有改变现有程序内容的能力；设计实验验证：“能否通过适当的指令使得Codex-e修复缺陷程序？”  </p>
+<ol>
+<li>Codex-e-bug: 告诉Codex-e给定程序中存在缺陷，并要求Codex-e修复它。该指令简单地表示为“修复程序中的bug” （”Fix bug in the program”） </li>
+<li>Codex-e-line: Codex-e的指令被表述为“修复行n”（”Fix line N”）   </li>
+<li>Codex-e-stm: 修复具体的语句,对可疑行的文本s1，如“修复s1”（s1:i-=2;）（”Fix s1”）  </li>
+</ol>
+<p>选择十个最可疑的陈述，并要求 Codex-e 为每个陈述生成五个可能的编辑（即 Codex-e 试图在 50 次尝试中修复不正确的解决方案）。Code-e(stm)方案的总体效果最好。<br>接下来：  </p>
+<ol>
+<li>将Codex-e-stm、TBar和Recoder的效果进行对比  </li>
+<li>结合不同工具的补丁空间<br>a) Combine patch space of Codex-e and APR<br><strong><font color=RED>定义1. 补丁成分：用于构建相应补丁的运算符/操作数（例如变量、文字、运算符等）的集合。</font></strong><br>探索通过评估不同工具产生的补丁成分，APR和Codex-e产生的补丁搜索空间是否可以相互补充。  #Recoder是基于深度学习的模型，因此不考虑Recoder与Codex-e的结合<br>&lt;对LMDefects每个问题由2名作者确认出一个最小的补丁，称为“ground truth”&gt;<br><strong>（没看太懂）：对于每个缺陷的解，根据”ground truth”补丁获得“所需的补丁成分 $I_1$”(required patch ingredients $I_1$)。</strong><br>接下来，探究以下2点：<br>单个工具 (TBar/Codex-e) 能否为每个不正确的解决方案生成所有所需的补丁成分？<br>结合 TBar 和 Codex-e（按顺序运行 TBar 和 Codex-e）可以产生所有所需的补丁成分吗？<br>b) Combine APR with Multiple Solutions of Codex<br>Codex 生成一组候选程序，每个候选程序在理解问题描述方面可能略有不同，因此生成的代码略有不同。作者研究了从这些候选者（“TBar+Codex”设置）中组合补丁成分的可行性。  </li>
+</ol>
+<p><strong>Q7. 用于定量评估的数据集是什么？代码有没有开源？</strong><br>LMDefects, a new dataset that contains 113 Java programming tasks.<br><strong><font color=BLUE>（文中未给出链接）<a target="_blank" rel="noopener" href="https://github.com/apr4codex/icse2023">https://github.com/apr4codex/icse2023</a></font></strong><br> Codex：略<br> TBar：略<br> Recoder：略  </p>
+<p><strong>Q8. 论文中的实验及结果有没有很好地支持需要验证的科学假设？</strong><br>RQ1. <font color="#006666">Auto-generated programs share common mistakes with human-written programs, and contain certain negative symptoms including: (1) names indicate wrong algorithms; (2) similar code blocks; (3) irrelevant helper functions.</font><br>RQ2. <font color="#006666">Existing pattern based and learning based APR are ineffective at fixing auto-generated code, challenges include: (1) limited search space; (2) unable to generate multi-edit patches; (3) lack of awareness of program dependencies.</font><br>RQ3_1. <font color="#006666">The effectiveness of Codex-e with a given specific fault location (Codex-e—stm) is nearly comparable to its effectiveness without any location guidance (Codex-e-bug).</font><br>RQ3_2. <font color="#006666">By using patch ingredients extracted from (1) TBar’s and Codex-e’s patches, and (2) TBar’s patches and multiple generated solutions by Codex — we successfully identify the required patch ingredients of more incorrect solutions.</font>    </p>
+<p><strong>Q9. 这篇论文到底有什么贡献？</strong>  </p>
+<ol>
+<li>研究了Codex自动生成缺陷代码的特征，并建立了公开数据集LMDefects；    </li>
+<li>首次对Codex作为ARP工具的有效性的研究；  </li>
+<li>研究基于搜索的ARP工具、基于深度学习的ARP工具对Codex自动生成缺陷代码的修复效果；</li>
+<li>研究ARP工具与Codex在修复Codex自动生成缺陷代码的过程中，可能的结合方式：a)两者补丁的结合，b)通过TBar的补丁修复多个Codex的解。</li>
+</ol>
+<p><strong>Q10. 下一步呢？有什么工作可以继续深入？</strong><br>“As Codex generated code share common mistakes with human-written code, using APR techniques to enhance reliability in auto-generated code by automatically fixing the bugs in the auto-generated code is worth studying.”  </p>
+<ol>
+<li>对语言模型生成的缺陷程序进行系统调查（作者的做法：建立LMDefects数据集）。  </li>
+<li>Codex似乎严重依赖函数名称来解决编程任务, 为代码生成而设计的未来语言模型应该专注于总结问题描述的有用信息，以减少对函数名称的依赖。  </li>
+<li>基于搜索的ARP算法需要额外的修复信息/模式（additional fix patterns）与更大的搜索空间；如何解决这类问题。  </li>
+<li>基于符号的算法未被本文测试。基于符号的修复往往针对于特定的语义问题，如Nopol专注于修复条件语句错误，总体效果也许不如Recoder与TBar，但是对于特定问题也许效果会更好。此外，如何集成多个基于符号的修复工具、如何结合不同的修复工具（符号修复往往依赖于精确的错误定位，也许能通过这个方向进行深入）等都是值得研究的。  </li>
+<li>基于学习的APR不能保证其学习后生成的模型总是正确应用于修复所有程序（缺乏泛化性），作者给出的建议是(1) 将特定领域的知识纳入学习新模式，(2) 提高学习模式的泛化性。  </li>
+<li>测试驱动的修复框架：未来的代码生成也许不是从头开始生成正确的程序，而可能是先生成错误的程序，并通过迭代测试的方法进一步优化它。  </li>
+<li>正确程序的优先级（Prioritization of correct programs）：在补丁正确性评估 [32]、[33] 和补丁优先级排序 [34]、[35] 中结合APR研究的最新进展来指导语言模型，如Codex，以生成更好的程序。 </li>
+<li>获取补丁成分（Obtaining patch ingredients）：未来的研究可以致力于自动搜索和合并补丁成分以生成更复杂的程序/块。</li>
+<li>如何构建编辑指令来指导Codex-e生成更正确的修复（Codex-e-bug、Codex-e-line与Codex-e-stm）。</li>
+</ol>
+<p>[32] Shin Hwei Tan, Hiroaki Yoshida, Mukul R. Prasad, &amp; Abhik Roychoudhury (2016). Anti-patterns in search-based program repair Foundations of Software Engineering.<br>[33] Shangwen Wang, Ming Wen, Bo Lin, Hongjun Wu, Yihao Qin, Deqing Zou, Xiaoguang Mao, &amp; Hai Jin (2020). Automated patch correctness assessment: how far are we?. Automated Software Engineering.<br>[34] He Ye, Jian Gu, Matias Martinez, Thomas Durieux, &amp; Martin Monperrus (2021). Automated Classification of Overfitting Patches with Statically Extracted Code Features IEEE Transactions on Software Engineering.<br>[35] Ali Ghanbari (2020). ObjSim: Lightweight Automatic Patch Prioritization via Object Similarity Cornell University - arXiv.  </p>
+<hr>
+<p><em><font color=BLUE>P.S.: 引用中带有“arXiv”的参考文献格式是不完全规范的；本文图方便了（我懒，略略略略略略）</font></em> </p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="Xiaofan Liu">Xiaofan Liu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://euterpe.cc/2023/02/14/Automated-Repair-of-Programs-from-Large-Language-Models/">http://euterpe.cc/2023/02/14/Automated-Repair-of-Programs-from-Large-Language-Models/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://euterpe.cc" target="_blank">Euterpe</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Paper/">Paper</a><a class="post-meta__tags" href="/tags/Compiler-Repair/">Compiler Repair</a><a class="post-meta__tags" href="/tags/Zhiyu-Fan/">Zhiyu Fan</a><a class="post-meta__tags" href="/tags/Xiang-Gao/">Xiang Gao</a><a class="post-meta__tags" href="/tags/Martin-Mirchev/">Martin Mirchev</a><a class="post-meta__tags" href="/tags/Abhik-Roychoudhury/">Abhik Roychoudhury</a><a class="post-meta__tags" href="/tags/Shin-Hwei-Tan/">Shin Hwei Tan</a><a class="post-meta__tags" href="/tags/ICSE/">ICSE</a></div><div class="post_share"><div class="social-share" data-image="/img/sc1.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2023/02/22/infor/"><img class="prev-cover" src="/img/sc1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">备忘：课题组日常信息 + Overleaf快速入门 + 日常工具列表</div></div></a></div><div class="next-post pull-right"><a href="/2022/10/30/heuristicAlgorithms/"><img class="next-cover" src="/img/sc1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/10/22/Paper-Break-It-Fix-It-Unsupervised-Learning-for-Program-Repair/" title="Break-It-Fix-It Unsupervised Learning for Program Repair."><img class="cover" src="/img/sc1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-22</div><div class="title">Break-It-Fix-It Unsupervised Learning for Program Repair.</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/me2.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Xiaofan Liu</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/slaintroyard"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/SlainTroyard" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:xiaofanliu@whu.edu.cn" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Welcome to Euterpe - an Avalon</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/02/22/infor/" title="备忘：课题组日常信息 + Overleaf快速入门 + 日常工具列表"><img src="/img/sc1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="备忘：课题组日常信息 + Overleaf快速入门 + 日常工具列表"/></a><div class="content"><a class="title" href="/2023/02/22/infor/" title="备忘：课题组日常信息 + Overleaf快速入门 + 日常工具列表">备忘：课题组日常信息 + Overleaf快速入门 + 日常工具列表</a><time datetime="2023-02-22T06:06:42.000Z" title="发表于 2023-02-22 14:06:42">2023-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/02/14/Automated-Repair-of-Programs-from-Large-Language-Models/" title="Automated Repair of Programs from Large Language Models"><img src="/img/sc1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Automated Repair of Programs from Large Language Models"/></a><div class="content"><a class="title" href="/2023/02/14/Automated-Repair-of-Programs-from-Large-Language-Models/" title="Automated Repair of Programs from Large Language Models">Automated Repair of Programs from Large Language Models</a><time datetime="2023-02-14T00:23:22.000Z" title="发表于 2023-02-14 08:23:22">2023-02-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/30/heuristicAlgorithms/" title="Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]"><img src="/img/sc1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]"/></a><div class="content"><a class="title" href="/2022/10/30/heuristicAlgorithms/" title="Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]">Problem, Algorithm, Optimalize and Heuristic [A Simple Guide]</a><time datetime="2022-10-30T07:11:48.000Z" title="发表于 2022-10-30 15:11:48">2022-10-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/22/Paper-Break-It-Fix-It-Unsupervised-Learning-for-Program-Repair/" title="Break-It-Fix-It Unsupervised Learning for Program Repair."><img src="/img/sc1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Break-It-Fix-It Unsupervised Learning for Program Repair."/></a><div class="content"><a class="title" href="/2022/10/22/Paper-Break-It-Fix-It-Unsupervised-Learning-for-Program-Repair/" title="Break-It-Fix-It Unsupervised Learning for Program Repair.">Break-It-Fix-It Unsupervised Learning for Program Repair.</a><time datetime="2022-10-22T09:16:37.000Z" title="发表于 2022-10-22 17:16:37">2022-10-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/20/hello%20world/" title="Welcome to Euterpe - an Avalon."><img src="/img/sabar1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Welcome to Euterpe - an Avalon."/></a><div class="content"><a class="title" href="/2022/10/20/hello%20world/" title="Welcome to Euterpe - an Avalon.">Welcome to Euterpe - an Avalon.</a><time datetime="2022-10-20T08:02:19.000Z" title="发表于 2022-10-20 16:02:19">2022-10-20</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/sc1.png')"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2023 By Xiaofan Liu</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Welcome to Avalon.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
