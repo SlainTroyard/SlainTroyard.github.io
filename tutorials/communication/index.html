@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通信原理完整讲义</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light-bg: #f8f9fa;
+            --dark-text: #333;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: #f5f7fa;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .toc {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        .toc h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary);
+        }
+        .toc ul {
+            columns: 2;
+            list-style-type: none;
+        }
+        .toc li {
+            margin-bottom: 10px;
+            break-inside: avoid;
+        }
+        .toc a {
+            text-decoration: none;
+            color: var(--secondary);
+            font-weight: 500;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .toc a:hover {
+            background-color: #e3f2fd;
+            transform: translateX(5px);
+        }
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .section:hover {
+            transform: translateY(-5px);
+        }
+        .section h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--secondary);
+        }
+        .section h3 {
+            color: var(--primary);
+            margin: 25px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #ddd;
+        }
+        .visual-box {
+            background: var(--light-bg);
+            border: 1px solid #e1e4e8;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .interactive {
+            background: #e3f2fd;
+            padding: 20px;
+            border-left: 4px solid var(--secondary);
+            margin: 25px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .formula {
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 25px 0;
+            padding: 20px;
+            background: #f1f8e9;
+            border-radius: 8px;
+            border: 1px solid #dcedc8;
+        }
+        .example {
+            background: #fff8e1;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #ffd54f;
+        }
+        .key-point {
+            background: #ffebee;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid var(--accent);
+        }
+        .calculator {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        .calculator h4 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        button {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-weight: 500;
+        }
+        .diagram {
+            text-align: center;
+            margin: 25px 0;
+        }
+        .diagram img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .diagram-caption {
+            margin-top: 10px;
+            font-style: italic;
+            color: #666;
+        }
+        .collapsible {
+            background-color: #f1f8ff;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 20px 0 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .collapsible:after {
+            content: '\002B';
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .active:after {
+            content: '\2212';
+        }
+        .content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+        }
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #777;
+            margin-top: 20px;
+        }
+        @media (max-width: 768px) {
+            .toc ul {
+                columns: 1;
+            }
+            body {
+                padding: 10px;
+            }
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>通信原理完整讲义</h1>
+        <div class="subtitle">从基础数学到随机过程 · 专为数学基础薄弱的学生设计</div>
+    </header>
+    
+    <div class="toc">
+        <h2>目录</h2>
+        <ul>
+            <li><a href="#part1">第一部分：通信原理基础</a></li>
+            <li><a href="#part2">第二部分：数学基础</a></li>
+            <li><a href="#part3">第三部分：确知信号分析</a></li>
+            <li><a href="#part4">第四部分：随机过程</a></li>
+            <li><a href="#part5">期末考试重点题型</a></li>
+            <li><a href="#calculators">数学工具包</a></li>
+        </ul>
+    </div>
+    
+    <div class="section" id="part1">
+        <h2>第一部分：通信原理基础</h2>
+        
+        <div class="key-point">
+            <h3>通信系统基本模型</h3>
+            <p>任何通信系统都包含以下基本组件：</p>
+            <div class="visual-box">
+                <pre>
+[信源] → [发送设备] → [信道] → [接收设备] → [信宿]
+         ↑                        ↑
+       [信息]                    [噪声]
+                </pre>
+            </div>
+        </div>
+        
+        <div class="key-point">
+            <h3>关键术语解析</h3>
+            <p><strong>调制技术对比</strong>：</p>
+            <div class="visual-box">
+                <table style="width:100%; border-collapse: collapse;">
+                    <tr style="background-color: #f1f8ff;">
+                        <th style="padding:10px; border:1px solid #ddd;">类型</th>
+                        <th style="padding:10px; border:1px solid #ddd;">改变参数</th>
+                        <th style="padding:10px; border:1px solid #ddd;">应用场景</th>
+                    </tr>
+                    <tr>
+                        <td style="padding:10px; border:1px solid #ddd;">AM调幅</td>
+                        <td style="padding:10px; border:1px solid #ddd;">振幅</td>
+                        <td style="padding:10px; border:1px solid #ddd;">广播电台</td>
+                    </tr>
+                    <tr style="background-color: #f8f9fa;">
+                        <td style="padding:10px; border:1px solid #ddd;">FM调频</td>
+                        <td style="padding:10px; border:1px solid #ddd;">频率</td>
+                        <td style="padding:10px; border:1px solid #ddd;">音乐广播</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:10px; border:1px solid #ddd;">PM调相</td>
+                        <td style="padding:10px; border:1px solid #ddd;">相位</td>
+                        <td style="padding:10px; border:1px solid #ddd;">数字通信</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <div class="key-point">
+            <h3>信号分类</h3>
+            <p><strong>模拟信号 → 数字信号转换过程</strong>：</p>
+            <ol>
+                <li><strong>采样</strong>：按时间间隔记录信号值（如CD采样率44.1kHz）</li>
+                <li><strong>量化</strong>：将连续值转为离散级别（如8位=256级）</li>
+                <li><strong>编码</strong>：用二进制表示量化值（如01001101）</li>
+            </ol>
+        </div>
+    </div>
+    
+    <div class="section" id="part2">
+        <h2>第二部分：数学基础</h2>
+        
+        <button class="collapsible">1. 指数函数 - 通信中的"放大器"</button>
+        <div class="content">
+            <p><strong>核心概念</strong>：指数描述"翻倍增长"现象</p>
+            <div class="formula">
+                \( y = a^x \quad (a>0, a \neq 1) \)
+            </div>
+            
+            <div class="example">
+                <h4>生活例子：</h4>
+                <ul>
+                    <li>细菌繁殖：1个→2个→4个 → \(2^t\)</li>
+                    <li>复利计算：本金年增10% → \(1.1^t\)</li>
+                </ul>
+            </div>
+            
+            <div class="key-point">
+                <h4>通信应用详解：</h4>
+                <p>1. 信号衰减：距离增加1倍，信号强度变为1/4（1/2²）</p>
+                <div class="formula">
+                    接收功率 \( \propto \frac{\text{发送功率}}{\text{距离}^2} \)
+                </div>
+                
+                <p>2. 复指数表示信号：</p>
+                <div class="formula">
+                    \( e^{j\omega t} = \cos(\omega t) + j\cdot\sin(\omega t) \)
+                </div>
+                <p>欧拉公式将复数和三角函数联系起来</p>
+                
+                <div class="diagram">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Euler%27s_formula.svg/500px-Euler%27s_formula.svg.png" alt="复指数旋转示意图">
+                    <div class="diagram-caption">图：复平面上的旋转向量，实部投影形成余弦波，虚部投影形成正弦波</div>
+                </div>
+                
+                <div class="visual-box">
+                    <pre>
+                    复平面上的旋转运动
+                    -----------------
+                    
+                    y轴（虚部）
+                    ^
+                    |     ● 点位置: (cosθ, sinθ)
+                    |    /|
+                    |   / | sinθ
+                    |  /  |
+                    | / θ |
+                    |/____|________> x轴（实部）
+                    |    cosθ
+                    |
+                    v
+                    
+                    θ = ωt (随时间增加)
+                    
+                    x轴投影：cos(ωt) → 余弦波
+                    y轴投影：sin(ωt) → 正弦波
+                    </pre>
+                </div>
+            </div>
+        </div>
+        
+        <button class="collapsible">2. 微积分基础 - 信号分析的核心工具</button>
+        <div class="content">
+            <h3>第一部分：导数（变化率）在通信中的应用</h3>
+            
+            <div class="key-point">
+                <h4>导数是什么？</h4>
+                <ul>
+                    <li>定义：描述函数在某一点的<strong>瞬时变化率</strong></li>
+                    <li>数学表示：\(\frac{df}{dt} = \lim_{\Delta t \to 0} \frac{f(t+\Delta t) - f(t)}{\Delta t}\)</li>
+                    <li>物理意义：信号变化的"快慢"程度</li>
+                </ul>
+            </div>
+            
+            <div class="calculator">
+                <h4>导数计算器</h4>
+                <div class="input-group">
+                    <label for="functionInput">输入函数：</label>
+                    <input type="text" id="functionInput" value="sin(2*pi*f*t)">
+                </div>
+                <button onclick="calculateDerivative()">计算导数</button>
+                <div class="result" id="derivativeResult">结果将显示在这里</div>
+            </div>
+            
+            <div class="key-point">
+                <h4>通信中的关键应用：频率调制(FM)</h4>
+                <ul>
+                    <li>原理：声音信号 → 改变载波频率</li>
+                    <li>数学关系：瞬时频率 \(f(t) = \frac{1}{2\pi} \frac{d\phi(t)}{dt}\)</li>
+                </ul>
+            </div>
+            
+            <div class="example">
+                <h4>FM调制实例分析</h4>
+                <p>假设声音信号：\(m(t) = 0.5 \cos(2\pi \cdot 1000t)\)</p>
+                <p>载波信号：\(\phi(t) = 2\pi \cdot 10^6 t + 2\pi \cdot 500 \int_0^t m(\tau) d\tau\)</p>
+                
+                <p>计算瞬时频率：</p>
+                <ol>
+                    <li>求相位导数：\(\frac{d\phi}{dt} = 2\pi \cdot 10^6 + 2\pi \cdot 500 \cdot m(t)\)</li>
+                    <li>代入声音信号：\(= 2\pi \cdot 10^6 + 2\pi \cdot 500 \cdot 0.5 \cos(2\pi \cdot 1000t)\)</li>
+                    <li>得瞬时频率：\(f(t) = 1,000,000 + 250 \cos(2\pi \cdot 1000t)\) Hz</li>
+                </ol>
+                <p>结果：载波频率在999,750Hz到1,000,250Hz之间变化，携带声音信息</p>
+            </div>
+            
+            <h3>第二部分：积分（累积效应）在通信中的应用</h3>
+            
+            <div class="key-point">
+                <h4>积分是什么？</h4>
+                <ul>
+                    <li>定义：计算函数在区间内的<strong>累积总量</strong></li>
+                    <li>数学表示：\(\int_a^b f(t) dt = \lim_{n \to \infty} \sum_{i=1}^n f(t_i) \Delta t\)</li>
+                    <li>物理意义：信号在时间段内的"总量"</li>
+                </ul>
+            </div>
+            
+            <div class="example">
+                <h4>通信中的关键应用：信号能量计算</h4>
+                <p>原理：信号能量 = 信号平方的积分</p>
+                <div class="formula">
+                    \( E = \int_{-\infty}^{\infty} |s(t)|^2 dt \)
+                </div>
+                
+                <p>实例：矩形脉冲信号：</p>
+                <div class="formula">
+                    \( p(t) = \begin{cases} A & |t| \leq T/2 \\ 0 & \text{其他} \end{cases} \)
+                </div>
+                
+                <p>计算能量：</p>
+                <ol>
+                    <li>建立积分：\(E = \int_{-T/2}^{T/2} A^2 dt\)</li>
+                    <li>计算：\(= A^2 \cdot t \big|_{-T/2}^{T/2}\)</li>
+                    <li>结果：\(= A^2 \cdot (T/2 - (-T/2)) = A^2 T\)</li>
+                </ol>
+                <p>物理意义：信号能量正比于振幅平方和持续时间</p>
+            </div>
+        </div>
+        
+        <!-- 新增：微积分公式速查表 -->
+        <button class="collapsible">3. 微积分公式速查表</button>
+        <div class="content">
+            <div class="key-point">
+                <h3>微积分公式速查表</h3>
+                <div class="visual-box">
+                    <table>
+                        <tr>
+                            <th>函数类型</th>
+                            <th>导数公式</th>
+                            <th>积分公式</th>
+                            <th>通信应用</th>
+                        </tr>
+                        <tr>
+                            <td>常数 \(c\)</td>
+                            <td>\(\frac{d}{dt}c = 0\)</td>
+                            <td>\(\int c  dt = ct + C\)</td>
+                            <td>直流分量</td>
+                        </tr>
+                        <tr>
+                            <td>幂函数 \(t^n\)</td>
+                            <td>\(\frac{d}{dt}t^n = nt^{n-1}\)</td>
+                            <td>\(\int t^n dt = \frac{t^{n+1}}{n+1} + C\)</td>
+                            <td>多项式信号</td>
+                        </tr>
+                        <tr>
+                            <td>指数函数 \(e^{at}\)</td>
+                            <td>\(\frac{d}{dt}e^{at} = ae^{at}\)</td>
+                            <td>\(\int e^{at} dt = \frac{1}{a}e^{at} + C\)</td>
+                            <td>衰减信号</td>
+                        </tr>
+                        <tr>
+                            <td>正弦函数 \(\sin(\omega t)\)</td>
+                            <td>\(\frac{d}{dt}\sin(\omega t) = \omega \cos(\omega t)\)</td>
+                            <td>\(\int \sin(\omega t) dt = -\frac{1}{\omega}\cos(\omega t) + C\)</td>
+                            <td>载波信号</td>
+                        </tr>
+                        <tr>
+                            <td>余弦函数 \(\cos(\omega t)\)</td>
+                            <td>\(\frac{d}{dt}\cos(\omega t) = -\omega \sin(\omega t)\)</td>
+                            <td>\(\int \cos(\omega t) dt = \frac{1}{\omega}\sin(\omega t) + C\)</td>
+                            <td>载波信号</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 新增：欧拉公式详细解释 -->
+        <button class="collapsible">4. 欧拉公式 - 信号分析的桥梁</button>
+        <div class="content">
+            <div class="key-point">
+                <h3>欧拉公式是什么？</h3>
+                <div class="formula">
+                    \( e^{j\theta} = \cos\theta + j\sin\theta \)
+                </div>
+                <p>其中 \( j = \sqrt{-1} \) 是虚数单位</p>
+            </div>
+            
+            <div class="example">
+                <h4>几何意义：复平面上的旋转</h4>
+                <div class="diagram">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Euler%27s_formula.svg/500px-Euler%27s_formula.svg.png" alt="欧拉公式几何解释">
+                    <div class="diagram-caption">图：欧拉公式将复数表示为复平面上的旋转向量</div>
+                </div>
+                <p>当 \(\theta\) 从0增加到 \(2\pi\) 时，点在复平面上画出一个单位圆</p>
+            </div>
+            
+            <div class="key-point">
+                <h4>为什么通信中如此重要？</h4>
+                <ol>
+                    <li><strong>简化计算</strong>：用指数运算代替三角函数运算</li>
+                    <li><strong>统一表示</strong>：同时包含信号的幅度和相位信息</li>
+                    <li><strong>物理实现</strong>：实际信号取实部 \(\cos\theta = \text{Re}\{e^{j\theta}\}\)</li>
+                </ol>
+            </div>
+            
+            <div class="calculator">
+                <h4>欧拉公式计算器</h4>
+                <div class="input-group">
+                    <label for="eulerAngle">输入角度θ（弧度）：</label>
+                    <input type="number" id="eulerAngle" value="0" step="0.1">
+                </div>
+                <button onclick="calculateEuler()">计算</button>
+                <div class="result" id="eulerResult">
+                    实部（cosθ）：1.000<br>
+                    虚部（sinθ）：0.000
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 在第三部分：确知信号分析前添加傅里叶分析专项 -->
+    <div class="section" id="fourier-section">
+        <h2>傅里叶分析专项</h2>
+        
+        <button class="collapsible">1. 傅里叶级数：周期信号的"身份证"</button>
+        <div class="content">
+            <div class="key-point">
+                <h3>傅里叶级数详细教程</h3>
+                <p>任何周期信号都可以分解为不同频率正弦波的组合：</p>
+                <div class="formula">
+                    \( s(t) = a_0 + \sum_{n=1}^{\infty} [a_n \cos(n\omega_0 t) + b_n \sin(n\omega_0 t)] \)
+                </div>
+                
+                <h4>系数计算：</h4>
+                <div class="formula">
+                    \( a_0 = \frac{1}{T} \int_{0}^{T} s(t) dt \)（直流分量）<br>
+                    \( a_n = \frac{2}{T} \int_{0}^{T} s(t) \cos(n\omega_0 t) dt \)<br>
+                    \( b_n = \frac{2}{T} \int_{0}^{T} s(t) \sin(n\omega_0 t) dt \)
+                </div>
+            </div>
+            
+            <div class="example">
+                <h4>方波信号分解实例</h4>
+                <p>方波信号：\( s(t) = \begin{cases} 1 & 0 \leq t < T/2 \\ -1 & T/2 \leq t < T \end{cases} \)</p>
+                
+                <div class="visual-box">
+                    <pre>
+计算步骤：
+1. 直流分量 a0 = (1/T)[∫₀ᵀ/² 1 dt + ∫ᵀ/²ᵀ (-1) dt] = 0
+2. 余弦分量 an = (2/T)[∫₀ᵀ/² cos(nω₀t) dt - ∫ᵀ/²ᵀ cos(nω₀t) dt] = 0
+3. 正弦分量 bn = (2/T)[∫₀ᵀ/² sin(nω₀t) dt - ∫ᵀ/²ᵀ sin(nω₀t) dt]
+   = { 4/(nπ)  n为奇数; 0  n为偶数 }
+
+重建信号：
+s(t) ≈ (4/π)[sin(ω₀t) + (1/3)sin(3ω₀t) + (1/5)sin(5ω₀t) + ...]
+                    </pre>
+                </div>
+                
+                <div class="diagram">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Fourier_series_square_wave_circles_animation.gif" alt="方波傅里叶级数分解">
+                    <div class="diagram-caption">图：方波信号通过不同频率正弦波合成</div>
+                </div>
+                
+                <p>物理意义：方波包含基频和所有奇次谐波</p>
+            </div>
+            
+            <div class="key-point">
+                <h3>傅里叶变换详细教程</h3>
+                <p>非周期信号的频谱分析工具：</p>
+                <div class="formula">
+                    \( S(f) = \int_{-\infty}^{\infty} s(t) e^{-j2\pi ft} dt \)
+                </div>
+                
+                <h4>计算步骤：</h4>
+                <ol>
+                    <li>写出积分表达式</li>
+                    <li>用欧拉公式展开：\( e^{-j2\pi ft} = \cos(2\pi ft) - j\sin(2\pi ft) \)</li>
+                    <li>分别计算实部和虚部积分</li>
+                    <li>合并结果</li>
+                </ol>
+                
+                <div class="example">
+                    <h5>矩形脉冲的傅里叶变换</h5>
+                    <p>信号：\( s(t) = \begin{cases} A & |t| \leq \tau/2 \\ 0 & \text{其他} \end{cases} \)</p>
+                    <p>计算：</p>
+                    <div class="formula">
+                        \( S(f) = \int_{-\tau/2}^{\tau/2} A e^{-j2\pi ft} dt = A\tau \frac{\sin(\pi f \tau)}{\pi f \tau} \)
+                    </div>
+                    <p>结果：\( S(f) = A\tau \cdot \text{sinc}(f\tau) \)</p>
+                    <p>物理意义：矩形脉冲的频谱是sinc函数</p>
+                </div>
+            </div>
+        </div>
+        
+        <button class="collapsible">2. 傅里叶变换：非周期信号的"频谱仪"</button>
+        <div class="content">
+            <div class="key-point">
+                <h3>傅里叶变换详细教程</h3>
+                <p>非周期信号的频谱分析工具：</p>
+                <div class="formula">
+                    \( S(f) = \int_{-\infty}^{\infty} s(t) e^{-j2\pi ft} dt \)
+                </div>
+                
+                <h4>计算步骤：</h4>
+                <ol>
+                    <li>写出积分表达式</li>
+                    <li>用欧拉公式展开：\( e^{-j2\pi ft} = \cos(2\pi ft) - j\sin(2\pi ft) \)</li>
+                    <li>分别计算实部和虚部积分</li>
+                    <li>合并结果</li>
+                </ol>
+                
+                <div class="example">
+                    <h5>矩形脉冲的傅里叶变换</h5>
+                    <p>信号：\( s(t) = \begin{cases} A & |t| \leq \tau/2 \\ 0 & \text{其他} \end{cases} \)</p>
+                    <p>计算：</p>
+                    <div class="formula">
+                        \( S(f) = \int_{-\tau/2}^{\tau/2} A e^{-j2\pi ft} dt = A\tau \frac{\sin(\pi f \tau)}{\pi f \tau} \)
+                    </div>
+                    <p>结果：\( S(f) = A\tau \cdot \text{sinc}(f\tau) \)</p>
+                    <p>物理意义：矩形脉冲的频谱是sinc函数</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 更新第三部分：确知信号分析 -->
+    <div class="section" id="part3">
+        <h2>第三部分：确知信号分析（完整版）</h2>
+        
+        <button class="collapsible">1. 信号分类与性质</button>
+        <div class="content">
+            <div class="key-point">
+                <h3>确知信号分类</h3>
+                <div class="visual-box">
+                    <table>
+                        <tr>
+                            <th>信号类型</th>
+                            <th>数学定义</th>
+                            <th>特点</th>
+                            <th>实例</th>
+                        </tr>
+                        <tr>
+                            <td><strong>能量信号</strong></td>
+                            <td>\( E = \int_{-\infty}^{\infty} |s(t)|^2 dt < \infty \)</td>
+                            <td>持续时间有限</td>
+                            <td>矩形脉冲</td>
+                        </tr>
+                        <tr>
+                            <td><strong>功率信号</strong></td>
+                            <td>\( P = \lim_{T \to \infty} \frac{1}{T} \int_{-T/2}^{T/2} |s(t)|^2 dt < \infty \)</td>
+                            <td>持续时间无限</td>
+                            <td>正弦波</td>
+                        </tr>
+                        <tr>
+                            <td><strong>周期信号</strong></td>
+                            <td>\( s(t+T) = s(t) \)</td>
+                            <td>重复出现</td>
+                            <td>方波</td>
+                        </tr>
+                        <tr>
+                            <td><strong>非周期信号</strong></td>
+                            <td>无周期性</td>
+                            <td>不重复</td>
+                            <td>语音信号</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="example">
+                <h4>能量信号实例：矩形脉冲</h4>
+                <div class="formula">
+                    \( p(t) = \begin{cases} A & |t| \leq T/2 \\ 0 & \text{其他} \end{cases} \)
+                </div>
+                <p>能量计算：\( E = \int_{-T/2}^{T/2} A^2 dt = A^2 T \)</p>
+            </div>
+            
+            <div class="example">
+                <h4>功率信号实例：正弦波</h4>
+                <div class="formula">
+                    \( s(t) = A \cos(2\pi f_c t) \)
+                </div>
+                <p>功率计算：\( P = \lim_{T \to \infty} \frac{1}{T} \int_{-T/2}^{T/2} A^2 \cos^2(2\pi f_c t) dt = \frac{A^2}{2} \)</p>
+            </div>
+        </div>
+        
+        <button class="collapsible">2. 频域分析</button>
+        <div class="content">
+            <div class="key-point">
+                <h3>能量信号的频谱密度</h3>
+                <div class="formula">
+                    \( S(f) = \int_{-\infty}^{\infty} s(t) e^{-j2\pi ft} dt \)
+                </div>
+                <p>物理意义：单位频率上的信号能量分布</p>
+                
+                <div class="example">
+                    <h4>矩形脉冲的频谱密度</h4>
+                    <div class="formula">
+                        \( S(f) = A\tau \cdot \text{sinc}(f\tau) \)
+                    </div>
+                    <div class="diagram">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Sinc_function_%28normalized%29.svg/600px-Sinc_function_%28normalized%29.svg.png" alt="矩形脉冲频谱">
+                        <div class="diagram-caption">图：矩形脉冲的频谱是sinc函数</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="key-point">
+                <h3>能量信号的能量谱密度</h3>
+                <div class="formula">
+                    \( G(f) = |S(f)|^2 \)
+                </div>
+                <p>物理意义：单位频率上的信号能量</p>
+                <p>总能量：\( E = \int_{-\infty}^{\infty} G(f) df \)</p>
+            </div>
+            
+            <div class="key-point">
+                <h3>功率信号的功率谱密度</h3>
+                <div class="formula">
+                    \( P(f) = \lim_{T \to \infty} \frac{1}{T} |S_T(f)|^2 \)
+                </div>
+                <p>其中 \( S_T(f) \) 是截断信号的傅里叶变换</p>
+                
+                <div class="example">
+                    <h4>正弦波的功率谱密度</h4>
+                    <div class="formula">
+                        \( P(f) = \frac{A^2}{4} [\delta(f - f_c) + \delta(f + f_c)] \)
+                    </div>
+                    <p>物理意义：所有功率集中在载波频率 \( f_c \) 处</p>
+                </div>
+            </div>
+        </div>
+        
+        <button class="collapsible">3. 时域分析：相关函数</button>
+        <div class="content">
+            <div class="key-point">
+                <h3>自相关函数（信号相似性度量）</h3>
+                <p><strong>能量信号：</strong></p>
+                <div class="formula">
+                    \( R(\tau) = \int_{-\infty}^{\infty} s(t) s(t+\tau) dt \)
+                </div>
+                
+                <p><strong>功率信号：</strong></p>
+                <div class="formula">
+                    \( R(\tau) = \lim_{T \to \infty} \frac{1}{T} \int_{-T/2}^{T/2} s(t) s(t+\tau) dt \)
+                </div>
+                
+                <div class="example">
+                    <h4>性质：</h4>
+                    <ol>
+                        <li>\( R(0) = \begin{cases} E & \text{能量信号} \\ P & \text{功率信号} \end{cases} \)</li>
+                        <li>\( R(\tau) = R(-\tau) \)（偶函数）</li>
+                        <li>\( |R(\tau)| \leq R(0) \)</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="key-point">
+                <h3>互相关函数（信号间相似性）</h3>
+                <p><strong>能量信号：</strong></p>
+                <div class="formula">
+                    \( R_{12}(\tau) = \int_{-\infty}^{\infty} s_1(t) s_2(t+\tau) dt \)
+                </div>
+                
+                <p><strong>功率信号：</strong></p>
+                <div class="formula">
+                    \( R_{12}(\tau) = \lim_{T \to \infty} \frac{1}{T} \int_{-T/2}^{T/2} s_1(t) s_2(t+\tau) dt \)
+                </div>
+                
+                <div class="example">
+                    <h4>性质：</h4>
+                    <ol>
+                        <li>\( R_{12}(\tau) \neq R_{21}(\tau) \)</li>
+                        <li>\( R_{12}(\tau) = R_{21}(-\tau) \)</li>
+                        <li>\( |R_{12}(\tau)| \leq \sqrt{R_{11}(0) R_{22}(0)} \)</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="calculator">
+                <h3>相关函数计算器</h3>
+                <div class="input-group">
+                    <label>相关类型：</label>
+                    <select id="corrType" onchange="toggleSignal2()">
+                        <option value="auto">自相关</option>
+                        <option value="cross">互相关</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label>信号1类型：</label>
+                    <select id="signal1">
+                        <option value="rect">矩形脉冲</option>
+                        <option value="sine">正弦波</option>
+                    </select>
+                </div>
+                
+                <div id="signal2Group" style="display:none">
+                    <label>信号2类型：</label>
+                    <select id="signal2">
+                        <option value="rect">矩形脉冲</option>
+                        <option value="sine">正弦波</option>
+                    </select>
+                </div>
+                
+                <button onclick="calculateCorrelation()">计算</button>
+                <div class="result" id="corrResult"></div>
+            </div>
+        </div>
+        
+        <div class="example">
+            <h3>雷达测距（自相关应用）</h3>
+            <ol>
+                <li>发送脉冲信号 \( s(t) \)</li>
+                <li>接收回波 \( s(t-\tau) \)</li>
+                <li>计算自相关峰值位置 → 时延 \( \tau \) → 距离 \( d = c\tau/2 \)</li>
+            </ol>
+            <div class="diagram">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Radar_transmission.svg/600px-Radar_transmission.svg.png" alt="雷达测距原理">
+                <div class="diagram-caption">图：雷达测距中的自相关应用</div>
+            </div>
+        </div>
+        
+        <div class="example">
+            <h3>信号检测（互相关应用）</h3>
+            <ol>
+                <li>接收信号 \( r(t) = s(t) + n(t) \)</li>
+                <li>与本地模板 \( s(t) \) 互相关：
+                    \( R_{rs}(\tau) = \int r(t) s(t-\tau) dt \)</li>
+                <li>峰值位置 → 信号到达时间</li>
+            </ol>
+            <div class="diagram">
+                <img src="https://www.researchgate.net/profile/Adrian-Ivaskiu/publication/333688000/figure/fig1/AS:769540395393025@1560439991930/Correlation-detector.png" alt="互相关检测">
+                <div class="diagram-caption">图：互相关在信号检测中的应用</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section" id="part4">
+        <h2>第四部分：随机过程</h2>
+        
+        <button class="collapsible">1. 随机过程基础</button>
+        <div class="content">
+            <div class="key-point">
+                <h3>什么是随机过程？</h3>
+                <p>随机过程是随时间变化的随机变量集合：</p>
+                <div class="formula">
+                    \( \{ X(t), t \in T \} \)
+                </div>
+                <p>其中每个时刻 \( t \) 的 \( X(t) \) 是一个随机变量</p>
+                
+                <h4>通信中的例子：</h4>
+                <ul>
+                    <li>无线信道衰落：\( h(t) \) 随时间随机变化</li>
+                    <li>接收机噪声：\( n(t) \) 是高斯随机过程</li>
+                    <li>用户到达过程：呼叫请求的随机时间序列</li>
+                </ul>
+            </div>
+            
+            <div class="key-point">
+                <h3>关键统计特性</h3>
+                <div class="formula">
+                    均值函数：\( \mu_X(t) = E[X(t)] \)<br>
+                    自相关函数：\( R_X(t_1, t_2) = E[X(t_1)X(t_2)] \)<br>
+                    方差函数：\( \sigma_X^2(t) = E[(X(t) - \mu_X(t))^2] \)
+                </div>
+                
+                <div class="example">
+                    <h4>高斯白噪声过程</h4>
+                    <p>定义：</p>
+                    <ul>
+                        <li>任意时刻服从高斯分布</li>
+                        <li>均值为零：\( \mu_X(t) = 0 \)</li>
+                        <li>自相关函数：\( R_X(\tau) = \frac{N_0}{2} \delta(\tau) \)</li>
+                        <li>功率谱密度：\( S_X(f) = \frac{N_0}{2} \)（常数）</li>
+                    </ul>
+                    <p>物理意义：所有频率成分强度相同</p>
+                </div>
+            </div>
+        </div>
+        
+        <button class="collapsible">2. 常见随机过程</button>
+        <div class="content">
+            <p>通信中常见的随机过程：</p>
+            <ul>
+                <li><strong>高斯白噪声</strong>：均值为0，方差为\(\sigma^2\)，功率谱密度为常数</li>
+                <li><strong>泊松过程</strong>：描述事件发生的随机过程，如电话呼叫</li>
+                <li><strong>马尔可夫过程</strong>：具有马尔可夫性质的随机过程，如无线信道的衰落</li>
+            </ul>
+        </div>
+        
+        <button class="collapsible">3. 随机过程的统计特性</button>
+        <div class="content">
+            <p>随机过程的统计特性：</p>
+            <ul>
+                <li>均值函数：\(\mu_X(t) = E[X(t)]\) 表示随机过程在时刻 \(t\) 的期望值</li>
+                <li>自相关函数：\(R_X(t_1, t_2) = E[X(t_1)X(t_2)]\) 表示随机过程在不同时刻的相关性</li>
+                <li>互相关函数：\(R_{XY}(t_1, t_2) = E[X(t_1)Y(t_2)]\) 表示两个随机过程之间的相关性</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="section" id="part5">
+        <h2>期末考试重点题型</h2>
+        <!-- 内容会继续添加 -->
+    </div>
+    
+    <div class="section" id="calculators">
+        <h2>数学工具包</h2>
+        
+        <div class="calculator">
+            <h3>傅里叶变换计算器</h3>
+            <div class="input-group">
+                <label for="signalType">选择信号类型：</label>
+                <select id="signalType">
+                    <option value="rect">矩形脉冲</option>
+                    <option value="tri">三角波</option>
+                    <option value="sine">正弦波</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="amplitude">振幅 (A)：</label>
+                <input type="number" id="amplitude" value="1">
+            </div>
+            <div class="input-group">
+                <label for="duration">持续时间 (T)：</label>
+                <input type="number" id="duration" value="1">
+            </div>
+            <button onclick="calculateFourier()">计算傅里叶变换</button>
+            <div class="result" id="fourierResult">结果将显示在这里</div>
+        </div>
+        
+        <div class="calculator">
+            <h3>信噪比计算器</h3>
+            <div class="input-group">
+                <label for="signalPower">信号功率 (W)：</label>
+                <input type="number" id="signalPower" value="10">
+            </div>
+            <div class="input-group">
+                <label for="noisePower">噪声功率 (W)：</label>
+                <input type="number" id="noisePower" value="0.1">
+            </div>
+            <button onclick="calculateSNR()">计算信噪比</button>
+            <div class="result" id="snrResult">结果将显示在这里</div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>通信原理完整讲义 &copy; 2025 - 专为数学基础薄弱的学生设计</p>
+    </footer>
+
+    <script>
+        // 可折叠内容
+        const coll = document.getElementsByClassName("collapsible");
+        for (let i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                const content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                } 
+            });
+        }
+        
+        // 导数计算器
+        function calculateDerivative() {
+            const input = document.getElementById('functionInput').value;
+            let result = '';
+            
+            if (input.includes('sin')) {
+                result = input.replace('sin', 'cos') + ' * 2πf';
+            } else if (input.includes('cos')) {
+                result = '-' + input.replace('cos', 'sin') + ' * 2πf';
+            } else if (input.includes('t^')) {
+                const power = parseInt(input.match(/t\^(\d+)/)[1]);
+                result = input.replace(`t^${power}`, `${power}t^${power-1}`);
+            } else if (input.includes('e^')) {
+                const exponent = input.match(/e\^(.*)/)[1];
+                result = input + ' * ' + exponent;
+            } else {
+                result = "无法解析的函数";
+            }
+            
+            document.getElementById('derivativeResult').textContent = "导数结果: " + result;
+        }
+        
+        // 傅里叶变换计算器
+        function calculateFourier() {
+            const signalType = document.getElementById('signalType').value;
+            const A = parseFloat(document.getElementById('amplitude').value);
+            const T = parseFloat(document.getElementById('duration').value);
+            let result = '';
+            
+            switch(signalType) {
+                case 'rect':
+                    result = `S(f) = ${A*T} * sinc(f*${T})`;
+                    break;
+                case 'tri':
+                    result = `S(f) = ${A*T} * sinc²(f*${T/2})`;
+                    break;
+                case 'sine':
+                    result = `S(f) = jπA [δ(f + 1/${T}) - δ(f - 1/${T})]`;
+                    break;
+                default:
+                    result = "请选择有效的信号类型";
+            }
+            
+            document.getElementById('fourierResult').textContent = "傅里叶变换结果: " + result;
+        }
+        
+        // 信噪比计算器
+        function calculateSNR() {
+            const signal = parseFloat(document.getElementById('signalPower').value);
+            const noise = parseFloat(document.getElementById('noisePower').value);
+            
+            if (noise <= 0) {
+                document.getElementById('snrResult').textContent = "错误：噪声功率必须大于0";
+                return;
+            }
+            
+            const linear = signal / noise;
+            const dB = 10 * Math.log10(linear);
+            
+            document.getElementById('snrResult').textContent = 
+                `线性值: ${linear.toFixed(2)}, 分贝值: ${dB.toFixed(2)} dB`;
+        }
+        
+        // 初始打开第一个部分
+        document.querySelector('.collapsible').click();
+
+        // 新增：欧拉公式计算函数
+        function calculateEuler() {
+            const angle = parseFloat(document.getElementById('eulerAngle').value);
+            const real = Math.cos(angle).toFixed(3);
+            const imag = Math.sin(angle).toFixed(3);
+            
+            document.getElementById('eulerResult').innerHTML = `
+                实部（cosθ）：${real}<br>
+                虚部（sinθ）：${imag}
+            `;
+        }
+
+        // 相关函数计算器
+        function calculateCorrelation() {
+            const corrType = document.getElementById('corrType').value;
+            const signal1 = document.getElementById('signal1').value;
+            let result = "";
+            
+            if (corrType === "auto") {
+                result = "自相关函数：R(τ) = ";
+                if (signal1 === "rect") result += "A²T·tri(τ/T)";
+                else result += "(A²/2)cos(2πfτ)";
+            } else {
+                const signal2 = document.getElementById('signal2').value;
+                result = "互相关函数：R₁₂(τ) = ";
+                if (signal1 === "rect" && signal2 === "sine") 
+                    result += "A₁A₂T·sinc(fτ)";
+                else 
+                    result += "复杂表达式，需数值计算";
+            }
+            
+            document.getElementById('corrResult').textContent = result;
+        }
+
+        // 切换互相关信号显示
+        function toggleSignal2() {
+            const signal2Group = document.getElementById('signal2Group');
+            const type = document.getElementById('corrType').value;
+            signal2Group.style.display = type === "cross" ? "block" : "none";
+        }
+    </script>
+</body>
+</html>
+
+
