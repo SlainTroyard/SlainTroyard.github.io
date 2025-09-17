@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>通信原理完整讲义</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)'], ['$', '$']],
+                displayMath: [['\\[', '\\]'], ['$$', '$$']],
+                processEscapes: true,
+                processEnvironments: true,
+                packages: {'[+]': ['ams', 'newcommand', 'configmacros']}
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            svg: {
+                fontCache: 'global'
+            },
+            startup: {
+                ready: function () {
+                    MathJax.startup.defaultReady();
+                    console.log('MathJax is ready');
+                }
+            }
+        };
+    </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         :root {
@@ -118,13 +143,15 @@
             border-radius: 0 8px 8px 0;
         }
         .formula {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             text-align: center;
             margin: 25px 0;
-            padding: 20px;
-            background: #f1f8e9;
-            border-radius: 8px;
-            border: 1px solid #dcedc8;
+            padding: 25px;
+            background: linear-gradient(135deg, #f1f8e9, #e8f5e8);
+            border-radius: 12px;
+            border: 2px solid #c8e6c9;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow-x: auto;
         }
         .example {
             background: #fff8e1;
@@ -246,6 +273,32 @@
             }
             .section {
                 padding: 20px;
+            }
+        }
+        
+        /* MathJax 公式样式优化 */
+        .MathJax {
+            font-size: 1.1em !important;
+        }
+        
+        .MathJax_Display {
+            margin: 1.5em 0 !important;
+            text-align: center !important;
+        }
+        
+        .formula .MathJax {
+            font-size: 1.4em !important;
+        }
+        
+        /* 确保公式在移动设备上正确显示 */
+        @media (max-width: 768px) {
+            .formula {
+                font-size: 1.1rem;
+                padding: 15px;
+            }
+            
+            .MathJax {
+                font-size: 1em !important;
             }
         }
     </style>
@@ -561,6 +614,173 @@
         
         <button class="collapsible">1. 傅里叶级数：周期信号的"身份证"</button>
         <div class="content">
+            <div class="key-point">
+                <h3>傅里叶级数的数学基础</h3>
+                
+                <div class="interactive">
+                    <h4>什么是周期函数？</h4>
+                    <p>周期函数就像每天重复的日出日落，每隔固定时间就会重复自己：</p>
+                    <div class="formula">
+                        \( f(t + T) = f(t) \)
+                    </div>
+                    <p>其中 \( T \) 是函数的<strong>周期</strong> - 重复一次所需的时间。</p>
+                    
+                    <div class="example">
+                        <h5>生活实例：</h5>
+                        <ul>
+                            <li><strong>心跳</strong>：大约每0.8秒重复一次（周期T=0.8秒）</li>
+                            <li><strong>季节变化</strong>：每年重复一次（周期T=1年）</li>
+                            <li><strong>交流电</strong>：家庭用电220V/50Hz，每0.02秒重复一次</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h4>1. 基本定义</h4>
+                <p>对于周期为 \( T \) 的周期信号 \( s(t) \)，其傅里叶级数展开为：</p>
+                <div class="formula">
+                    \( s(t) = a_0 + \sum_{n=1}^{\infty} [a_n \cos(n\omega_0 t) + b_n \sin(n\omega_0 t)] \)
+                </div>
+                <p>其中：</p>
+                <ul>
+                    <li><strong>基频（角频率）</strong>：\( \omega_0 = \frac{2\pi}{T} \) rad/s，表示单位时间内的相位变化量</li>
+                    <li><strong>基频（频率）</strong>：\( f_0 = \frac{1}{T} \) Hz，表示单位时间内信号重复的次数</li>
+                    <li><strong>第n次谐波频率</strong>：\( n\omega_0 \) rad/s 或 \( n f_0 \) Hz，是基频的整数倍，表示信号的第n个谐波成分</li>
+                </ul>
+                
+                <div class="example">
+                    <h5>频率关系实例：</h5>
+                    <p>假设信号周期 \( T = 0.02 \) 秒：</p>
+                    <ul>
+                        <li>基频 \( f_0 = \frac{1}{0.02} = 50 \) Hz（每秒重复50次）</li>
+                        <li>基频角频率 \( \omega_0 = 2\pi \times 50 = 100\pi \) rad/s ≈ 314 rad/s</li>
+                        <li>3次谐波频率 = \( 3 \times 50 = 150 \) Hz（基频的3倍）</li>
+                        <li>5次谐波角频率 = \( 5 \times 100\pi = 500\pi \) rad/s ≈ 1570 rad/s</li>
+                    </ul>
+                </div>
+                
+                <div class="key-point">
+                    <h4>为什么需要谐波？</h4>
+                    <p>就像音乐中的和弦，复杂的声音由多个频率组合而成：</p>
+                    <ul>
+                        <li><strong>基波</strong>：决定声音的基本音高</li>
+                        <li><strong>谐波</strong>：决定声音的音色和特点</li>
+                        <li><strong>傅里叶级数</strong>：数学上分解复杂周期信号的方法</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="key-point">
+                <h3>傅里叶级数的物理意义</h3>
+                
+                <h4>1. 频谱分析</h4>
+                <p>傅里叶级数将复杂的周期信号分解为：</p>
+                <ul>
+                    <li><strong>直流分量</strong>：\( a_0 \)（信号的均值）</li>
+                    <li><strong>基波</strong>：频率为 \( f_0 \) 的正弦波</li>
+                    <li><strong>谐波</strong>：频率为 \( nf_0 \) 的正弦波（\( n = 2, 3, 4, \ldots \)）</li>
+                </ul>
+                
+                <h4>2. 幅度谱和相位谱</h4>
+                <div class="formula">
+                    幅度：\( A_n = \sqrt{a_n^2 + b_n^2} \)<br>
+                    相位：\( \phi_n = \arctan\left(\frac{b_n}{a_n}\right) \)
+                </div>
+                <p>信号可以表示为：</p>
+                <div class="formula">
+                    \( s(t) = a_0 + \sum_{n=1}^{\infty} A_n \cos(n\omega_0 t + \phi_n) \)
+                </div>
+                
+                <h4>3. 功率谱</h4>
+                <div class="formula">
+                    \( P_n = \frac{a_n^2 + b_n^2}{2} = \frac{A_n^2}{2} \)
+                </div>
+                <p>总功率：</p>
+                <div class="formula">
+                    \( P_{\text{total}} = a_0^2 + \sum_{n=1}^{\infty} P_n \)
+                </div>
+            </div>
+            
+            <div class="key-point">
+                <h3>傅里叶级数的收敛条件</h3>
+                
+                <h4>1. 狄利克雷条件</h4>
+                <p>傅里叶级数收敛的充分条件：</p>
+                <ol>
+                    <li><strong>周期性</strong>：\( s(t) = s(t+T) \)</li>
+                    <li><strong>有限个极值</strong>：在任意有限区间内只有有限个极大值和极小值</li>
+                    <li><strong>有限个间断点</strong>：在任意有限区间内只有有限个第一类间断点</li>
+                    <li><strong>绝对可积</strong>：\( \int_{0}^{T} |s(t)| dt < \infty \)</li>
+                </ol>
+                
+                <h4>2. 收敛性质</h4>
+                <ul>
+                    <li>在连续点：级数收敛到 \( s(t) \)</li>
+                    <li>在间断点：级数收敛到 \( \frac{s(t^+) + s(t^-)}{2} \)</li>
+                    <li>在端点：级数收敛到 \( \frac{s(0^+) + s(T^-)}{2} \)</li>
+                </ul>
+            </div>
+            
+            <div class="key-point">
+                <h3>傅里叶级数的性质</h3>
+                
+                <h4>1. 线性性质</h4>
+                <p>如果 \( s_1(t) \leftrightarrow \{a_{1,n}, b_{1,n}\} \) 和 \( s_2(t) \leftrightarrow \{a_{2,n}, b_{2,n}\} \)，则：</p>
+                <div class="formula">
+                    \( \alpha s_1(t) + \beta s_2(t) \leftrightarrow \{\alpha a_{1,n} + \beta a_{2,n}, \alpha b_{1,n} + \beta b_{2,n}\} \)
+                </div>
+                
+                <h4>2. 时移性质</h4>
+                <p>如果 \( s(t) \leftrightarrow \{a_n, b_n\} \)，则：</p>
+                <div class="formula">
+                    \( s(t-t_0) \leftrightarrow \{a_n \cos(n\omega_0 t_0) + b_n \sin(n\omega_0 t_0), b_n \cos(n\omega_0 t_0) - a_n \sin(n\omega_0 t_0)\} \)
+                </div>
+                
+                <h4>3. 尺度变换</h4>
+                <p>如果 \( s(t) \leftrightarrow \{a_n, b_n\} \)，则：</p>
+                <div class="formula">
+                    \( s(at) \leftrightarrow \{a_n, b_n\} \)（周期变为 \( T/a \)）
+                </div>
+                
+                <h4>4. 微分性质</h4>
+                <p>如果 \( s(t) \leftrightarrow \{a_n, b_n\} \)，则：</p>
+                <div class="formula">
+                    \( \frac{ds(t)}{dt} \leftrightarrow \{-n\omega_0 b_n, n\omega_0 a_n\} \)
+                </div>
+                
+                <h4>5. 积分性质</h4>
+                <p>如果 \( s(t) \leftrightarrow \{a_n, b_n\} \)，则：</p>
+                <div class="formula">
+                    \( \int s(t) dt \leftrightarrow \{\frac{b_n}{n\omega_0}, -\frac{a_n}{n\omega_0}\} \)
+                </div>
+            </div>
+            
+            <div class="calculator">
+                <h4>傅里叶级数计算器</h4>
+                <div class="input-group">
+                    <label for="signalTypeFS">选择信号类型：</label>
+                    <select id="signalTypeFS">
+                        <option value="square">方波</option>
+                        <option value="triangle">三角波</option>
+                        <option value="sawtooth">锯齿波</option>
+                        <option value="rect">矩形脉冲序列</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="amplitudeFS">振幅 (A)：</label>
+                    <input type="number" id="amplitudeFS" value="1" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="periodFS">周期 (T)：</label>
+                    <input type="number" id="periodFS" value="1" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="harmonicsFS">谐波数量：</label>
+                    <input type="number" id="harmonicsFS" value="5" min="1" max="20">
+                </div>
+                <button onclick="calculateFourierSeries()">计算傅里叶级数</button>
+                <div class="result" id="fourierSeriesResult">结果将显示在这里</div>
+            </div>
+            
             <div class="key-point">
                 <h3>傅里叶级数详细教程</h3>
                 <p>任何周期信号都可以分解为不同频率正弦波的组合：</p>
@@ -980,6 +1200,24 @@ s(t) ≈ (4/π)[sin(ω₀t) + (1/3)sin(3ω₀t) + (1/5)sin(5ω₀t) + ...]
             <button onclick="calculateSNR()">计算信噪比</button>
             <div class="result" id="snrResult">结果将显示在这里</div>
         </div>
+        
+        <div class="calculator">
+            <h4>信道容量计算器</h4>
+            <div class="input-group">
+                <label for="channelBandwidth">带宽 \( B \) (MHz)：</label>
+                <input type="number" id="channelBandwidth" value="1" step="0.1">
+            </div>
+            <div class="input-group">
+                <label for="signalPower">信号功率 \( S \) (W)：</label>
+                <input type="number" id="signalPower" value="1" step="0.1">
+            </div>
+            <div class="input-group">
+                <label for="noisePower">噪声功率 \( N \) (W)：</label>
+                <input type="number" id="noisePower" value="0.1" step="0.01">
+            </div>
+            <button onclick="calculateChannelCapacity()">计算信道容量</button>
+            <div class="result" id="channelCapacityResult">结果将显示在这里</div>
+        </div>
     </div>
     
     <footer>
@@ -1107,6 +1345,152 @@ s(t) ≈ (4/π)[sin(ω₀t) + (1/3)sin(3ω₀t) + (1/5)sin(5ω₀t) + ...]
             const type = document.getElementById('corrType').value;
             signal2Group.style.display = type === "cross" ? "block" : "none";
         }
+
+        // 傅里叶级数计算器
+        function calculateFourierSeries() {
+            const signalType = document.getElementById('signalTypeFS').value;
+            const A = parseFloat(document.getElementById('amplitudeFS').value);
+            const T = parseFloat(document.getElementById('periodFS').value);
+            const harmonics = parseInt(document.getElementById('harmonicsFS').value);
+            
+            let result = "";
+            let coefficients = "";
+            
+            switch(signalType) {
+                case 'square':
+                    result = `方波信号 s(t) = A × sign(sin(2πt/T))`;
+                    coefficients = `傅里叶级数系数：<br>`;
+                    coefficients += `a₀ = 0<br>`;
+                    coefficients += `aₙ = 0 (所有n)<br>`;
+                    coefficients += `bₙ = { 4A/(nπ)  n为奇数; 0  n为偶数 }<br><br>`;
+                    coefficients += `前${harmonics}项展开：<br>`;
+                    coefficients += `s(t) ≈ (4A/π)[sin(ω₀t) + (1/3)sin(3ω₀t) + (1/5)sin(5ω₀t)`;
+                    if (harmonics >= 7) coefficients += ` + (1/7)sin(7ω₀t)`;
+                    if (harmonics >= 9) coefficients += ` + (1/9)sin(9ω₀t)`;
+                    coefficients += ` + ...]`;
+                    break;
+                    
+                case 'triangle':
+                    result = `三角波信号 s(t) = A × (2|t/T - floor(t/T + 1/2)| - 1)`;
+                    coefficients = `傅里叶级数系数：<br>`;
+                    coefficients += `a₀ = 0<br>`;
+                    coefficients += `aₙ = { 8A/(nπ)²  n为奇数; 0  n为偶数 }<br>`;
+                    coefficients += `bₙ = 0 (所有n)<br><br>`;
+                    coefficients += `前${harmonics}项展开：<br>`;
+                    coefficients += `s(t) ≈ (8A/π²)[cos(ω₀t) + (1/9)cos(3ω₀t) + (1/25)cos(5ω₀t)`;
+                    if (harmonics >= 7) coefficients += ` + (1/49)cos(7ω₀t)`;
+                    if (harmonics >= 9) coefficients += ` + (1/81)cos(9ω₀t)`;
+                    coefficients += ` + ...]`;
+                    break;
+                    
+                case 'sawtooth':
+                    result = `锯齿波信号 s(t) = A × (2t/T - 1)`;
+                    coefficients = `傅里叶级数系数：<br>`;
+                    coefficients += `a₀ = 0<br>`;
+                    coefficients += `aₙ = 0 (所有n)<br>`;
+                    coefficients += `bₙ = 2A(-1)^(n+1)/(nπ)<br><br>`;
+                    coefficients += `前${harmonics}项展开：<br>`;
+                    coefficients += `s(t) ≈ (2A/π)[sin(ω₀t) - (1/2)sin(2ω₀t) + (1/3)sin(3ω₀t)`;
+                    if (harmonics >= 4) coefficients += ` - (1/4)sin(4ω₀t)`;
+                    if (harmonics >= 5) coefficients += ` + (1/5)sin(5ω₀t)`;
+                    coefficients += ` + ...]`;
+                    break;
+                    
+                case 'rect':
+                    result = `矩形脉冲序列 s(t) = A × rect(t/T)`;
+                    coefficients = `傅里叶级数系数：<br>`;
+                    coefficients += `a₀ = A/2<br>`;
+                    coefficients += `aₙ = (2A/nπ)sin(nπ/2)<br>`;
+                    coefficients += `bₙ = 0 (所有n)<br><br>`;
+                    coefficients += `前${harmonics}项展开：<br>`;
+                    coefficients += `s(t) ≈ A/2 + (2A/π)[cos(ω₀t) - (1/3)cos(3ω₀t) + (1/5)cos(5ω₀t)`;
+                    if (harmonics >= 7) coefficients += ` - (1/7)cos(7ω₀t)`;
+                    if (harmonics >= 9) coefficients += ` + (1/9)cos(9ω₀t)`;
+                    coefficients += ` + ...]`;
+                    break;
+            }
+            
+            const omega0 = 2 * Math.PI / T;
+            const freq0 = 1 / T;
+            
+            result += `<br><br>参数：<br>`;
+            result += `振幅 A = ${A}<br>`;
+            result += `周期 T = ${T}<br>`;
+            result += `基频 f₀ = ${freq0.toFixed(3)} Hz<br>`;
+            result += `基频角频率 ω₀ = ${omega0.toFixed(3)} rad/s<br><br>`;
+            result += coefficients;
+            
+            document.getElementById('fourierSeriesResult').innerHTML = result;
+        }
+        
+        // 初始打开第一个部分
+        document.querySelector('.collapsible').click();
+        
+        // 频带利用率计算器
+        function calculateSpectralEfficiency() {
+            const bitRate = parseFloat(document.getElementById('bitRate').value);
+            const bandwidth = parseFloat(document.getElementById('bandwidth').value);
+            
+            if (bandwidth <= 0) {
+                document.getElementById('spectralEfficiencyResult').textContent = "错误：带宽必须大于0";
+                return;
+            }
+            
+            const efficiency = bitRate / bandwidth;
+            
+            let interpretation = "";
+            if (efficiency < 0.5) {
+                interpretation = "（效率较低，可考虑提高调制阶数）";
+            } else if (efficiency < 1.0) {
+                interpretation = "（效率中等）";
+            } else if (efficiency < 2.0) {
+                interpretation = "（效率较高）";
+            } else {
+                interpretation = "（效率很高，接近理论极限）";
+            }
+            
+            document.getElementById('spectralEfficiencyResult').innerHTML = 
+                `频带利用率: <strong>${efficiency.toFixed(3)} bit/s/Hz</strong><br>
+                比特率: ${bitRate} Mbit/s<br>
+                带宽: ${bandwidth} MHz<br>
+                ${interpretation}`;
+        }
+        
+        // 信道容量计算器
+        function calculateChannelCapacity() {
+            const bandwidth = parseFloat(document.getElementById('channelBandwidth').value) * 1e6; // 转换为Hz
+            const signalPower = parseFloat(document.getElementById('signalPower').value);
+            const noisePower = parseFloat(document.getElementById('noisePower').value);
+            
+            if (noisePower <= 0) {
+                document.getElementById('channelCapacityResult').textContent = "错误：噪声功率必须大于0";
+                return;
+            }
+            
+            const snr = signalPower / noisePower;
+            const snrDb = 10 * Math.log10(snr);
+            const capacity = bandwidth * Math.log2(1 + snr);
+            const capacityMbps = capacity / 1e6;
+            
+            let interpretation = "";
+            if (snrDb < 0) {
+                interpretation = "（信噪比很低，通信困难）";
+            } else if (snrDb < 10) {
+                interpretation = "（信噪比较低，需要纠错编码）";
+            } else if (snrDb < 20) {
+                interpretation = "（信噪比中等，适合一般通信）";
+            } else {
+                interpretation = "（信噪比很高，可以实现高速传输）";
+            }
+            
+            document.getElementById('channelCapacityResult').innerHTML = 
+                `信道容量: <strong>${capacityMbps.toFixed(2)} Mbit/s</strong><br>
+                信噪比: ${snrDb.toFixed(2)} dB<br>
+                带宽: ${(bandwidth/1e6).toFixed(1)} MHz<br>
+                ${interpretation}`;
+        }
+        
+        // 初始打开第一个部分
     </script>
 </body>
 </html>
