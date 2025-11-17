@@ -15,13 +15,13 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             overflow: hidden;
-            background: linear-gradient(135deg, #ffb3d9 0%, #ff99cc 50%, #ffb3e6 100%);
+            background: linear-gradient(135deg, #ffeef5 0%, #ffe0f0 50%, #ffeef8 100%);
             height: 100vh;
             width: 100vw;
             position: relative;
         }
 
-        /* 粉色背景装饰 */
+        /* 浅粉色背景装饰 */
         body::before {
             content: '';
             position: fixed;
@@ -30,9 +30,9 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(255, 182, 193, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 192, 203, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(255, 182, 193, 0.2) 0%, transparent 50%);
+                radial-gradient(circle at 20% 30%, rgba(255, 228, 225, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 240, 245, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 228, 225, 0.3) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
         }
@@ -57,7 +57,8 @@
             user-select: none;
             white-space: nowrap;
             z-index: 10;
-            animation: appear 0.6s ease-out forwards, gentleFloat 4s ease-in-out infinite;
+            /* 超级慢动作：更长的淡入时间 + 更慢的浮动周期 */
+            animation: appear 1.2s ease-out forwards, gentleFloat 6s ease-in-out infinite;
             text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.9), 0 0 8px rgba(255, 182, 193, 0.5);
             opacity: 0;
             will-change: transform;
@@ -66,11 +67,15 @@
         @keyframes appear {
             0% {
                 opacity: 0;
-                transform: scale(0.5) rotate(-10deg);
+                transform: scale(0.4) translateY(10px) rotate(-8deg);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(1.08) translateY(-4px) rotate(2deg);
             }
             100% {
                 opacity: 1;
-                transform: scale(1) rotate(0deg);
+                transform: scale(1) translateY(0) rotate(0deg);
             }
         }
 
@@ -89,14 +94,15 @@
             }
         }
 
-        /* 美乐蒂元素 */
+        /* 美乐蒂元素（颜文字） */
         .melody {
             position: absolute;
-            font-size: 35px;
+            font-size: 28px;
             pointer-events: none;
             user-select: none;
             z-index: 5;
-            animation: melodyFloat 5s ease-in-out infinite;
+            /* 慢一点的飘动节奏 */
+            animation: melodyFloat 7s ease-in-out infinite;
             filter: drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.15));
             will-change: transform;
         }
@@ -116,17 +122,27 @@
             }
         }
 
-        /* 彩色文字类 */
-        .color-1 { color: #ff6b9d; }
-        .color-2 { color: #ff8fab; }
-        .color-3 { color: #ffa8c5; }
-        .color-4 { color: #ffb3d1; }
-        .color-5 { color: #ffc0dd; }
-        .color-6 { color: #ff99cc; }
-        .color-7 { color: #ffb3e6; }
-        .color-8 { color: #ffccf2; }
-        .color-9 { color: #ff6bb3; }
-        .color-10 { color: #ff80bf; }
+        /* 彩色文字类 - 20 种柔和多色系（在浅粉背景上可读） */
+        .color-1  { color: #ff6b9d; }  /* 玫红 */
+        .color-2  { color: #ff8fab; }  /* 浅玫红 */
+        .color-3  { color: #ffa8c5; }  /* 樱花粉 */
+        .color-4  { color: #ffb3d1; }  /* 浅粉 */
+        .color-5  { color: #ffc0dd; }  /* 糖果粉 */
+        .color-6  { color: #ff9671; }  /* 珊瑚橘 */
+        .color-7  { color: #ffb997; }  /* 杏色 */
+        .color-8  { color: #ffd97d; }  /* 暖黄 */
+        .color-9  { color: #ffeaa7; }  /* 奶油黄 */
+        .color-10 { color: #c5e99b; }  /* 清新黄绿 */
+        .color-11 { color: #a8e6cf; }  /* 薄荷绿 */
+        .color-12 { color: #9be7ff; }  /* 浅蓝 */
+        .color-13 { color: #7ec8e3; }  /* 天空蓝 */
+        .color-14 { color: #9fa8da; }  /* 浅靛蓝 */
+        .color-15 { color: #b39ddb; }  /* 淡紫 */
+        .color-16 { color: #ce93d8; }  /* 薰衣草紫 */
+        .color-17 { color: #f48fb1; }  /* 玫瑰粉 */
+        .color-18 { color: #ffb5e8; }  /* 草莓牛奶 */
+        .color-19 { color: #ff9cee; }  /* 糖果紫粉 */
+        .color-20 { color: #ffc8e0; }  /* 珍珠粉 */
 
         /* 点击弹出的I LOVE U文字 */
         .click-love {
@@ -137,7 +153,8 @@
             user-select: none;
             white-space: nowrap;
             z-index: 20;
-            animation: clickLoveAppear 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards, clickLoveFloat 3s ease-in-out infinite;
+            /* 超级慢动作弹出：更慢的从无到有，再慢慢浮动 */
+            animation: clickLoveAppear 1.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards, clickLoveFloat 5s ease-in-out infinite;
             text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9), 0 0 15px rgba(255, 20, 147, 0.8), 0 0 25px rgba(255, 105, 180, 0.6);
             color: #ff1493;
             opacity: 0;
@@ -461,12 +478,12 @@
     </div>
 
     <script>
-        // 情话内容
+        // 情话内容 - 更浪漫的情话和歌词
         const loveMessages = [
             '我爱你',
             '我永远爱你',
             '爱你，永远永远',
-            '一起去私奔吧！',
+            '一起去私奔',
             '你是我的唯一',
             '想和你在一起',
             '永远不分离',
@@ -482,7 +499,46 @@
             '你是我的宝贝',
             '爱你到天荒地老',
             '想和你一起做所有事',
-            '你是我的全部'
+            '你是我的全部',
+            '你是我的唯一',
+            '想和你一起看日出',
+            '你是我生命中的光',
+            '想和你一起数星星',
+            '你是我最美的风景',
+            '想和你一起慢慢变老',
+            '你是我心中的唯一',
+            '想和你一起走过四季',
+            '你是我最珍贵的礼物',
+            '想和你一起看日落',
+            '你是我生命的意义',
+            '想和你一起听雨声',
+            '你是我心中的太阳',
+            '想和你一起看月亮',
+            '你是我最美好的遇见',
+            '想和你一起看海',
+            '你是我心中的彩虹',
+            '想和你一起看雪',
+            '你是我最温暖的拥抱',
+            '想和你一起看花',
+            '你是我心中的诗',
+            '想和你一起听歌',
+            '你是我最甜蜜的梦',
+            '想和你一起做饭',
+            '你是我心中的家',
+            '想和你一起散步',
+            '你是我最温柔的陪伴',
+            '想和你一起发呆',
+            '你是我心中的港湾',
+            '想和你一起笑',
+            '你是我最快乐的源泉',
+            '想和你一起哭',
+            '你是我最真实的自己',
+            '想和你一起成长',
+            '你是我最美好的未来',
+            '想和你一起回忆',
+            '你是我最珍贵的记忆',
+            '想和你一起期待',
+            '你是我最美好的明天'
         ];
 
         let animationFrameId = null;
@@ -491,12 +547,14 @@
         let melodyElements = [];
         let textElements = [];
 
-        // 创建美乐蒂元素
+        // 创建美乐蒂元素（使用颜文字）
+        const melodyFaces = ['(◕‿◕)', '(｡◕‿◕｡)', '(◕‿-✿)', '(◕‿◕)♡', '(◡‿◡)', '(◕‿-✿)♡', '(◕‿◕)✨', '(◡‿◡)♡'];
+        
         function createMelody() {
             const container = document.getElementById('heart-container');
             const melody = document.createElement('div');
             melody.className = 'melody';
-            melody.textContent = '🐰';
+            melody.textContent = melodyFaces[Math.floor(Math.random() * melodyFaces.length)];
             
             const screenWidth = window.innerWidth;
             const screenHeight = window.innerHeight;
@@ -548,8 +606,8 @@
             loveText.className = 'love-text';
             loveText.textContent = text;
             
-            // 随机颜色类
-            const colorClass = 'color-' + (Math.floor(Math.random() * 10) + 1);
+            // 随机颜色类（使用更多颜色）
+            const colorClass = 'color-' + (Math.floor(Math.random() * 20) + 1);
             loveText.classList.add(colorClass);
             
             const screenWidth = window.innerWidth;
@@ -577,8 +635,8 @@
             container.appendChild(loveText);
             textElements.push(loveText);
             
-            // 限制文字数量，避免性能问题（增加到80个）
-            if (textElements.length > 80) {
+            // 限制文字数量，避免性能问题（移动端控制在 60 个以内）
+            if (textElements.length > 60) {
                 const oldText = textElements.shift();
                 if (oldText && oldText.parentNode) {
                     oldText.parentNode.removeChild(oldText);
@@ -590,8 +648,8 @@
         function animate() {
             const now = performance.now();
             
-            // 每400ms创建一个文字
-            if (now - lastCreateTime > 400) {
+            // 每650ms创建一个文字（超级慢动作版，更慢更梦幻）
+            if (now - lastCreateTime > 650) {
                 createLoveText();
                 lastCreateTime = now;
             }
@@ -946,9 +1004,10 @@
             edaQuestions.forEach((q, index) => {
                 const questionCard = document.createElement('div');
                 questionCard.className = 'question-card';
-                const isMultiple = q.multiple === true;
+                // 所有题目都标记为不定项选择题
+                const isMultiple = true; // 强制所有题目都是多选题
                 questionCard.innerHTML = `
-                    <div class="question-number">题目 ${index + 1} / ${edaQuestions.length} ${isMultiple ? '<span style="color: #667eea; font-size: 0.9em;">(多选题)</span>' : ''}</div>
+                    <div class="question-number">题目 ${index + 1} / ${edaQuestions.length} <span style="color: #667eea; font-size: 0.9em;">(不定项选择题)</span></div>
                     <div class="question-text">${q.question}</div>
                     <div class="options" data-question="${index}" data-multiple="${isMultiple}">
                         ${q.options.map((opt, optIndex) => `
@@ -960,37 +1019,28 @@
                 container.appendChild(questionCard);
             });
 
-            // 添加选项点击事件
+            // 添加选项点击事件（所有题目都是不定项选择题）
             document.querySelectorAll('.option').forEach(option => {
                 option.addEventListener('click', function() {
                     const questionIndex = parseInt(this.parentElement.dataset.question);
                     const optionIndex = parseInt(this.dataset.option);
-                    const isMultiple = this.parentElement.dataset.multiple === 'true';
+                    // 所有题目都是多选题
+                    const isMultiple = true;
                     
-                    if (isMultiple) {
-                        // 多选题：切换选中状态
-                        this.classList.toggle('selected');
-                        if (!selectedAnswers[questionIndex]) {
-                            selectedAnswers[questionIndex] = [];
-                        }
-                        const answerArray = selectedAnswers[questionIndex];
-                        const index = answerArray.indexOf(optionIndex);
-                        if (index > -1) {
-                            answerArray.splice(index, 1);
-                        } else {
-                            answerArray.push(optionIndex);
-                        }
-                        // 排序以便比较
-                        answerArray.sort((a, b) => a - b);
-                    } else {
-                        // 单选题：移除同组其他选项的选中状态
-                        this.parentElement.querySelectorAll('.option').forEach(opt => {
-                            opt.classList.remove('selected');
-                        });
-                        // 添加选中状态
-                        this.classList.add('selected');
-                        selectedAnswers[questionIndex] = optionIndex;
+                    // 多选题：切换选中状态
+                    this.classList.toggle('selected');
+                    if (!selectedAnswers[questionIndex]) {
+                        selectedAnswers[questionIndex] = [];
                     }
+                    const answerArray = selectedAnswers[questionIndex];
+                    const index = answerArray.indexOf(optionIndex);
+                    if (index > -1) {
+                        answerArray.splice(index, 1);
+                    } else {
+                        answerArray.push(optionIndex);
+                    }
+                    // 排序以便比较
+                    answerArray.sort((a, b) => a - b);
                 });
             });
 
@@ -999,14 +1049,11 @@
             submitBtn.className = 'submit-btn';
             submitBtn.textContent = '提交答案';
             submitBtn.addEventListener('click', function() {
-                // 检查是否所有题目都已作答
+                // 检查是否所有题目都已作答（所有题目都是不定项选择题）
                 const unanswered = edaQuestions.findIndex((q, idx) => {
                     const answer = selectedAnswers[idx];
-                    if (q.multiple === true) {
-                        return !answer || !Array.isArray(answer) || answer.length === 0;
-                    } else {
-                        return answer === undefined;
-                    }
+                    // 所有题目都是多选题
+                    return !answer || !Array.isArray(answer) || answer.length === 0;
                 });
                 if (unanswered !== -1) {
                     alert(`请先完成所有题目！还有题目 ${unanswered + 1} 未作答。`);
@@ -1024,33 +1071,36 @@
             edaQuestions.forEach((q, index) => {
                 const userAnswer = selectedAnswers[index];
                 const correctAnswer = q.correct;
-                const isMultiple = q.multiple === true;
+                // 所有题目都是不定项选择题
+                const isMultiple = true;
                 const resultDiv = document.getElementById(`result-${index}`);
                 const options = document.querySelectorAll(`[data-question="${index}"] .option`);
                 
-                // 显示正确答案
-                if (isMultiple && Array.isArray(correctAnswer)) {
+                // 显示正确答案（处理单选题和多选题两种情况）
+                if (Array.isArray(correctAnswer)) {
+                    // 多选题
                     correctAnswer.forEach(correctIdx => {
                         options[correctIdx].classList.add('correct');
                     });
-                } else if (!isMultiple) {
+                } else {
+                    // 单选题（但显示为不定项选择题）
                     options[correctAnswer].classList.add('correct');
                 }
                 
-                if (userAnswer === undefined || (isMultiple && (!Array.isArray(userAnswer) || userAnswer.length === 0))) {
+                if (userAnswer === undefined || !Array.isArray(userAnswer) || userAnswer.length === 0) {
                     resultDiv.textContent = '未作答';
                     resultDiv.className = 'result-message show wrong';
                 } else {
                     let isCorrect = false;
                     
-                    if (isMultiple && Array.isArray(correctAnswer)) {
-                        // 多选题判断：答案必须完全一致
-                        if (Array.isArray(userAnswer) && userAnswer.length === correctAnswer.length) {
-                            isCorrect = userAnswer.every((ans, idx) => ans === correctAnswer[idx]);
-                        }
-                    } else {
-                        // 单选题判断
-                        isCorrect = userAnswer === correctAnswer;
+                    // 将正确答案转换为数组格式以便比较
+                    const correctArray = Array.isArray(correctAnswer) ? correctAnswer : [correctAnswer];
+                    const userArray = userAnswer.sort((a, b) => a - b);
+                    const correctArraySorted = correctArray.sort((a, b) => a - b);
+                    
+                    // 多选题判断：答案必须完全一致
+                    if (userArray.length === correctArraySorted.length) {
+                        isCorrect = userArray.every((ans, idx) => ans === correctArraySorted[idx]);
                     }
                     
                     if (isCorrect) {
@@ -1059,15 +1109,11 @@
                         correctCount++;
                     } else {
                         // 标记错误选项
-                        if (isMultiple && Array.isArray(userAnswer)) {
-                            userAnswer.forEach(wrongIdx => {
-                                if (!correctAnswer.includes(wrongIdx)) {
-                                    options[wrongIdx].classList.add('wrong');
-                                }
-                            });
-                        } else if (!isMultiple) {
-                            options[userAnswer].classList.add('wrong');
-                        }
+                        userArray.forEach(wrongIdx => {
+                            if (!correctArraySorted.includes(wrongIdx)) {
+                                options[wrongIdx].classList.add('wrong');
+                            }
+                        });
                         resultDiv.textContent = '✗ 回答错误，正确答案已标记';
                         resultDiv.className = 'result-message show wrong';
                     }
@@ -1114,8 +1160,13 @@
             clickLove.style.left = (x - 50) + 'px';
             clickLove.style.top = (y - 20) + 'px';
             
-            // 随机颜色变化
-            const colors = ['#ff1493', '#ff69b4', '#ff6b9d', '#ff1493', '#ff10f0'];
+            // 随机颜色变化（与 love 文本保持风格统一的多色系）
+            const colors = [
+                '#ff6b9d', '#ff8fab', '#ffa8c5', '#ffb3d1', '#ffc0dd',
+                '#ff9671', '#ffd97d', '#ffeaa7', '#c5e99b', '#a8e6cf',
+                '#9be7ff', '#7ec8e3', '#9fa8da', '#b39ddb', '#ce93d8',
+                '#f48fb1', '#ffb5e8', '#ff9cee', '#ffc8e0', '#ff80bf'
+            ];
             const color = colors[Math.floor(Math.random() * colors.length)];
             clickLove.style.color = color;
             clickLove.style.textShadow = `2px 2px 4px rgba(255, 255, 255, 0.9), 0 0 15px ${color}, 0 0 25px ${color}80`;
@@ -1123,8 +1174,8 @@
             container.appendChild(clickLove);
             clickLoveElements.push(clickLove);
             
-            // 限制数量，避免性能问题
-            if (clickLoveElements.length > 30) {
+            // 限制数量，避免性能问题（移动端控制在 7 个以内）
+            if (clickLoveElements.length > 7) {
                 const oldElement = clickLoveElements.shift();
                 if (oldElement && oldElement.parentNode) {
                     oldElement.parentNode.removeChild(oldElement);
