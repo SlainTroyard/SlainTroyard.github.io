@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我爱你 ranran ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* 心形动画容器 */
+        #heart-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .heart-text {
+            position: absolute;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff6b9d;
+            text-shadow: 0 0 10px rgba(255, 107, 157, 0.8);
+            animation: float 4s ease-out forwards;
+            pointer-events: none;
+            user-select: none;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-50vh) translateX(10px) scale(1.2) rotate(5deg);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(-10px) scale(0.6) rotate(-5deg);
+                opacity: 0;
+            }
+        }
+
+        /* 控制按钮 */
+        #control-panel {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            min-width: 200px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* 答题界面 */
+        #quiz-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 50;
+            display: none;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        #quiz-container.active {
+            display: block;
+        }
+
+        .quiz-content {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .quiz-header h1 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .quiz-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .question-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .question-number {
+            font-size: 14px;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 12px 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: #e8edff;
+        }
+
+        .option.correct {
+            border-color: #4caf50;
+            background: #e8f5e9;
+        }
+
+        .option.wrong {
+            border-color: #f44336;
+            background: #ffebee;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-message {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .result-message.show {
+            display: block;
+        }
+
+        .result-message.correct {
+            background: #e8f5e9;
+            color: #2e7d32;
+            animation: popIn 0.3s ease-out;
+        }
+
+        .result-message.wrong {
+            background: #ffebee;
+            color: #c62828;
+            animation: popIn 0.3s ease-out;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 24px;
+            color: #667eea;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f0f4ff;
+            border-radius: 15px;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 25px;
+            color: #667eea;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 51;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 心形路径 */
+        .heart-path {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            pointer-events: none;
+        }
+
+        @media (max-width: 600px) {
+            .quiz-content {
+                padding: 20px;
+                margin-top: 10px;
+            }
+
+            .quiz-header h1 {
+                font-size: 24px;
+            }
+
+            .question-text {
+                font-size: 16px;
+            }
+
+            .btn {
+                min-width: 180px;
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 心形动画容器 -->
+    <div id="heart-container"></div>
+
+    <!-- 控制面板 -->
+    <div id="control-panel">
+        <button class="btn" id="start-heart-btn">开始动画 ❤️</button>
+        <button class="btn" id="quiz-btn">进入答题 🎯</button>
+    </div>
+
+    <!-- 答题界面 -->
+    <div id="quiz-container">
+        <button class="back-btn" id="back-btn">← 返回</button>
+        <div class="quiz-content">
+            <div class="quiz-header">
+                <h1>EDA 比赛题目</h1>
+                <p>测试你的EDA知识，加油！💪</p>
+            </div>
+            <div id="questions-container"></div>
+            <div class="score-display" id="score-display" style="display: none;">
+                得分: <span id="score">0</span> / <span id="total">0</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 心形路径坐标（更完整的心形路径）
+        const heartPoints = [
+            {x: 50, y: 20}, {x: 52, y: 18}, {x: 55, y: 16}, {x: 58, y: 15},
+            {x: 60, y: 15}, {x: 62, y: 16}, {x: 65, y: 18}, {x: 67, y: 20},
+            {x: 68, y: 22}, {x: 68, y: 25}, {x: 67, y: 28}, {x: 65, y: 32},
+            {x: 62, y: 36}, {x: 60, y: 38}, {x: 58, y: 40}, {x: 55, y: 42},
+            {x: 52, y: 43}, {x: 50, y: 44}, {x: 48, y: 43}, {x: 45, y: 42},
+            {x: 42, y: 40}, {x: 40, y: 38}, {x: 38, y: 36}, {x: 35, y: 32},
+            {x: 33, y: 28}, {x: 32, y: 25}, {x: 32, y: 22}, {x: 33, y: 20},
+            {x: 35, y: 18}, {x: 38, y: 16}, {x: 40, y: 15}, {x: 42, y: 15},
+            {x: 45, y: 16}, {x: 48, y: 18}
+        ];
+
+        let heartAnimationInterval = null;
+        let currentPointIndex = 0;
+
+        // 开始心形动画
+        function startHeartAnimation() {
+            if (heartAnimationInterval) {
+                clearInterval(heartAnimationInterval);
+            }
+
+            const container = document.getElementById('heart-container');
+            const texts = ['我爱你', 'ranran', '❤️'];
+            let textIndex = 0;
+
+            heartAnimationInterval = setInterval(() => {
+                const point = heartPoints[currentPointIndex];
+                const text = texts[textIndex % texts.length];
+                
+                const heartText = document.createElement('div');
+                heartText.className = 'heart-text';
+                heartText.textContent = text;
+                
+                // 计算实际位置（基于屏幕尺寸）
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+                const centerX = screenWidth / 2;
+                const centerY = screenHeight / 2 - 50; // 稍微上移
+                const scale = Math.min(screenWidth, screenHeight) / 300;
+                
+                const x = centerX + (point.x - 50) * scale * 2.5;
+                const y = centerY + (point.y - 50) * scale * 2.5;
+                
+                heartText.style.left = x + 'px';
+                heartText.style.top = y + 'px';
+                
+                // 随机延迟和大小，增加颜色变化
+                const delay = Math.random() * 0.3;
+                const size = 20 + Math.random() * 12;
+                const colors = ['#ff6b9d', '#ff8fab', '#ffa8c5', '#ffb3d1', '#ffc0dd'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                heartText.style.animationDelay = delay + 's';
+                heartText.style.fontSize = size + 'px';
+                heartText.style.color = color;
+                heartText.style.textShadow = `0 0 15px ${color}, 0 0 25px ${color}`;
+                
+                container.appendChild(heartText);
+                
+                // 4秒后移除元素
+                setTimeout(() => {
+                    if (heartText.parentNode) {
+                        heartText.parentNode.removeChild(heartText);
+                    }
+                }, 4000);
+                
+                currentPointIndex = (currentPointIndex + 1) % heartPoints.length;
+                textIndex++;
+            }, 150);
+        }
+
+        // 停止心形动画
+        function stopHeartAnimation() {
+            if (heartAnimationInterval) {
+                clearInterval(heartAnimationInterval);
+                heartAnimationInterval = null;
+            }
+        }
+
+        // EDA 比赛题目
+        const edaQuestions = [
+            {
+                question: "在EDA中，什么是时序分析（Timing Analysis）的主要目的？",
+                options: [
+                    "检查电路的功能正确性",
+                    "验证电路是否满足时序约束",
+                    "优化电路的功耗",
+                    "检查电路的物理布局"
+                ],
+                correct: 1
+            },
+            {
+                question: "以下哪个不是常见的EDA工具？",
+                options: [
+                    "Cadence",
+                    "Synopsys",
+                    "Mentor Graphics",
+                    "Microsoft Visual Studio"
+                ],
+                correct: 3
+            },
+            {
+                question: "在数字电路设计中，什么是综合（Synthesis）？",
+                options: [
+                    "将RTL代码转换为门级网表",
+                    "将门级网表转换为版图",
+                    "验证电路的功能",
+                    "优化电路的功耗"
+                ],
+                correct: 0
+            },
+            {
+                question: "什么是静态时序分析（STA）？",
+                options: [
+                    "通过仿真验证时序",
+                    "不依赖测试向量，分析所有路径的时序",
+                    "只分析关键路径",
+                    "只分析时钟路径"
+                ],
+                correct: 1
+            },
+            {
+                question: "在布局布线（Place & Route）中，什么是拥塞（Congestion）？",
+                options: [
+                    "电路功耗过高",
+                    "布线资源不足，无法完成所有连接",
+                    "时序不满足",
+                    "面积过大"
+                ],
+                correct: 1
+            },
+            {
+                question: "什么是建立时间（Setup Time）？",
+                options: [
+                    "时钟信号到达的时间",
+                    "数据在时钟有效沿之前必须稳定的最小时间",
+                    "数据在时钟有效沿之后必须保持的时间",
+                    "时钟周期的一半"
+                ],
+                correct: 1
+            },
+            {
+                question: "在RTL设计中，什么是流水线（Pipeline）？",
+                options: [
+                    "一种降低功耗的技术",
+                    "将组合逻辑分成多个阶段，提高时钟频率",
+                    "一种布局优化技术",
+                    "一种测试方法"
+                ],
+                correct: 1
+            },
+            {
+                question: "什么是时钟域交叉（Clock Domain Crossing, CDC）？",
+                options: [
+                    "时钟信号跨越不同区域",
+                    "数据在不同时钟域之间传递",
+                    "时钟频率的变化",
+                    "时钟树的优化"
+                ],
+                correct: 1
+            },
+            {
+                question: "在综合过程中，什么是约束（Constraint）？",
+                options: [
+                    "电路的物理尺寸限制",
+                    "对时序、面积、功耗等设计目标的要求",
+                    "输入信号的限制",
+                    "输出负载的限制"
+                ],
+                correct: 1
+            },
+            {
+                question: "什么是门控时钟（Clock Gating）？",
+                options: [
+                    "关闭时钟信号",
+                    "根据条件控制时钟的传递，降低功耗",
+                    "改变时钟频率",
+                    "优化时钟树"
+                ],
+                correct: 1
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedAnswers = {};
+
+        // 显示题目
+        function displayQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            edaQuestions.forEach((q, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+                questionCard.innerHTML = `
+                    <div class="question-number">题目 ${index + 1} / ${edaQuestions.length}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options" data-question="${index}">
+                        ${q.options.map((opt, optIndex) => `
+                            <div class="option" data-option="${optIndex}">${opt}</div>
+                        `).join('')}
+                    </div>
+                    <div class="result-message" id="result-${index}"></div>
+                `;
+                container.appendChild(questionCard);
+            });
+
+            // 添加选项点击事件
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const questionIndex = parseInt(this.parentElement.dataset.question);
+                    const optionIndex = parseInt(this.dataset.option);
+                    
+                    // 移除同组其他选项的选中状态
+                    this.parentElement.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // 添加选中状态
+                    this.classList.add('selected');
+                    selectedAnswers[questionIndex] = optionIndex;
+                });
+            });
+
+            // 添加提交按钮
+            const submitBtn = document.createElement('button');
+            submitBtn.className = 'submit-btn';
+            submitBtn.textContent = '提交答案';
+            submitBtn.addEventListener('click', function() {
+                // 检查是否所有题目都已作答
+                const unanswered = edaQuestions.findIndex((q, idx) => selectedAnswers[idx] === undefined);
+                if (unanswered !== -1) {
+                    alert(`请先完成所有题目！还有题目 ${unanswered + 1} 未作答。`);
+                    return;
+                }
+                checkAnswers();
+            });
+            container.appendChild(submitBtn);
+        }
+
+        // 检查答案
+        function checkAnswers() {
+            let correctCount = 0;
+            
+            edaQuestions.forEach((q, index) => {
+                const userAnswer = selectedAnswers[index];
+                const correctAnswer = q.correct;
+                const resultDiv = document.getElementById(`result-${index}`);
+                const options = document.querySelectorAll(`[data-question="${index}"] .option`);
+                
+                // 显示正确答案
+                options[correctAnswer].classList.add('correct');
+                
+                if (userAnswer === undefined) {
+                    resultDiv.textContent = '未作答';
+                    resultDiv.className = 'result-message show wrong';
+                } else if (userAnswer === correctAnswer) {
+                    resultDiv.textContent = '✓ 回答正确！';
+                    resultDiv.className = 'result-message show correct';
+                    correctCount++;
+                } else {
+                    options[userAnswer].classList.add('wrong');
+                    resultDiv.textContent = '✗ 回答错误，正确答案已标记';
+                    resultDiv.className = 'result-message show wrong';
+                }
+            });
+
+            score = correctCount;
+            document.getElementById('score').textContent = score;
+            document.getElementById('total').textContent = edaQuestions.length;
+            document.getElementById('score-display').style.display = 'block';
+            
+            // 禁用所有选项和提交按钮
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+            document.querySelector('.submit-btn').disabled = true;
+            document.querySelector('.submit-btn').textContent = '已完成答题';
+        }
+
+        // 事件监听
+        document.getElementById('start-heart-btn').addEventListener('click', startHeartAnimation);
+        document.getElementById('quiz-btn').addEventListener('click', function() {
+            document.getElementById('quiz-container').classList.add('active');
+            displayQuestions();
+            stopHeartAnimation();
+        });
+        document.getElementById('back-btn').addEventListener('click', function() {
+            document.getElementById('quiz-container').classList.remove('active');
+            // 重置答题状态
+            currentQuestionIndex = 0;
+            score = 0;
+            selectedAnswers = {};
+        });
+
+        // 页面加载时自动开始动画
+        window.addEventListener('load', function() {
+            setTimeout(startHeartAnimation, 500);
+        });
+    </script>
+</body>
+</html>
