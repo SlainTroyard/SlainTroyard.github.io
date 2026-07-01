@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>恋人人格测试 · 你是什么恋爱人格？</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --rose: oklch(0.65 0.18 15);
+  --rose-light: oklch(0.92 0.06 15);
+  --rose-dark: oklch(0.45 0.2 15);
+  --blush: oklch(0.88 0.08 350);
+  --cream: oklch(0.97 0.01 80);
+  --warm: oklch(0.95 0.02 60);
+  --ink: oklch(0.2 0.02 30);
+  --ink-light: oklch(0.45 0.02 30);
+  --ink-faint: oklch(0.6 0.02 30);
+  --gold: oklch(0.75 0.14 80);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: clamp(14px, 1.2vw, 18px); scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ═══════ LANDING ═══════ */
+.landing {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 2rem;
+  background:
+    radial-gradient(ellipse at 20% 50%, oklch(0.95 0.08 350 / 0.4), transparent 60%),
+    radial-gradient(ellipse at 80% 30%, oklch(0.93 0.06 300 / 0.3), transparent 50%),
+    radial-gradient(ellipse at 50% 80%, oklch(0.95 0.05 50 / 0.3), transparent 50%),
+    var(--cream);
+  position: relative;
+}
+.landing::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4a0a0' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.landing-content { text-align: center; position: relative; z-index: 1; max-width: 640px; }
+.landing-emoji { font-size: 5rem; margin-bottom: 1rem; display: block; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+.landing h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 900;
+  color: var(--rose-dark); letter-spacing: 0.08em; margin-bottom: 0.5rem; line-height: 1.2;
+}
+.landing .subtitle { font-family: 'Noto Serif SC', serif; font-size: 1.1rem; color: var(--ink-light); letter-spacing: 0.15em; margin-bottom: 2rem; }
+.landing .desc { font-size: 0.95rem; color: var(--ink-faint); line-height: 1.8; margin-bottom: 2.5rem; max-width: 520px; margin-left: auto; margin-right: auto; }
+.dimension-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 2.5rem; }
+.dimension-tags span { padding: 0.35rem 0.9rem; border-radius: 2rem; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.05em; }
+.btn-start {
+  display: inline-block; padding: 1rem 3rem;
+  background: linear-gradient(135deg, var(--rose), var(--rose-dark));
+  color: white; border: none; border-radius: 3rem;
+  font-family: 'Noto Serif SC', serif; font-size: 1.15rem; font-weight: 700; letter-spacing: 0.15em;
+  cursor: pointer; transition: all 0.3s ease;
+  box-shadow: 0 8px 30px oklch(0.6 0.15 15 / 0.3);
+}
+.btn-start:hover { transform: translateY(-2px); box-shadow: 0 12px 40px oklch(0.6 0.15 15 / 0.4); }
+.landing .note { margin-top: 1.5rem; font-size: 0.8rem; color: var(--ink-faint); }
+
+/* ═══════ QUIZ ═══════ */
+.quiz-container { display: none; min-height: 100vh; padding: 1.5rem; }
+.quiz-header {
+  position: sticky; top: 0; z-index: 100;
+  background: oklch(0.97 0.01 80 / 0.92); backdrop-filter: blur(12px);
+  padding: 1rem 0 0.8rem; margin-bottom: 1.5rem;
+}
+.quiz-header-inner { max-width: 700px; margin: 0 auto; }
+.progress-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; font-size: 0.82rem; color: var(--ink-light); }
+.progress-info .q-num { font-weight: 700; color: var(--rose-dark); font-size: 0.9rem; }
+.dimension-label { padding: 0.2rem 0.7rem; border-radius: 1rem; font-size: 0.72rem; font-weight: 500; }
+.progress-bar { width: 100%; height: 6px; background: oklch(0.9 0.03 15); border-radius: 3px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--rose), var(--gold)); border-radius: 3px; transition: width 0.5s cubic-bezier(0.22,1,0.36,1); }
+.question-card {
+  max-width: 700px; margin: 0 auto;
+  background: white; border-radius: 1.2rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  box-shadow: 0 4px 24px oklch(0.8 0.02 30 / 0.3);
+  animation: slideUp 0.4s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes slideUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+.question-card .q-context { font-size: 0.82rem; color: var(--ink-faint); margin-bottom: 0.8rem; font-style: italic; }
+.question-card h2 { font-family: 'Noto Serif SC', serif; font-size: clamp(1.1rem,2.5vw,1.35rem); font-weight: 700; color: var(--ink); line-height: 1.6; margin-bottom: 1.8rem; }
+.options { display: flex; flex-direction: column; gap: 0.7rem; }
+.option-btn {
+  display: flex; align-items: flex-start; gap: 0.9rem;
+  padding: 1rem 1.2rem; background: var(--warm); border: 2px solid transparent;
+  border-radius: 0.8rem; cursor: pointer; transition: all 0.25s ease;
+  text-align: left; font-family: inherit; font-size: 0.92rem; color: var(--ink); line-height: 1.5;
+}
+.option-btn:hover { background: var(--rose-light); border-color: oklch(0.8 0.08 15); transform: translateX(4px); }
+.option-btn.selected { background: var(--rose-light); border-color: var(--rose); box-shadow: 0 2px 12px oklch(0.7 0.1 15 / 0.2); }
+.opt-marker {
+  flex-shrink: 0; width: 1.6rem; height: 1.6rem; border-radius: 50%;
+  border: 2px solid oklch(0.8 0.04 30);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 700; color: var(--ink-faint); transition: all 0.25s ease; margin-top: 0.1rem;
+}
+.option-btn.selected .opt-marker { background: var(--rose); border-color: var(--rose); color: white; }
+.quiz-nav { max-width: 700px; margin: 1.5rem auto 0; display: flex; justify-content: space-between; align-items: center; }
+.btn-nav {
+  padding: 0.7rem 1.5rem; border: 2px solid oklch(0.85 0.04 30); background: white;
+  border-radius: 2rem; font-family: inherit; font-size: 0.88rem; font-weight: 500; color: var(--ink-light);
+  cursor: pointer; transition: all 0.25s ease;
+}
+.btn-nav:hover:not(:disabled) { border-color: var(--rose); color: var(--rose-dark); }
+.btn-nav:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-nav.primary { background: var(--rose); border-color: var(--rose); color: white; }
+.btn-nav.primary:hover:not(:disabled) { background: var(--rose-dark); }
+
+/* ═══════ RESULTS ═══════ */
+.results-container {
+  display: none; min-height: 100vh; padding: 2rem 1.5rem;
+  background:
+    radial-gradient(ellipse at 30% 20%, oklch(0.95 0.06 350 / 0.3), transparent 50%),
+    radial-gradient(ellipse at 70% 70%, oklch(0.93 0.05 300 / 0.2), transparent 50%),
+    var(--cream);
+}
+.results-inner { max-width: 800px; margin: 0 auto; }
+
+/* ═══════ PERSONALITY CARD ═══════ */
+.persona-card {
+  background: white; border-radius: 1.5rem; padding: 2.5rem 2rem;
+  margin-bottom: 2rem; text-align: center;
+  box-shadow: 0 8px 40px oklch(0.7 0.1 15 / 0.15);
+  position: relative; overflow: hidden;
+}
+.persona-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+}
+\1\n.persona-card .persona-img { width: 210px; height: 210px; object-fit: cover; border-radius: 26px; display: block; margin: 0 auto 0.6rem; box-shadow: 0 12px 34px oklch(0.6 0.12 15 / 0.28); }
+.persona-card .persona-title {
+  font-family: 'Noto Serif SC', serif; font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 900; margin-bottom: 0.3rem; line-height: 1.3;
+}
+.persona-card .persona-subtitle {
+  font-family: 'Noto Serif SC', serif; font-size: 1rem; color: var(--ink-faint);
+  letter-spacing: 0.15em; margin-bottom: 1rem;
+}
+.persona-card .persona-tagline {
+  font-size: 1.05rem; color: var(--ink-light); line-height: 1.7;
+  max-width: 500px; margin: 0 auto 1.5rem; font-style: italic;
+}
+.persona-card .persona-color-bar {
+  display: flex; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 1.5rem;
+}
+.persona-card .persona-keywords {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;
+}
+.persona-card .persona-keywords span {
+  padding: 0.35rem 0.9rem; border-radius: 2rem; font-size: 0.78rem; font-weight: 600;
+}
+
+/* ═══════ SHARE CARD (for screenshot) ═══════ */
+.share-card {
+  background: white; border-radius: 1.5rem; padding: 2rem;
+  margin-bottom: 2rem; box-shadow: 0 4px 24px oklch(0.8 0.02 30 / 0.2);
+}
+.share-card h3 { font-family: 'Noto Serif SC', serif; font-size: 1.1rem; margin-bottom: 1rem; }
+.share-card .share-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; margin-bottom: 1rem;
+}
+.share-card .share-item {
+  text-align: center; padding: 0.8rem 0.4rem; border-radius: 0.8rem;
+  background: oklch(0.97 0.01 80);
+}
+.share-card .share-item .share-icon { font-size: 1.5rem; display: block; margin-bottom: 0.3rem; }
+.share-card .share-item .share-label { font-size: 0.65rem; color: var(--ink-faint); margin-bottom: 0.2rem; }
+.share-card .share-item .share-value { font-size: 0.75rem; font-weight: 700; }
+
+/* ═══════ RADAR ═══════ */
+.radar-section {
+  background: white; border-radius: 1rem; padding: 2rem; margin-bottom: 2rem;
+  box-shadow: 0 2px 16px oklch(0.85 0.02 30 / 0.25); text-align: center;
+}
+.radar-section h3 { font-family: 'Noto Serif SC', serif; font-size: 1.15rem; margin-bottom: 1.5rem; }
+.radar-canvas { max-width: 420px; margin: 0 auto; }
+
+/* ═══════ DIMENSION CARDS ═══════ */
+.dimension-results { display: grid; grid-template-columns: 1fr; gap: 1.2rem; margin-bottom: 2rem; }
+.dim-card { background: white; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 2px 16px oklch(0.85 0.02 30 / 0.25); }
+.dim-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
+.dim-card-header h3 { font-family: 'Noto Serif SC', serif; font-size: 1.05rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+.dim-score { font-size: 1.5rem; font-weight: 900; color: var(--rose-dark); }
+.dim-bar { width: 100%; height: 8px; background: oklch(0.93 0.02 30); border-radius: 4px; overflow: hidden; margin-bottom: 0.8rem; }
+.dim-bar-fill { height: 100%; border-radius: 4px; transition: width 1s cubic-bezier(0.22,1,0.36,1); }
+.dim-label { font-size: 0.85rem; color: var(--ink-faint); line-height: 1.6; }
+.dim-type-badge { display: inline-block; padding: 0.2rem 0.7rem; border-radius: 1rem; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.5rem; }
+
+/* ═══════ COMPAT / ADVICE ═══════ */
+.compat-section, .advice-section {
+  background: white; border-radius: 1rem; padding: 2rem; margin-bottom: 2rem;
+  box-shadow: 0 2px 16px oklch(0.85 0.02 30 / 0.25);
+}
+.compat-section h3, .advice-section h3 {
+  font-family: 'Noto Serif SC', serif; font-size: 1.15rem; margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.compat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 0.8rem; }
+.compat-item { padding: 1rem; border-radius: 0.8rem; text-align: center; }
+.compat-item .compat-type { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.3rem; }
+.compat-item .compat-score { font-size: 1.5rem; font-weight: 900; margin-bottom: 0.2rem; }
+.compat-item .compat-desc { font-size: 0.78rem; color: var(--ink-faint); }
+.advice-section ul { list-style: none; padding: 0; }
+.advice-section li {
+  padding: 0.6rem 0; padding-left: 1.5rem; position: relative;
+  font-size: 0.9rem; color: var(--ink-light); line-height: 1.6;
+  border-bottom: 1px solid oklch(0.95 0.02 30);
+}
+.advice-section li:last-child { border-bottom: none; }
+.advice-section li::before { content: '♡'; position: absolute; left: 0; color: var(--rose); }
+
+/* ═══════ ACTIONS ═══════ */
+.result-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+.btn-action {
+  padding: 0.8rem 1.8rem; border-radius: 2rem;
+  font-family: inherit; font-size: 0.9rem; font-weight: 500; cursor: pointer;
+  transition: all 0.25s ease; border: 2px solid var(--rose);
+}
+.btn-action.primary { background: var(--rose); color: white; }
+.btn-action.secondary { background: transparent; color: var(--rose-dark); }
+.btn-action:hover { transform: translateY(-2px); box-shadow: 0 4px 16px oklch(0.7 0.1 15 / 0.2); }
+.result-footer { text-align: center; padding: 2rem; font-size: 0.8rem; color: var(--ink-faint); }
+
+@media (max-width: 600px) {
+  .landing { padding: 1.2rem; }
+  .landing-emoji { font-size: 3.5rem; }
+  .landing h1 { font-size: 1.8rem; }
+  .landing .desc { font-size: 0.88rem; }
+  .question-card { padding: 1.1rem; }
+  .question-card h2 { font-size: 1rem; margin-bottom: 1.2rem; }
+  .option-btn { padding: 0.85rem 0.9rem; font-size: 0.85rem; gap: 0.7rem; min-height: 44px; }
+  .opt-marker { width: 1.4rem; height: 1.4rem; }
+  .quiz-nav { padding: 0 0.5rem; }
+  .btn-nav { padding: 0.6rem 1.2rem; font-size: 0.82rem; }
+  .persona-card { padding: 1.8rem 1rem; }
+  \1 .persona-card .persona-img { width: 150px; height: 150px; }
+  .persona-card .persona-title { font-size: 1.6rem; }
+  .share-card .share-grid { grid-template-columns: repeat(2, 1fr); }
+  .dim-card { padding: 1.1rem; }
+  .radar-canvas canvas { max-width: 300px; height: auto; }
+  .result-actions { flex-direction: column; align-items: stretch; }
+  .btn-action { text-align: center; }
+  .compat-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ LANDING ═══════ -->
+<section class="landing" id="landing">
+  <div class="landing-content">
+    <span class="landing-emoji">💕</span>
+    <h1>恋人人格测试</h1>
+    <p class="subtitle">你是什么恋爱人格？</p>
+    <p class="desc">
+      通过 200+ 道行为场景题，从依恋风格、爱的语言、沟通模式等八大维度深度解析你的恋爱人格。<br>
+      最终生成你的专属恋爱图腾——一个动物、一组色彩、一句话人设。
+    </p>
+    <div class="dimension-tags">
+      <span style="background:var(--rose-light);color:var(--rose-dark);">依恋风格</span>
+      <span style="background:oklch(0.95 0.05 350);color:oklch(0.45 0.15 350);">爱的语言</span>
+      <span style="background:oklch(0.95 0.05 240);color:oklch(0.4 0.12 240);">沟通模式</span>
+      <span style="background:oklch(0.95 0.05 50);color:oklch(0.45 0.12 50);">冲突处理</span>
+      <span style="background:oklch(0.95 0.05 300);color:oklch(0.4 0.12 300);">亲密独立</span>
+      <span style="background:oklch(0.95 0.05 150);color:oklch(0.4 0.1 150);">情感表达</span>
+      <span style="background:oklch(0.95 0.05 80);color:oklch(0.45 0.12 80);">承诺忠诚</span>
+      <span style="background:oklch(0.95 0.05 20);color:oklch(0.45 0.12 20);">浪漫倾向</span>
+    </div>
+    <button class="btn-start" onclick="startQuiz()">开始测试</button>
+    <p class="note">约需 25-35 分钟 · 200+ 道题 · 八维度 + 专属人格标签</p>
+  </div>
+</section>
+
+<!-- ═══════ QUIZ ═══════ -->
+<section class="quiz-container" id="quiz">
+  <div class="quiz-header">
+    <div class="quiz-header-inner">
+      <div class="progress-info">
+        <span><span class="q-num" id="qNum">1</span> / <span id="qTotal">0</span></span>
+        <span class="dimension-label" id="dimLabel">—</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-bar-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="question-card" id="questionCard">
+    <p class="q-context" id="qContext"></p>
+    <h2 id="qText"></h2>
+    <div class="options" id="options"></div>
+  </div>
+  <div class="quiz-nav">
+    <button class="btn-nav" id="btnPrev" onclick="prevQuestion()" disabled>← 上一题</button>
+    <button class="btn-nav primary" id="btnNext" onclick="nextQuestion()" disabled>下一题 →</button>
+  </div>
+</section>
+
+<!-- ═══════ RESULTS ═══════ -->
+<section class="results-container" id="results">
+  <div class="results-inner">
+    <div class="persona-card" id="personaCard"></div>
+    <div class="share-card" id="shareCard"></div>
+    <div class="radar-section">
+      <h3>八维度人格雷达图</h3>
+      <div class="radar-canvas"><canvas id="radarChart" width="420" height="420"></canvas></div>
+    </div>
+    <div class="dimension-results" id="dimResults"></div>
+    <div class="compat-section" id="compatSection"></div>
+    <div class="advice-section" id="adviceSection"></div>
+    <div class="result-actions">
+      <button class="btn-action primary" onclick="restart()">重新测试</button>
+      <button class="btn-action secondary" onclick="exportResult()">导出结果</button>
+      <button class="btn-action secondary" onclick="copyForAI()">复制给AI分析</button>
+    </div>
+    <div class="result-footer">恋人人格测试 · 基于依恋理论、爱的语言、大五人格等心理学框架<br>本测试仅供参考，不构成专业心理诊断</div>
+  </div>
+</section>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// LOVER PERSONALITY TEST v2 — 200+ Questions, 8 Dimensions
+// ═══════════════════════════════════════════════════════════════
+
+const DIMENSIONS = {
+  attach:   { name:'依恋风格', en:'Attachment',     icon:'🔗', color:'oklch(0.65 0.18 15)' },
+  love:     { name:'爱的语言', en:'Love Language',   icon:'💗', color:'oklch(0.65 0.18 350)' },
+  comm:     { name:'沟通模式', en:'Communication',    icon:'💬', color:'oklch(0.6 0.14 240)' },
+  conflict: { name:'冲突处理', en:'Conflict',         icon:'🕊️', color:'oklch(0.65 0.14 50)' },
+  intimacy: { name:'亲密独立', en:'Intimacy',         icon:'🌙', color:'oklch(0.6 0.15 300)' },
+  emotion:  { name:'情感表达', en:'Emotion',          icon:'🎭', color:'oklch(0.6 0.12 150)' },
+  commit:   { name:'承诺忠诚', en:'Commitment',       icon:'💍', color:'oklch(0.7 0.14 80)' },
+  romance:  { name:'浪漫倾向', en:'Romance',          icon:'🌹', color:'oklch(0.65 0.16 20)' }
+};
+
+const S7 = [
+  {text:'非常不同意',score:1},{text:'不同意',score:2},{text:'有些不同意',score:3},
+  {text:'中立',score:4},{text:'有些同意',score:5},{text:'同意',score:6},{text:'非常同意',score:7}
+];
+const S5F = [
+  {text:'从不',score:1},{text:'很少',score:2},{text:'有时',score:3},{text:'经常',score:4},{text:'总是',score:5}
+];
+
+// ═══════ 200+ QUESTIONS ═══════
+const Q = [
+  // ────────────── 依恋风格 (28题) ──────────────
+  {d:'attach',q:'伴侣超过两小时没回消息，你会？',o:[
+    {t:'完全不在意，知道对方忙',s:1},{t:'偶尔想起来才看手机',s:2},{t:'会看手机但不焦虑',s:3},
+    {t:'忍不住看了好几次',s:4},{t:'反复检查，开始担心',s:5},{t:'非常焦虑甚至打电话',s:6},{t:'感到被抛弃的恐惧',s:7}]},
+  {d:'attach',q:'伴侣需要独自外出几天，你的第一反应？',o:[
+    {t:'感到解脱，终于有自己的空间',s:1},{t:'觉得挺好',s:2},{t:'有点不舍但能理解',s:3},
+    {t:'有些失落但能处理',s:4},{t:'感到明显不安',s:5},{t:'很难受频繁联系',s:6},{t:'感到被抛弃极度痛苦',s:7}]},
+  {d:'attach',r:1,q:'你很容易在感情中信任对方，不需要反复确认。',o:S7},
+  {d:'attach',q:'伴侣没像往常说晚安，你会怎么想？',o:[
+    {t:'可能忘了，没什么',s:1},{t:'不太在意',s:2},{t:'会想一下但很快放下',s:3},
+    {t:'有点在意',s:4},{t:'会感到不安',s:5},{t:'会直接问',s:6},{t:'会认为不爱我了',s:7}]},
+  {d:'attach',r:1,q:'你在亲密关系中很有安全感。',o:S7},
+  {d:'attach',q:'伴侣和异性朋友单独吃饭，你会？',o:[
+    {t:'完全不在意',s:1},{t:'基本不在意',s:2},{t:'有一点在意但不表现',s:3},
+    {t:'会有些不舒服',s:4},{t:'会明确表达不满',s:5},{t:'会要求看聊天记录',s:6},{t:'极度焦虑',s:7}]},
+  {d:'attach',r:1,q:'你能自在地向伴侣表达需求和脆弱。',o:S7},
+  {d:'attach',q:'吵架后伴侣冷战，你通常会？',o:[
+    {t:'等对方冷静后再沟通',s:2},{t:'给对方空间做自己的事',s:1},{t:'等一会再尝试沟通',s:3},
+    {t:'很快主动找对方',s:4},{t:'无法忍受马上找',s:5},{t:'不停发消息打电话',s:6},{t:'极度恐慌',s:7}]},
+  {d:'attach',q:'你是否担心自己配不上伴侣？',o:[
+    {t:'从不担心',s:1},{t:'很少',s:2},{t:'偶尔',s:3},{t:'有时',s:4},{t:'经常',s:5},{t:'几乎总是',s:6},{t:'一直深信',s:7}]},
+  {d:'attach',r:1,q:'你觉得依赖别人是轻松自然的事。',o:S7},
+  {d:'attach',q:'伴侣突然改了周末计划没提前说，你会？',o:[
+    {t:'没关系',s:1},{t:'有点意外但能接受',s:2},{t:'希望下次提前说',s:3},
+    {t:'感到不被尊重',s:4},{t:'很生气',s:5},{t:'怀疑对方有事瞒着',s:6},{t:'觉得不在乎这段关系',s:7}]},
+  {d:'attach',q:'在亲密关系中你更害怕？',o:[
+    {t:'失去个人空间',s:1},{t:'被过度依赖',s:2},{t:'双方都不够独立',s:3},
+    {t:'不确定',s:4},{t:'对方不够关心我',s:5},{t:'被冷落忽视',s:6},{t:'被抛弃背叛',s:7}]},
+  {d:'attach',r:1,q:'即使伴侣不在身边你也能内心平静。',o:S7},
+  {d:'attach',q:'伴侣说"我需要一些自己的时间"，你感受？',o:[
+    {t:'完全理解',s:1},{t:'觉得合理',s:2},{t:'能接受但有点失落',s:3},
+    {t:'会有点受伤',s:4},{t:'会感到被拒绝',s:5},{t:'很难过觉得被推开',s:6},{t:'觉得不爱我了',s:7}]},
+  {d:'attach',q:'你是否会经常分析伴侣言行寻找"是否爱我"的证据？',o:S5F},
+  {d:'attach',r:1,q:'你在感情中不需要刻意维持就能感到安心。',o:S7},
+  {d:'attach',q:'伴侣回复变慢了，你通常会？',o:[
+    {t:'完全不注意',s:1},{t:'偶尔注意到不在意',s:2},{t:'想可能比较忙',s:3},
+    {t:'有些在意',s:4},{t:'担心是不是做错了什么',s:5},{t:'直接问为什么',s:6},{t:'非常焦虑受伤',s:7}]},
+  {d:'attach',q:'分手或关系危机时你更容易？',o:[
+    {t:'很快恢复',s:1},{t:'虽然难过但能理性面对',s:2},{t:'需要一些时间',s:3},
+    {t:'很难过需要支持',s:4},{t:'非常痛苦反复回忆',s:5},{t:'不顾一切想挽回',s:6},{t:'世界崩塌无法自拔',s:7}]},
+  {d:'attach',r:1,q:'你觉得亲密关系中的距离感让你更自在。',o:S7},
+  {d:'attach',q:'伴侣当众表扬你，你的真实感受？',o:[
+    {t:'很自然地接受',s:2},{t:'不好意思但开心',s:3},{t:'感到温暖被爱',s:4},
+    {t:'非常感动更依恋',s:5},{t:'觉得不够想要更多',s:6},{t:'怀疑是不是敷衍',s:1}]},
+  {d:'attach',q:'伴侣出差时你联系对方的频率会？',o:[
+    {t:'比平时少',s:1},{t:'和平时差不多',s:2},{t:'稍微多一些',s:3},
+    {t:'明显增多',s:4},{t:'频繁联系',s:5},{t:'几乎时刻保持联系',s:6},{t:'无法忍受不联系',s:7}]},
+  {d:'attach',q:'伴侣说"你今天怎么不开心"而你其实没事，你会？',o:[
+    {t:'说"我没事啊"',s:2},{t:'觉得对方多虑了',s:1},{t:'觉得被关心挺好的',s:3},
+    {t:'觉得对方很细心',s:4},{t:'希望对方多关注我',s:5},{t:'觉得对方时刻在观察我',s:6},{t:'觉得被监视',s:1}]},
+  {d:'attach',r:1,q:'你不会因为伴侣回复慢而胡思乱想。',o:S7},
+  {d:'attach',q:'伴侣和朋友出去玩没叫你，你会？',o:[
+    {t:'正好自己也有事做',s:1},{t:'觉得正常',s:2},{t:'有点想一起去',s:3},
+    {t:'有些失落',s:4},{t:'会不开心',s:5},{t:'会问为什么不叫自己',s:6},{t:'会感到被排斥',s:7}]},
+  {d:'attach',q:'你觉得"如果足够爱就不会离开"这句话？',o:[
+    {t:'不太认同',s:1},{t:'有一定道理',s:2},{t:'不确定',s:3},
+    {t:'比较认同',s:4},{t:'很认同',s:5},{t:'深信不疑',s:6},{t:'这是我的信念',s:7}]},
+  {d:'attach',r:1,q:'你能在争吵后很快恢复平静。',o:S7},
+  {d:'attach',q:'和伴侣在一起时，你心里更多是哪种感觉？',o:[
+    {t:'安心，像回到了家',s:1},{t:'大多数时候很踏实',s:2},{t:'平静',s:3},
+    {t:'偶尔会患得患失',s:4},{t:'常担心好景不长',s:5},{t:'越靠近越怕失去',s:6},{t:'幸福里总掺着不安',s:7}]},
+  {d:'attach',q:'在感情中你更容易？',o:[
+    {t:'很快放下继续前进',s:1},{t:'理性分析原因',s:2},{t:'需要一些时间消化',s:3},
+    {t:'反复回忆',s:4},{t:'陷入自责',s:5},{t:'害怕再也找不到',s:6},{t:'觉得自己不值得被爱',s:7}]},
+  {d:'attach',r:1,q:'你能在亲密关系中保持自我，不会迷失。',o:S7},
+
+  // ────────────── 爱的语言 (25题) ──────────────
+  {d:'love',q:'以下哪种行为最能让你感到被爱？',o:[
+    {t:'伴侣送你精心准备的礼物',s:5},{t:'伴侣说"我爱你"或赞美你',s:4},{t:'伴侣陪你度过一整天',s:3},
+    {t:'伴侣帮你做事或分担家务',s:2},{t:'伴侣拥抱你牵你的手',s:1}]},
+  {d:'love',q:'心情低落时伴侣怎样做最能安慰你？',o:[
+    {t:'安静地抱着你',s:1},{t:'说出温暖鼓励的话',s:4},{t:'放下一切来陪你',s:3},
+    {t:'帮你解决问题',s:2},{t:'送你一个小惊喜',s:5}]},
+  {d:'love',q:'你更喜欢哪种约会方式？',o:[
+    {t:'一起做饭看电影',s:3},{t:'收到精心策划的惊喜',s:5},{t:'一起做家务整理',s:2},
+    {t:'深度聊天',s:4},{t:'拥抱亲吻肢体接触',s:1}]},
+  {d:'love',q:'伴侣做什么让你最感动？',o:[
+    {t:'记住你随口提过的东西买给你',s:5},{t:'生病时无微不至照顾',s:2},{t:'在朋友面前真诚夸你',s:4},
+    {t:'推掉安排只为陪你',s:3},{t:'一直牵着你的手',s:1}]},
+  {d:'love',q:'你最珍惜伴侣给你的是？',o:[
+    {t:'一封手写情书',s:4},{t:'一条有特殊意义的项链',s:5},{t:'一个长长的拥抱',s:1},
+    {t:'一次说走就走的旅行',s:3},{t:'帮你修好漏水的水龙头',s:2}]},
+  {d:'love',q:'你表达爱的方式更倾向于？',o:[
+    {t:'经常说甜蜜的话写情书',s:4},{t:'记住喜好送贴心礼物',s:5},{t:'主动做家务照顾生活',s:2},
+    {t:'安排约会创造共处时光',s:3},{t:'经常拥抱亲吻牵手',s:1}]},
+  {d:'love',q:'伴侣忘了纪念日你会？',o:[
+    {t:'非常失落觉得不够爱我',s:5},{t:'有点失望但理解',s:4},{t:'不太在意日期本身',s:3},
+    {t:'不在意日常关心更重要',s:2},{t:'不在意肢体亲密更重要',s:1}]},
+  {d:'love',q:'完美情人节是？',o:[
+    {t:'收到有心意的礼物',s:5},{t:'对方写一封深情的信',s:4},{t:'两个人安静待在一起',s:3},
+    {t:'对方帮你做了所有事',s:2},{t:'整天都有亲密接触',s:1}]},
+  {d:'love',q:'伴侣说什么话最能打动你？',o:[
+    {t:'"你今天真好看"',s:4},{t:'"我帮你做了晚饭"',s:2},{t:'"这个让我想到了你"',s:5},
+    {t:'"今天什么都不做就陪你"',s:3},{t:'"过来让我抱一下"',s:1}]},
+  {d:'love',q:'你最希望伴侣记住的是？',o:[
+    {t:'你最喜欢的拥抱方式',s:1},{t:'你的各种小习惯喜好',s:5},{t:'你说过的重要的话',s:4},
+    {t:'你忙碌时需要的支持',s:2},{t:'你们一起的特别时刻',s:3}]},
+  {d:'love',q:'哪个场景最让你心动？',o:[
+    {t:'伴侣在包里偷偷放小纸条',s:5},{t:'散步时紧紧握手',s:1},{t:'伴侣主动帮你准备午餐',s:2},
+    {t:'伴侣花一下午听你倾诉',s:3},{t:'伴侣认真说"有你真好"',s:4}]},
+  {d:'love',q:'你更在意伴侣的哪种付出？',o:[
+    {t:'记住不经意提到的小事',s:5},{t:'生病时陪在身边',s:3},{t:'每天早上给你一个吻',s:1},
+    {t:'主动承担家务',s:2},{t:'经常说暖心的话',s:4}]},
+  {d:'love',q:'异地时什么最能缓解思念？',o:[
+    {t:'收到对方寄来的包裹',s:5},{t:'长时间视频通话',s:3},{t:'长长的语音消息',s:4},
+    {t:'对方说"我帮你定了机票"',s:2},{t:'见面时紧紧的拥抱',s:1}]},
+  {d:'love',q:'你认为爱最好的证明是？',o:[
+    {t:'每天甜言蜜语',s:4},{t:'持续的陪伴共处',s:3},{t:'实际行动付出',s:2},
+    {t:'身体的亲密接触',s:1},{t:'用心的礼物惊喜',s:5}]},
+  {d:'love',q:'如果只能选一种感受爱，你选？',o:[
+    {t:'听到对方说爱我',s:4},{t:'和对方共度时光',s:3},{t:'收到对方的礼物',s:5},
+    {t:'对方为我做事',s:2},{t:'和对方有肢体接触',s:1}]},
+  {d:'love',q:'伴侣加班很晚回来，你更希望对方？',o:[
+    {t:'给你带了你爱吃的夜宵',s:5},{t:'说"辛苦了宝贝"',s:4},{t:'坐下来陪你聊一会',s:3},
+    {t:'帮你把明天的事准备好',s:2},{t:'抱你一下',s:1}]},
+  {d:'love',q:'你收到伴侣最开心的礼物是？',o:[
+    {t:'对方亲手做的东西',s:5},{t:'一条深情的长消息',s:4},{t:'一起看的演唱会票',s:3},
+    {t:'帮你解决了一个麻烦',s:2},{t:'一个惊喜的吻',s:1}]},
+  {d:'love',q:'你觉得理想的相处模式是？',o:[
+    {t:'随时分享一有事就联系',s:3},{t:'每天说很多甜蜜的话',s:4},{t:'互相准备惊喜',s:5},
+    {t:'默契配合互相照顾',s:2},{t:'经常有肢体亲密',s:1}]},
+  {d:'love',q:'伴侣做了以下哪件事你最开心？',o:[
+    {t:'突然从背后抱住你',s:1},{t:'给你发了一段深情语音',s:4},{t:'送了你提到过想要的东西',s:5},
+    {t:'帮你把家里收拾干净',s:2},{t:'计划了一次只属于你们的约会',s:3}]},
+  {d:'love',q:'你在朋友圈秀恩爱更倾向于？',o:[
+    {t:'发两个人的合照',s:3},{t:'晒对方送的礼物',s:5},{t:'写一段甜蜜的文字',s:4},
+    {t:'发对方做的饭',s:2},{t:'发牵手/拥抱的照片',s:1}]},
+  {d:'love',q:'吵架后伴侣怎样道歉最有效？',o:[
+    {t:'紧紧抱着你不说话',s:1},{t:'写一封长信',s:4},{t:'送你一直想要的东西',s:5},
+    {t:'做一顿你爱吃的饭',s:2},{t:'安静地陪在你身边',s:3}]},
+  {d:'love',q:'你理想中的50年后的相处模式？',o:[
+    {t:'每天手牵手散步',s:1},{t:'每天互道"我爱你"',s:4},{t:'互相送小礼物',s:5},
+    {t:'互相照顾生活',s:2},{t:'一起坐在沙发上看电视',s:3}]},
+  {d:'love',q:'以下哪种最接近你的爱情观？',o:[
+    {t:'爱是说出来',s:4},{t:'爱是做出来',s:2},{t:'爱是陪伴',s:3},
+    {t:'爱是用心',s:5},{t:'爱是触碰',s:1}]},
+  {d:'love',q:'你会为伴侣的生日做什么？',o:[
+    {t:'准备一份惊喜派对',s:3},{t:'写一封长长的情书',s:4},{t:'准备一份有特殊意义的礼物',s:5},
+    {t:'帮对方完成一个心愿',s:2},{t:'一整天的亲密相处',s:1}]},
+  {d:'love',q:'伴侣出差回来你最想？',o:[
+    {t:'紧紧拥抱',s:1},{t:'听对方说"想你了"',s:4},{t:'收到对方带的特产',s:5},
+    {t:'对方帮你带了需要的东西',s:2},{t:'一起吃一顿饭',s:3}]},
+
+  // ────────────── 沟通模式 (25题) ──────────────
+  {d:'comm',q:'有心事时你通常会？',o:[
+    {t:'直接告诉伴侣',s:5},{t:'等对方问起再说',s:4},{t:'暗示但不直说',s:3},
+    {t:'先自己消化',s:2},{t:'完全不说',s:1}]},
+  {d:'comm',q:'伴侣说"我们需要谈谈"，你的第一反应？',o:[
+    {t:'好的我也想说',s:5},{t:'紧张但愿意听',s:4},{t:'会担心做错了',s:3},
+    {t:'下意识想回避',s:2},{t:'感到很大压力',s:1}]},
+  {d:'comm',q:'讨论重要决定时你更倾向于？',o:[
+    {t:'和伴侣详细讨论每一步',s:5},{t:'告知并征求意见',s:4},{t:'自己想清楚再沟通',s:3},
+    {t:'自己决定后通知',s:2},{t:'希望对方来决定',s:1}]},
+  {d:'comm',q:'伴侣倾诉烦恼时你通常会？',o:[
+    {t:'认真听然后一起想办法',s:5},{t:'安静听给情感支持',s:4},{t:'用逻辑分析帮助',s:3},
+    {t:'分享自己的类似经历',s:2},{t:'给出具体建议',s:1}]},
+  {d:'comm',q:'表达不满最好的方式是？',o:[
+    {t:'当下直接但温和地说',s:5},{t:'等冷静后再沟通',s:4},{t:'用"我"开头表达感受',s:3},
+    {t:'写下来让对方看',s:2},{t:'忍着不说避免冲突',s:1}]},
+  {d:'comm',q:'你会主动讨论关系状态吗？',o:[
+    {t:'经常主动',s:5},{t:'偶尔提起',s:4},{t:'有具体问题时才',s:3},
+    {t:'很少主动',s:2},{t:'从不觉得没必要',s:1}]},
+  {d:'comm',q:'意见不一致时你更倾向于？',o:[
+    {t:'充分讨论达成共识',s:5},{t:'表达自己听对方',s:4},{t:'找折中方案',s:3},
+    {t:'大多数让步',s:2},{t:'避免争论同意对方',s:1}]},
+  {d:'comm',q:'你如何分享日常？',o:[
+    {t:'发生什么第一时间告诉',s:5},{t:'分享重要的有趣的事',s:4},{t:'对方问起才说',s:3},
+    {t:'只说大事',s:2},{t:'不太习惯分享',s:1}]},
+  {d:'comm',q:'感到受伤但伴侣没意识到，你会？',o:[
+    {t:'直接告诉对方',s:5},{t:'等一会再温和提起',s:4},{t:'通过行为让对方察觉',s:3},
+    {t:'希望对方自己意识到',s:2},{t:'不说自己消化',s:1}]},
+  {d:'comm',q:'你更喜欢哪种沟通频率？',o:[
+    {t:'随时分享',s:5},{t:'每天固定深度聊天',s:4},{t:'有事就说不刻意',s:3},
+    {t:'不需要每天联系',s:2},{t:'保持独立需要时再联系',s:1}]},
+  {d:'comm',q:'好的亲密关系沟通应该是？',o:[
+    {t:'完全透明没有秘密',s:5},{t:'坦诚但保留个人空间',s:4},{t:'重要的坦诚小事可不说',s:3},
+    {t:'各自有隐私',s:2},{t:'保持神秘感',s:1}]},
+  {d:'comm',q:'伴侣突然沉默不语，你通常会？',o:[
+    {t:'直接问怎么了',s:5},{t:'先观察再问',s:4},{t:'给空间等对方说',s:3},
+    {t:'以为是自己的问题',s:2},{t:'也不说话等开口',s:1}]},
+  {d:'comm',q:'你更倾向于什么方式表达爱意？',o:[
+    {t:'直接说出来',s:5},{t:'写下来',s:4},{t:'通过行动',s:3},
+    {t:'通过礼物',s:2},{t:'不需要表达对方应该知道',s:1}]},
+  {d:'comm',q:'伴侣做了让你开心的小事，你会？',o:[
+    {t:'立刻表达感谢',s:5},{t:'用笑容和拥抱回应',s:4},{t:'记在心里以后回报',s:3},
+    {t:'心里开心但不太表现',s:2},{t:'觉得是应该的',s:1}]},
+  {d:'comm',q:'如果可以选择你希望？',o:[
+    {t:'无话不谈随时交流',s:5},{t:'深度但不频繁',s:4},{t:'自然不刻意',s:3},
+    {t:'默契大于语言',s:2},{t:'少说多做',s:1}]},
+  {d:'comm',q:'伴侣问"你在想什么"，你通常？',o:[
+    {t:'如实说出所想',s:5},{t:'说一部分',s:4},{t:'看情况',s:3},
+    {t:'说"没什么"',s:2},{t:'不喜欢被问',s:1}]},
+  {d:'comm',q:'你会和伴侣分享工作中的烦恼吗？',o:[
+    {t:'经常分享',s:5},{t:'偶尔分享',s:4},{t:'只说大事',s:3},
+    {t:'很少分享',s:2},{t:'从不不想把负能量带回家',s:1}]},
+  {d:'comm',q:'你觉得吵架时应该？',o:[
+    {t:'就事论事不跑题',s:5},{t:'控制音量',s:4},{t:'允许暂停冷静',s:3},
+    {t:'有时候需要发泄',s:2},{t:'想到什么说什么',s:1}]},
+  {d:'comm',q:'伴侣说了一句让你不舒服的话，你会？',o:[
+    {t:'马上温和地说"这句话让我不舒服"',s:5},{t:'过一会再说',s:4},{t:'看表情让对方知道',s:3},
+    {t:'记下来以后再说',s:2},{t:'不说自己消化',s:1}]},
+  {d:'comm',q:'你认为理想的沟通状态是？',o:[
+    {t:'双方都能自由表达不被评判',s:5},{t:'能讨论任何话题',s:4},{t:'重要的事能好好说',s:3},
+    {t:'不需要太多语言',s:2},{t:'各想各的就好',s:1}]},
+  {d:'comm',q:'你会用"我觉得"还是"你总是"来开头？',o:[
+    {t:'总是用"我觉得"',s:5},{t:'尽量用"我觉得"',s:4},{t:'看情况',s:3},
+    {t:'有时候会说"你总是"',s:2},{t:'经常说"你总是"',s:1}]},
+  {d:'comm',q:'伴侣告诉你一个秘密，你会？',o:[
+    {t:'绝对保密',s:5},{t:'保密除非对方同意可以说',s:4},{t:'可能告诉闺蜜/兄弟',s:3},
+    {t:'看情况',s:2},{t:'觉得没什么不能说的',s:1}]},
+  {d:'comm',q:'你觉得沉默在关系中是？',o:[
+    {t:'有时需要但不能太久',s:4},{t:'不好的信号',s:5},{t:'看情况',s:3},
+    {t:'有时候是舒适的',s:2},{t:'比说错话好',s:1}]},
+  {d:'comm',q:'你更喜欢和伴侣？',o:[
+    {t:'长谈到深夜',s:5},{t:'边散步边聊天',s:4},{t:'一起做事时自然聊天',s:3},
+    {t:'安静待在一起',s:2},{t:'各自做事偶尔交流',s:1}]},
+  {d:'comm',q:'伴侣做了一件你不喜欢的事，你会？',o:[
+    {t:'立刻温和沟通',s:5},{t:'观察几次再沟通',s:4},{t:'等合适时机',s:3},
+    {t:'暗示让对方自己发现',s:2},{t:'忍着不说',s:1}]},
+
+  // ────────────── 冲突处理 (25题) ──────────────
+  {d:'conflict',q:'伴侣做了让你很生气的事，你通常会？',o:[
+    {t:'深呼吸冷静后直接沟通',s:5},{t:'表达不满但控制情绪',s:4},{t:'先沉默消化',s:3},
+    {t:'用冷战表达',s:2},{t:'爆发情绪大声争吵',s:1}]},
+  {d:'conflict',q:'吵架时你会说后悔的话吗？',o:[
+    {t:'从不',s:5},{t:'偶尔会马上道歉',s:4},{t:'有时控制不住',s:3},
+    {t:'经常说完就后悔',s:2},{t:'几乎每次都会',s:1}]},
+  {d:'conflict',q:'吵架后你更倾向于？',o:[
+    {t:'主动找对方和解',s:5},{t:'冷静后主动',s:4},{t:'等双方冷静再谈',s:3},
+    {t:'等对方先来找我',s:2},{t:'冷战好几天',s:1}]},
+  {d:'conflict',q:'观点根本对立时你觉得应该？',o:[
+    {t:'各退一步找折中',s:4},{t:'充分讨论理解对方',s:5},{t:'看谁更有道理',s:3},
+    {t:'为避免冲突让步',s:2},{t:'坚持自己不动摇',s:1}]},
+  {d:'conflict',q:'你如何看待亲密关系中的争吵？',o:[
+    {t:'增进了解的机会',s:5},{t:'正常的关键是怎么吵',s:4},{t:'能避免就避免',s:3},
+    {t:'说明关系有问题',s:2},{t:'不可接受',s:1}]},
+  {d:'conflict',q:'伴侣当着朋友面批评你，你会？',o:[
+    {t:'先不发作事后沟通',s:5},{t:'幽默化解事后再说',s:4},{t:'忍着但不开心',s:3},
+    {t:'当场表现出不开心',s:2},{t:'当场反击',s:1}]},
+  {d:'conflict',q:'你会翻旧账吗？',o:[
+    {t:'从不',s:5},{t:'很少除非同样问题反复',s:4},{t:'偶尔吵架时提起',s:3},
+    {t:'经常提起',s:2},{t:'旧账是吵架必备武器',s:1}]},
+  {d:'conflict',q:'意识到自己错了你会？',o:[
+    {t:'真诚道歉并改正',s:5},{t:'道歉但需要时间',s:4},{t:'用行动弥补',s:3},
+    {t:'等对方给台阶',s:2},{t:'很难开口道歉',s:1}]},
+  {d:'conflict',q:'伴侣的某个习惯让你困扰，你会？',o:[
+    {t:'找合适时机温和沟通',s:5},{t:'明确但友好提出',s:4},{t:'暗示但不直说',s:3},
+    {t:'忍着不说',s:2},{t:'每次发生就发火',s:1}]},
+  {d:'conflict',q:'伴侣情绪激动指责你，你会？',o:[
+    {t:'先让对方冷静再讨论',s:5},{t:'认真听不急反驳',s:4},{t:'感到受伤但忍着',s:3},
+    {t:'马上反驳辩解',s:2},{t:'也变得激动互相指责',s:1}]},
+  {d:'conflict',q:'你觉得伴侣应该有"吵架规则"吗？',o:[
+    {t:'是的不翻旧账不人身攻击',s:5},{t:'有基本底线就好',s:4},{t:'不需要自然就好',s:3},
+    {t:'没想过',s:2},{t:'吵架不需要规则',s:1}]},
+  {d:'conflict',q:'冷战时你内心真正的状态是？',o:[
+    {t:'思考如何沟通解决',s:5},{t:'消化自己情绪',s:4},{t:'又气又想和好',s:3},
+    {t:'在等对方来找我',s:2},{t:'觉得对方应该先低头',s:1}]},
+  {d:'conflict',q:'处理压力的方式会如何影响关系？',o:[
+    {t:'和伴侣分享压力',s:5},{t:'告诉伴侣需要空间',s:4},{t:'自己扛但不迁怒',s:3},
+    {t:'可能不自觉迁怒',s:2},{t:'会转嫁到伴侣身上',s:1}]},
+  {d:'conflict',q:'伴侣道歉时你通常会？',o:[
+    {t:'真诚接受不追究',s:5},{t:'接受但需要时间',s:4},{t:'看是否真诚再决定',s:3},
+    {t:'嘴上接受但有疙瘩',s:2},{t:'很难真正原谅',s:1}]},
+  {d:'conflict',q:'理想的冲突解决方式是？',o:[
+    {t:'双方表达感受达成共识',s:5},{t:'理性分析找解决方案',s:4},{t:'一方妥协或各退一步',s:3},
+    {t:'时间会冲淡一切',s:2},{t:'不吵架就是最好的',s:1}]},
+  {d:'conflict',q:'伴侣连续两次犯同样的错误，你会？',o:[
+    {t:'认真沟通强调这很重要',s:5},{t:'再次表达不满',s:4},{t:'更生气但还会沟通',s:3},
+    {t:'开始怀疑对方是否在意',s:2},{t:'直接爆发',s:1}]},
+  {d:'conflict',q:'你生气时更需要？',o:[
+    {t:'和对方把话说开',s:5},{t:'对方的拥抱',s:4},{t:'一些独处时间',s:3},
+    {t:'对方先认错',s:2},{t:'对方猜到我在气什么',s:1}]},
+  {d:'conflict',q:'你能在吵架中控制自己的音量吗？',o:[
+    {t:'总能控制',s:5},{t:'大多数时候',s:4},{t:'看情况',s:3},
+    {t:'经常控制不住',s:2},{t:'完全控制不住',s:1}]},
+  {d:'conflict',q:'你更害怕吵架中的什么？',o:[
+    {t:'人身攻击的话',s:5},{t:'对方的沉默',s:4},{t:'自己的失控',s:3},
+    {t:'对方的冷漠',s:2},{t:'关系的裂痕',s:1}]},
+  {d:'conflict',q:'伴侣说"你每次都这样"，你会？',o:[
+    {t:'说"我们讨论具体事件"',s:5},{t:'感到被贴标签不舒服',s:4},{t:'反驳"我哪有每次"',s:3},
+    {t:'很生气',s:2},{t:'直接回击',s:1}]},
+  {d:'conflict',q:'你们吵完架会复盘吗？',o:[
+    {t:'经常会',s:5},{t:'偶尔会',s:4},{t:'有时会',s:3},
+    {t:'很少',s:2},{t:'从不吵完就过去了',s:1}]},
+  {d:'conflict',q:'你觉得自己在冲突中的角色是？',o:[
+    {t:'调解者引导沟通',s:5},{t:'倾听者先理解对方',s:4},{t:'看情况',s:3},
+    {t:'防守者保护自己',s:2},{t:'攻击者先发制人',s:1}]},
+  {d:'conflict',q:'你认为"不吵架"代表什么？',o:[
+    {t:'可能有未表达的问题',s:5},{t:'看情况',s:4},{t:'可能是默契好',s:3},
+    {t:'关系很稳定',s:2},{t:'完美的关系',s:1}]},
+  {d:'conflict',q:'伴侣在外人面前和你意见不同，你会？',o:[
+    {t:'先支持伴侣私下再讨论',s:5},{t:'礼貌表达不同意见',s:4},{t:'看情况',s:3},
+    {t:'会感到不舒服',s:2},{t:'会当场争论',s:1}]},
+  {d:'conflict',q:'你修复关系的方式更像？',o:[
+    {t:'阳光——温暖融化冰',s:5},{t:'水——慢慢渗透',s:4},{t:'风——自然吹散',s:3},
+    {t:'石头——等待时间',s:2},{t:'火——快速爆发又快速熄灭',s:1}]},
+
+  // ────────────── 亲密与独立 (25题) ──────────────
+  {d:'intimacy',q:'你理想的相处模式是？',o:[
+    {t:'大部分时间在一起',s:5},{t:'平衡在一起和独处',s:4},{t:'在一起时亲密分开时独立',s:3},
+    {t:'各自有生活定期约会',s:2},{t:'保持高度独立偶尔见面',s:1}]},
+  {d:'intimacy',q:'伴侣想看你手机，你会？',o:[
+    {t:'随时可以看没有秘密',s:5},{t:'可以但希望先说',s:4},{t:'看情况有些隐私',s:3},
+    {t:'不太愿意这是隐私',s:2},{t:'坚决不让看',s:1}]},
+  {d:'intimacy',q:'你希望伴侣了解你多少？',o:[
+    {t:'了解我的一切',s:5},{t:'大部分可分享',s:4},{t:'重要的事分享',s:3},
+    {t:'保留个人空间',s:2},{t:'每个人都有不该探索的角落',s:1}]},
+  {d:'intimacy',q:'你更喜欢哪种周末？',o:[
+    {t:'两个人一起做所有事',s:5},{t:'大部分一起留一些各自时间',s:4},{t:'一半一半',s:3},
+    {t:'各做各的晚上一起吃饭',s:2},{t:'完全各过各的',s:1}]},
+  {d:'intimacy',q:'你会和伴侣共享社交圈吗？',o:[
+    {t:'希望完全融合',s:5},{t:'大部分朋友都认识',s:4},{t:'有共同也有各自的',s:3},
+    {t:'各自保留',s:2},{t:'社交圈完全独立',s:1}]},
+  {d:'intimacy',q:'财务方面你倾向于？',o:[
+    {t:'完全共享不分你我',s:5},{t:'大部分共享留个人预算',s:4},{t:'共同平分各自管理',s:3},
+    {t:'各自管理',s:2},{t:'财务完全独立',s:1}]},
+  {d:'intimacy',q:'你想时刻知道伴侣在哪在做什么吗？',o:[
+    {t:'是的让我安心',s:5},{t:'大概想知道',s:4},{t:'大的行程会说',s:3},
+    {t:'不需要信任对方',s:2},{t:'完全不在意',s:1}]},
+  {d:'intimacy',q:'你更害怕哪种情况？',o:[
+    {t:'渐行渐远',s:5},{t:'失去亲密感',s:4},{t:'不确定',s:3},
+    {t:'失去个人空间',s:2},{t:'失去自我',s:1}]},
+  {d:'intimacy',q:'你如何看待"情侣间没有秘密"？',o:[
+    {t:'完全同意',s:5},{t:'大部分同意',s:4},{t:'部分同意',s:3},
+    {t:'不太同意',s:2},{t:'完全不同意',s:1}]},
+  {d:'intimacy',q:'伴侣出差时联系频率应该是？',o:[
+    {t:'随时保持联系',s:5},{t:'每天至少一次电话',s:4},{t:'每天几条消息',s:3},
+    {t:'隔天联系就好',s:2},{t:'不需要特别联系',s:1}]},
+  {d:'intimacy',q:'你更倾向于哪种居住安排？',o:[
+    {t:'尽快同居或结婚',s:5},{t:'稳定后同居',s:4},{t:'各自住但离得近',s:3},
+    {t:'各自有住所',s:2},{t:'不需要住一起',s:1}]},
+  {d:'intimacy',q:'伴侣分享深层秘密时你会？',o:[
+    {t:'很感动也分享自己的',s:5},{t:'认真对待给支持',s:4},{t:'感谢信任会保密',s:3},
+    {t:'听就好不一定分享',s:2},{t:'不太想听太私密的',s:1}]},
+  {d:'intimacy',q:'你对"灵魂伴侣"的看法？',o:[
+    {t:'完全相信',s:5},{t:'相信正在找或已找到',s:4},{t:'半信半疑',s:3},
+    {t:'不太相信',s:2},{t:'不相信只是浪漫幻想',s:1}]},
+  {d:'intimacy',q:'你更看重关系中的什么？',o:[
+    {t:'深度情感连接',s:5},{t:'稳定陪伴',s:4},{t:'互相成长',s:3},
+    {t:'保持自我',s:2},{t:'自由和空间',s:1}]},
+  {d:'intimacy',q:'伴侣想要独处时间你会？',o:[
+    {t:'有点失落但尊重',s:4},{t:'完全理解',s:3},{t:'利用时间做自己的事',s:2},
+    {t:'有些不安但不说',s:5},{t:'感到被冷落',s:5}]},
+  {d:'intimacy',q:'你会主动告诉伴侣自己的行踪吗？',o:[
+    {t:'自然会说',s:5},{t:'大部分会说',s:4},{t:'看情况',s:3},
+    {t:'除非对方问',s:2},{t:'不需要报告',s:1}]},
+  {d:'intimacy',q:'你觉得恋爱中最理想的空间是？',o:[
+    {t:'两个人就是全世界',s:5},{t:'两个人是世界的中心',s:4},{t:'两个人是世界的一部分',s:3},
+    {t:'两个人各自有世界',s:2},{t:'两个人是平行线偶尔相交',s:1}]},
+  {d:'intimacy',q:'伴侣有你不了解的朋友圈，你会？',o:[
+    {t:'希望认识他们',s:5},{t:'有些好奇',s:4},{t:'尊重对方的社交',s:3},
+    {t:'不太在意',s:2},{t:'觉得每个人有自己的圈子',s:1}]},
+  {d:'intimacy',q:'你觉得理想的亲密关系是？',o:[
+    {t:'两个人融为一体',s:5},{t:'两个人紧密相连',s:4},{t:'两个人互相支持',s:3},
+    {t:'两个人互相尊重',s:2},{t:'两个独立的人选择在一起',s:1}]},
+  {d:'intimacy',q:'伴侣生病了你会？',o:[
+    {t:'请几天假照顾',s:5},{t:'下班后马上去照顾',s:4},{t:'送药送吃的',s:3},
+    {t:'问候但不会特别做',s:2},{t:'让对方好好休息',s:1}]},
+  {d:'intimacy',q:'你更希望两个人有？',o:[
+    {t:'共同的银行账户',s:5},{t:'共同的储蓄目标',s:4},{t:'AA但会互送礼物',s:3},
+    {t:'各管各的',s:2},{t:'完全不需要财务交集',s:1}]},
+  {d:'intimacy',q:'你会在社交媒体上公开恋爱关系吗？',o:[
+    {t:'一定会',s:5},{t:'会但不会太频繁',s:4},{t:'看情况',s:3},
+    {t:'不太会',s:2},{t:'完全不会',s:1}]},
+  {d:'intimacy',q:'你觉得恋爱中最重要的承诺是？',o:[
+    {t:'永远在一起',s:5},{t:'忠诚和信任',s:4},{t:'互相支持',s:3},
+    {t:'尊重彼此',s:2},{t:'让对方自由',s:1}]},
+  {d:'intimacy',q:'伴侣想和你一起做你不喜欢的事，你会？',o:[
+    {t:'愿意陪对方',s:5},{t:'偶尔可以',s:4},{t:'看情况',s:3},
+    {t:'会说出自己不喜欢',s:2},{t:'直接拒绝',s:1}]},
+  {d:'intimacy',q:'你觉得最好的恋爱状态是？',o:[
+    {t:'每天都很甜蜜',s:5},{t:'大部分时间甜蜜',s:4},{t:'平淡但安心',s:3},
+    {t:'各自精彩偶尔相聚',s:2},{t:'互不打扰各自安好',s:1}]},
+
+  // ────────────── 情感表达 (22题) ──────────────
+  {d:'emotion',q:'你在伴侣面前哭过吗？',o:[
+    {t:'经常表达脆弱是好的',s:5},{t:'偶尔在特别难过时',s:4},{t:'很少但不介意',s:3},
+    {t:'几乎不会不习惯',s:2},{t:'从不想显得脆弱',s:1}]},
+  {d:'emotion',q:'伴侣在你面前哭泣，你会？',o:[
+    {t:'抱着轻声安慰',s:5},{t:'陪着给支持',s:4},{t:'想帮但不知说什么',s:3},
+    {t:'感到不自在',s:2},{t:'想逃避',s:1}]},
+  {d:'emotion',q:'你表达愤怒的方式？',o:[
+    {t:'直接说但不攻击人',s:5},{t:'暂时离开冷静后沟通',s:4},{t:'压抑自己消化',s:3},
+    {t:'用沉默表达',s:2},{t:'爆发式发火',s:1}]},
+  {d:'emotion',q:'你多久说一次"我爱你"？',o:[
+    {t:'每天',s:5},{t:'经常',s:4},{t:'特别时刻',s:3},{t:'偶尔',s:2},{t:'很少或从不',s:1}]},
+  {d:'emotion',q:'你更容易表达哪种情感？',o:[
+    {t:'爱和感激',s:5},{t:'快乐和兴奋',s:4},{t:'都可以',s:3},
+    {t:'不满和需求',s:2},{t:'愤怒和失望',s:1}]},
+  {d:'emotion',q:'收到伴侣深情表白你的反应？',o:[
+    {t:'同样深情回应',s:5},{t:'感到幸福表达感谢',s:4},{t:'心里开心但不太会表达',s:3},
+    {t:'感到不好意思',s:2},{t:'回避或转移话题',s:1}]},
+  {d:'emotion',q:'你更习惯什么方式表达关心？',o:[
+    {t:'直接说"我担心你"',s:5},{t:'通过行动照顾',s:4},{t:'默默关注不表现',s:3},
+    {t:'等需要时再出现',s:2},{t:'不太会表达关心',s:1}]},
+  {d:'emotion',q:'很想念伴侣时你会？',o:[
+    {t:'直接说"我想你"',s:5},{t:'发消息打电话',s:4},{t:'在心里想但不说',s:3},
+    {t:'用行动暗示',s:2},{t:'等对方先联系',s:1}]},
+  {d:'emotion',q:'情感表达在关系中重要吗？',o:[
+    {t:'非常重要',s:5},{t:'比较重要',s:4},{t:'有一定重要性',s:3},
+    {t:'不太重要行动更重要',s:2},{t:'不重要',s:1}]},
+  {d:'emotion',q:'伴侣做了让你感动的事你会？',o:[
+    {t:'立刻表达感动可能哭',s:5},{t:'真诚说谢谢',s:4},{t:'用行动回报',s:3},
+    {t:'记在心里',s:2},{t:'觉得理所当然',s:1}]},
+  {d:'emotion',q:'你更容易被什么打动？',o:[
+    {t:'一封真挚的手写信',s:5},{t:'对方深情的眼神',s:4},{t:'一个温暖的拥抱',s:3},
+    {t:'为你做的具体事情',s:2},{t:'物质上的惊喜',s:1}]},
+  {d:'emotion',q:'你的情感丰富程度是？',o:[
+    {t:'非常丰富容易被感动',s:5},{t:'比较丰富',s:4},{t:'一般',s:3},
+    {t:'比较内敛',s:2},{t:'很理性不太动情',s:1}]},
+  {d:'emotion',q:'你看爱情电影会哭吗？',o:[
+    {t:'经常',s:5},{t:'有时候',s:4},{t:'偶尔',s:3},{t:'很少',s:2},{t:'从不',s:1}]},
+  {d:'emotion',q:'伴侣说"你今天好美/帅"，你会？',o:[
+    {t:'开心地说"谢谢"',s:5},{t:'不好意思但开心',s:4},{t:'觉得对方嘴甜',s:3},
+    {t:'不太相信',s:2},{t:'觉得对方在敷衍',s:1}]},
+  {d:'emotion',q:'你更倾向于？',o:[
+    {t:'把心里话都说出来',s:5},{t:'大部分说',s:4},{t:'选择性说',s:3},
+    {t:'大部分藏在心里',s:2},{t:'完全不说',s:1}]},
+  {d:'emotion',q:'伴侣送你意外礼物你会？',o:[
+    {t:'非常感动大声说谢谢',s:5},{t:'很开心表达感谢',s:4},{t:'开心但不太表现',s:3},
+    {t:'觉得对方乱花钱',s:2},{t:'没什么感觉',s:1}]},
+  {d:'emotion',q:'心里觉得委屈时，你会让伴侣看见吗？',o:[
+    {t:'会，难过就直接表现出来',s:5},{t:'大多会说出来',s:4},{t:'看情况',s:3},
+    {t:'通常自己悄悄消化',s:2},{t:'从不让人看见我的脆弱',s:1}]},
+  {d:'emotion',q:'你的情绪表达方式更像？',o:[
+    {t:'阳光——明亮温暖',s:5},{t:'月亮——柔和内敛',s:4},{t:'风——来去自由',s:3},
+    {t:'湖——表面平静内心丰富',s:2},{t:'石头——很少表达',s:1}]},
+  {d:'emotion',q:'伴侣做了一件很小但很暖心的事，你会？',o:[
+    {t:'马上说"好感动"',s:5},{t:'给个拥抱',s:4},{t:'记在心里',s:3},
+    {t:'觉得是应该的',s:2},{t:'不太会注意到',s:1}]},
+  {d:'emotion',q:'你更习惯哪种方式表达快乐？',o:[
+    {t:'大声笑出来',s:5},{t:'微笑和眼神',s:4},{t:'告诉伴侣',s:3},
+    {t:'通过行动',s:2},{t:'不太表达',s:1}]},
+  {d:'emotion',q:'伴侣问"你还好吗"而你不好，你会？',o:[
+    {t:'如实说"不太好"',s:5},{t:'说一些',s:4},{t:'说"还行"',s:3},
+    {t:'说"没事"',s:2},{t:'说"嗯"',s:1}]},
+  {d:'emotion',q:'你觉得表达情感是？',o:[
+    {t:'一种力量',s:5},{t:'一种美德',s:4},{t:'一种选择',s:3},
+    {t:'一种负担',s:2},{t:'一种软弱',s:1}]},
+
+  // ────────────── 承诺忠诚 (22题) ──────────────
+  {d:'commit',q:'你对长期关系的看法？',o:[
+    {t:'一旦在一起就想走到最后',s:5},{t:'认真对待希望长久',s:4},{t:'顺其自然',s:3},
+    {t:'看情况发展',s:2},{t:'不想被束缚',s:1}]},
+  {d:'commit',q:'你如何看待"结婚"？',o:[
+    {t:'恋爱的自然归宿',s:5},{t:'合适时会考虑',s:4},{t:'不确定',s:3},
+    {t:'不是必须的',s:2},{t:'不感兴趣',s:1}]},
+  {d:'commit',q:'关系遇到瓶颈时你会？',o:[
+    {t:'积极想办法解决',s:5},{t:'和伴侣一起面对',s:4},{t:'先观察',s:3},
+    {t:'考虑是否继续',s:2},{t:'觉得可能不适合',s:1}]},
+  {d:'commit',q:'你如何看待关系中的"忠诚"？',o:[
+    {t:'绝对忠诚',s:5},{t:'忠诚是底线',s:4},{t:'重要但需要双方努力',s:3},
+    {t:'是理想但不总是现实',s:2},{t:'人的情感很复杂',s:1}]},
+  {d:'commit',q:'你能接受异地恋吗？',o:[
+    {t:'只要爱就能坚持',s:5},{t:'可以会努力维持',s:4},{t:'时间短可以',s:3},
+    {t:'比较难接受',s:2},{t:'不能接受',s:1}]},
+  {d:'commit',q:'你愿意为伴侣牺牲吗？',o:[
+    {t:'愿意改变很多',s:5},{t:'重要事情上妥协',s:4},{t:'看情况',s:3},
+    {t:'不太愿意改变',s:2},{t:'不愿为别人改变',s:1}]},
+  {d:'commit',q:'你如何看待伴侣的过去？',o:[
+    {t:'完全不在意只看现在',s:5},{t:'基本不在意',s:4},{t:'偶尔想但能放下',s:3},
+    {t:'会有些在意',s:2},{t:'非常在意',s:1}]},
+  {d:'commit',q:'你认为爱情能持续多久？',o:[
+    {t:'可以一辈子',s:5},{t:'用心经营可长久',s:4},{t:'不确定',s:3},
+    {t:'几年就会变淡',s:2},{t:'本质上是短暂的',s:1}]},
+  {d:'commit',q:'你愿意和伴侣一起面对困难吗？',o:[
+    {t:'无论如何在一起',s:5},{t:'愿意一起面对',s:4},{t:'看困难程度',s:3},
+    {t:'太难可能放弃',s:2},{t:'不想太辛苦',s:1}]},
+  {d:'commit',q:'你如何定义"对的人"？',o:[
+    {t:'愿意一起努力的人',s:5},{t:'三观一致互相理解',s:4},{t:'在一起舒服',s:3},
+    {t:'有心动感觉',s:2},{t:'各方面条件匹配',s:1}]},
+  {d:'commit',q:'伴侣犯了严重错误（非背叛），你会？',o:[
+    {t:'愿意给机会修复',s:5},{t:'看态度再决定',s:4},{t:'需要时间考虑',s:3},
+    {t:'重新评估关系',s:2},{t:'可能直接结束',s:1}]},
+  {d:'commit',q:'你在关系中最需要的是？',o:[
+    {t:'稳定安全感',s:5},{t:'信任忠诚',s:4},{t:'理解尊重',s:3},
+    {t:'自由空间',s:2},{t:'激情新鲜感',s:1}]},
+  {d:'commit',q:'你会为伴侣改变自己的习惯吗？',o:[
+    {t:'愿意为对方改变',s:5},{t:'好的改变会',s:4},{t:'看情况',s:3},
+    {t:'不太愿意',s:2},{t:'不会',s:1}]},
+  {d:'commit',q:'你如何看待"为爱牺牲"？',o:[
+    {t:'真爱值得牺牲',s:5},{t:'合理范围内',s:4},{t:'看情况',s:3},
+    {t:'不应该牺牲自我',s:2},{t:'不值得',s:1}]},
+  {d:'commit',q:'你对"一辈子只爱一个人"的看法？',o:[
+    {t:'完全可能且美好',s:5},{t:'可能但需要努力',s:4},{t:'不确定',s:3},
+    {t:'不太现实',s:2},{t:'不可能',s:1}]},
+  {d:'commit',q:'伴侣想要更进一步（如同居见家长），你会？',o:[
+    {t:'开心地接受',s:5},{t:'认真考虑后接受',s:4},{t:'需要一些时间',s:3},
+    {t:'会犹豫',s:2},{t:'会退缩',s:1}]},
+  {d:'commit',q:'你认为承诺在关系中重要吗？',o:[
+    {t:'非常重要',s:5},{t:'重要',s:4},{t:'有一定重要性',s:3},
+    {t:'不太重要',s:2},{t:'不重要',s:1}]},
+  {d:'commit',q:'你愿意为关系做出的最大牺牲是？',o:[
+    {t:'改变工作城市',s:5},{t:'调整生活习惯',s:4},{t:'减少社交',s:3},
+    {t:'小的妥协',s:2},{t:'不太愿意牺牲',s:1}]},
+  {d:'commit',q:'你对分手的态度是？',o:[
+    {t:'尽量不走到那一步',s:5},{t:'努力后实在不行才',s:4},{t:'顺其自然',s:3},
+    {t:'不合适就分',s:2},{t:'随时可以',s:1}]},
+  {d:'commit',q:'你认为爱情中的信任是？',o:[
+    {t:'无条件的',s:5},{t:'建立在行动上',s:4},{t:'需要时间',s:3},
+    {t:'需要验证',s:2},{t:'很难完全信任',s:1}]},
+  {d:'commit',q:'你愿意和伴侣一起成长吗？',o:[
+    {t:'非常愿意',s:5},{t:'愿意',s:4},{t:'看情况',s:3},
+    {t:'更想各自成长',s:2},{t:'不想被影响',s:1}]},
+  {d:'commit',q:'你觉得爱情中最重要的是？',o:[
+    {t:'忠诚',s:5},{t:'信任',s:4},{t:'理解',s:3},
+    {t:'自由',s:2},{t:'激情',s:1}]},
+
+  // ────────────── 浪漫倾向 (22题) ──────────────
+  {d:'romance',q:'你更喜欢哪种约会？',o:[
+    {t:'精心策划的浪漫晚餐',s:5},{t:'一起看日落星空',s:4},{t:'一起尝试新事物',s:3},
+    {t:'在家看电影',s:2},{t:'不需要特别安排',s:1}]},
+  {d:'romance',q:'浪漫重要吗？',o:[
+    {t:'非常重要',s:5},{t:'比较重要',s:4},{t:'偶尔浪漫挺好',s:3},
+    {t:'不太重要',s:2},{t:'不重要务实更好',s:1}]},
+  {d:'romance',q:'你会为伴侣制造惊喜吗？',o:[
+    {t:'经常',s:5},{t:'特别日子会',s:4},{t:'偶尔想到',s:3},{t:'很少',s:2},{t:'不太会',s:1}]},
+  {d:'romance',q:'你对"仪式感"的看法？',o:[
+    {t:'非常重要每个纪念日都要',s:5},{t:'重要日子要有',s:4},{t:'有一些挺好',s:3},
+    {t:'不太在意',s:2},{t:'形式主义',s:1}]},
+  {d:'romance',q:'你更喜欢什么方式表达爱意？',o:[
+    {t:'写深情的情书',s:5},{t:'在特别场景说心里话',s:4},{t:'用行动默默付出',s:3},
+    {t:'日常小关心',s:2},{t:'不说对方应该感受到',s:1}]},
+  {d:'romance',q:'你理想中的爱情更像哪种电影？',o:[
+    {t:'《泰坦尼克号》轰轰烈烈',s:5},{t:'《爱在黎明破晓前》灵魂交流',s:4},
+    {t:'《怦然心动》纯真美好',s:3},{t:'《当哈利遇到莎莉》日久生情',s:2},{t:'更像现实纪录片',s:1}]},
+  {d:'romance',q:'你会记住"小日子"吗？',o:[
+    {t:'每一个都记得还会庆祝',s:5},{t:'重要的都记得',s:4},{t:'大概记得',s:3},
+    {t:'不太记日期',s:2},{t:'不记这些',s:1}]},
+  {d:'romance',q:'你更享受关系的哪个阶段？',o:[
+    {t:'热恋期的激情',s:5},{t:'深入了解后的默契',s:4},{t:'每阶段都有美好',s:3},
+    {t:'长期相处的安稳',s:2},{t:'不确定',s:1}]},
+  {d:'romance',q:'你愿意为爱做疯狂的事吗？',o:[
+    {t:'当然值得',s:5},{t:'合理范围内',s:4},{t:'看情况',s:3},{t:'不太会',s:2},{t:'不会理性更重要',s:1}]},
+  {d:'romance',q:'爱情中最浪漫的事是？',o:[
+    {t:'一起变老',s:5},{t:'无条件接纳',s:4},{t:'一起经历风雨',s:3},
+    {t:'日常陪伴',s:2},{t:'保持自我同时相爱',s:1}]},
+  {d:'romance',q:'你如何保持新鲜感？',o:[
+    {t:'不断制造浪漫惊喜',s:5},{t:'一起尝试新事物',s:4},{t:'给彼此空间',s:3},
+    {t:'顺其自然',s:2},{t:'不需要刻意保持',s:1}]},
+  {d:'romance',q:'你觉得恋爱中最甜蜜的瞬间是？',o:[
+    {t:'四目相对的那一刻',s:5},{t:'突然被从背后抱住',s:4},{t:'收到意外的礼物',s:3},
+    {t:'对方帮你想到了你没想到的事',s:2},{t:'两个人一起笑到停不下来',s:1}]},
+  {d:'romance',q:'你会给伴侣起昵称吗？',o:[
+    {t:'会而且有很多',s:5},{t:'会有一两个',s:4},{t:'偶尔会叫',s:3},
+    {t:'不太会',s:2},{t:'不会觉得很肉麻',s:1}]},
+  {d:'romance',q:'你觉得爱情应该是什么颜色？',o:[
+    {t:'红色——热烈激情',s:5},{t:'粉色——甜蜜温柔',s:4},{t:'蓝色——深邃宁静',s:3},
+    {t:'绿色——自然舒适',s:2},{t:'白色——纯净简单',s:1}]},
+  {d:'romance',q:'你会在公共场合牵手拥抱吗？',o:[
+    {t:'很自然',s:5},{t:'偶尔会',s:4},{t:'看场合',s:3},
+    {t:'不太习惯',s:2},{t:'不会',s:1}]},
+  {d:'romance',q:'你觉得恋爱中最重要的是？',o:[
+    {t:'心动的感觉',s:5},{t:'深度的理解',s:4},{t:'稳定的陪伴',s:3},
+    {t:'互相的成长',s:2},{t:'各自的独立',s:1}]},
+  {d:'romance',q:'你会给伴侣写情书吗？',o:[
+    {t:'经常写',s:5},{t:'偶尔写',s:4},{t:'特别的日子',s:3},{t:'很少',s:2},{t:'从不',s:1}]},
+  {d:'romance',q:'你觉得爱情中最美的画面是？',o:[
+    {t:'两个人一起看海',s:5},{t:'雨中一起撑伞',s:4},{t:'一起做饭',s:3},
+    {t:'沙发上各自看书',s:2},{t:'不需要特别的画面',s:1}]},
+  {d:'romance',q:'你会记住伴侣说过的每句话吗？',o:[
+    {t:'尽量都记住',s:5},{t:'重要的话会',s:4},{t:'有些会',s:3},
+    {t:'不太会',s:2},{t:'不会',s:1}]},
+  {d:'romance',q:'你认为恋爱需要经营吗？',o:[
+    {t:'需要不断注入浪漫',s:5},{t:'需要一些用心',s:4},{t:'自然就好',s:3},
+    {t:'不需要刻意',s:2},{t:'顺其自然',s:1}]},
+  {d:'romance',q:'你理想的求婚方式是？',o:[
+    {t:'精心策划的浪漫场景',s:5},{t:'在特别的地方',s:4},{t:'自然地讨论',s:3},
+    {t:'不需要特别的方式',s:2},{t:'不需要求婚',s:1}]},
+  {d:'romance',q:'你觉得爱情是什么？',o:[
+    {t:'命中注定的缘分',s:5},{t:'用心经营的选择',s:4},{t:'两个人的默契',s:3},
+    {t:'一种舒适的陪伴',s:2},{t:'一种社会契约',s:1}]},
+  {d:'commit',q:'伴侣想要一个明确的未来规划，你会？',o:[
+    {t:'开心地一起规划',s:5},{t:'愿意讨论',s:4},{t:'可以聊',s:3},
+    {t:'觉得太早了',s:2},{t:'不想被规划束缚',s:1}]},
+  {d:'commit',q:'你觉得恋爱中最难的是？',o:[
+    {t:'始终保持忠诚',s:5},{t:'在困难时不放弃',s:4},{t:'保持沟通',s:3},
+    {t:'保持新鲜感',s:2},{t:'保持自我',s:1}]},
+  {d:'emotion',q:'伴侣说你怎么都不想我，你会？',o:[
+    {t:'说我当然想你了',s:5},{t:'不好意思地笑',s:4},{t:'觉得对方在撒娇',s:3},
+    {t:'不知道怎么回应',s:2},{t:'觉得对方太黏人',s:1}]},
+  {d:'emotion',q:'你看到感人的视频会？',o:[
+    {t:'眼眶湿润',s:5},{t:'有些触动',s:4},{t:'觉得还好',s:3},
+    {t:'没什么感觉',s:2},{t:'完全无感',s:1}]},
+  {d:'romance',q:'你最想和伴侣一起做的事是？',o:[
+    {t:'一起环游世界',s:5},{t:'一起看遍所有日落',s:4},{t:'一起养一只宠物',s:3},
+    {t:'一起建一个家',s:2},{t:'一起变老',s:1}]},
+  {d:'romance',q:'你觉得恋爱中最有仪式感的是？',o:[
+    {t:'每年的纪念日旅行',s:5},{t:'每月一封情书',s:4},{t:'每周的固定约会',s:3},
+    {t:'每天的晚安吻',s:2},{t:'不需要特别的仪式',s:1}]},
+  {d:'romance',q:'你对异地恋最浪漫的看法是？',o:[
+    {t:'距离让爱更浓烈',s:5},{t:'见面前的等待也是甜蜜',s:4},{t:'考验感情的方式',s:3},
+    {t:'不太浪漫',s:2},{t:'不浪漫而且很累',s:1}]},
+];
+
+// ═══════ 恋爱人格标签系统 ═══════
+// 基于8个维度的组合，生成一个有记忆点的"人格标签"
+
+const PERSONA_TYPES = [
+  {
+    id:'kite', animal:'🪁', title:'赤鸢', en:'Scarlet Kite',
+    desc:'你爱起来是会烧到自己的那种。喜欢一个人，整颗心就全押上去，不留退路，也不算后账。有人劝你悠着点，可你心里清楚——温吞吞的喜欢，在你这儿根本不成立。要么不爱，要爱就爱到指尖发烫。',
+    colors:['#c0392b','#e67e22','#f39c12'],
+    keywords:['炽热','赤诚','奋不顾身','浓烈'],
+    proto:[3.79,3.0,3.66,2.47,3.66,4.06,3.79,3.92]
+  },
+  {
+    id:'watchman', animal:'🕯️', title:'守夜人', en:'The Night Watch',
+    desc:'你很少把“爱”挂在嘴上，但你做的事都算数。约好的事一定办到，记住的细节从不出错，对方半夜醒来，你这盏灯还亮着。浪漫不是你的强项，可真要论谁靠得住，名单第一个写的是你。',
+    colors:['#2c3e50','#f39c12','#bdc3c7'],
+    keywords:['沉默','守候','笃定','长情'],
+    proto:[2.54,2.34,2.34,3.26,2.74,2.34,4.06,2.34]
+  },
+  {
+    id:'mooncat', animal:'🌙', title:'月下客', en:'Moonlit Wanderer',
+    desc:'你像只夜里独自爬上屋顶的猫——亲近你可以，圈养你不行。再喜欢一个人，你也得留一块谁都进不来的地方，那是你喘气的地方。你的疏离不是装出来的清高，是你确实要独处，才活得舒展。',
+    colors:['#2c3e50','#8e44ad','#ecf0f1'],
+    keywords:['独行','自在','清冷','留白'],
+    proto:[2.47,2.74,2.74,3.0,1.94,2.74,2.6,2.93]
+  },
+  {
+    id:'reflection', animal:'🪷', title:'照水', en:'Still Water',
+    desc:'吵架的时候，先冷静下来的总是你。不是不在意，恰恰是太在意，舍不得把话说狠。你信大部分的刺抱一抱就软了，大部分的伤交给时间就好了。和你在一起的人，会慢慢松开攥紧的拳头。',
+    colors:['#3498db','#f5f5dc','#a8d8ea'],
+    keywords:['温润','包容','治愈','沉静'],
+    proto:[2.47,3.0,3.4,4.06,3.13,3.0,3.53,3.0]
+  },
+  {
+    id:'poet', animal:'📜', title:'游吟诗人', en:'The Wandering Poet',
+    desc:'别人觉得肉麻的事，你做起来理直气壮。一张电影票根你能留三年，一句随口的情话你记一辈子。你打心底相信，爱情值得被郑重其事地歌颂，而你乐意当那个写诗的人。',
+    colors:['#e91e63','#9c27b0','#ffd700'],
+    keywords:['诗意','深情','细腻','梦幻'],
+    proto:[3.26,3.66,3.53,3.26,3.26,4.06,3.53,4.19]
+  },
+  {
+    id:'windweaver', animal:'🪶', title:'裁风者', en:'Wind Weaver',
+    desc:'恋爱里你像个手感很好的棋手，什么时候进、什么时候退、什么时候该闭嘴，心里都有数。你不太靠一时上头，更信自己的判断。和你在一起省心，因为分寸感这种稀缺东西，你像是天生就带着。',
+    colors:['#1abc9c','#bdc3c7','#f0f0f0'],
+    keywords:['分寸','从容','清醒','自在'],
+    proto:[2.34,3.0,3.0,3.66,2.87,3.0,3.0,2.87]
+  },
+  {
+    id:'timekeeper', animal:'⏳', title:'拾光者', en:'Timekeeper',
+    desc:'你记得第一次牵手那天在下雨，记得对方随口说过想吃什么。在你眼里，感情是由一地别人看不见的碎片拼起来的。你舍不得扔掉任何一片，因为每一片都是“我们存在过”的证据。',
+    colors:['#d4a574','#8b7355','#ffd700'],
+    keywords:['念旧','细腻','珍重','入微'],
+    proto:[3.0,3.0,3.0,3.26,3.13,3.13,3.79,3.46]
+  },
+  {
+    id:'sunflower', animal:'🌻', title:'向阳花', en:'Sunflower',
+    desc:'你不太会说漂亮话，但你往那一站，周围的空气都甜了几分。你表达爱的方式很朴素——让你在乎的人，每天都觉得活着挺好的。这份明亮不费劲，像是从你骨头缝里自己长出来的。',
+    colors:['#f1c40f','#27ae60','#87ceeb'],
+    keywords:['明朗','治愈','元气','暖意'],
+    proto:[2.47,2.01,3.92,3.66,3.4,4.06,3.13,3.13]
+  },
+  {
+    id:'navigator', animal:'🌌', title:'夜航者', en:'Night Navigator',
+    desc:'你的爱像深海，表面不起波澜，底下却暗流汹涌。你不轻易开口说爱，却在没人看见的地方默默做了很多。不是不热烈，是你把热烈沉到了更深的地方，只留给真正靠近的人。',
+    colors:['#1a1a2e','#16213e','#e2e2e2'],
+    keywords:['深沉','内敛','持久','厚重'],
+    proto:[2.74,2.47,2.21,3.0,2.47,2.21,3.86,2.87]
+  },
+  {
+    id:'mountain', animal:'🏔️', title:'孤山', en:'Solitary Peak',
+    desc:'你不靠对方的回应来证明自己爱不爱。你站在那儿，本身就是答案。撒娇和甜话不是你的语言，但你给的那种安全感，是打了地基、盖到一半也塌不了的那种。',
+    colors:['#5d6d7e','#27ae60','#ecf0f1'],
+    keywords:['沉稳','可靠','独立','不动声色'],
+    proto:[2.08,2.47,2.14,3.13,2.01,2.21,3.53,2.47]
+  },
+  {
+    id:'tide', animal:'🌊', title:'潮汐', en:'Tide',
+    desc:'你的爱有涨有落。靠近时倾尽所有，退开时也不是变心，只是你停不下来。这让人有点抓不住你，可偏偏是这份抓不住，叫人上瘾。你自己未必想这样，但海哪有不退潮的。',
+    colors:['#2980b9','#6dd5fa','#c3cfe2'],
+    keywords:['起伏','自由','迷人','无常'],
+    proto:[3.92,3.0,3.0,2.6,2.47,3.2,2.34,3.2]
+  },
+  {
+    id:'lighthouse', animal:'🔦', title:'灯塔', en:'Lighthouse',
+    desc:'你是关系里方向感最稳的那个。对方在外头怎么飘，一回头，你还在原地亮着。你不追也不闹，只是稳稳守着，信那个人终会自己找回来。这份不动声色的笃定，本身就是一种温柔。',
+    colors:['#f39c12','#2c3e50','#ecf0f1'],
+    keywords:['笃定','指引','安静','永恒'],
+    proto:[2.27,2.34,2.67,3.73,2.87,2.67,4.06,2.87]
+  },
+  {
+    id:'origami', animal:'🕊️', title:'折纸', en:'Origami',
+    desc:'你把每段感情都当成一件手作来对待。在意细节，在意那些别人嫌麻烦的仪式，连道歉都要琢磨怎么让对方真的好受些。你的爱是一折一折叠出来的，慢，但每一道折痕都很认真。',
+    colors:['#e8b4b8','#d4a5a5','#f5e6cc'],
+    keywords:['匠心','仪式','精琢','有心'],
+    proto:[2.87,3.99,3.0,3.53,3.13,3.2,3.66,3.99]
+  },
+  {
+    id:'dusk', animal:'🌅', title:'暮归', en:'Dusk Return',
+    desc:'你爱得不快，可一旦认定就不回头。你要的不是惊天动地，是黄昏时有人对你说一句“走，回家”。你的浪漫不在情诗里，在一日三餐熬到最后、还愿意一起吃的那个人身上。',
+    colors:['#e67e22','#c0392b','#2c3e50'],
+    keywords:['踏实','归处','绵长','不移'],
+    proto:[2.41,2.34,3.0,3.53,3.33,2.87,4.06,2.6]
+  },
+  {
+    id:'mayfly', animal:'✨', title:'蜉蝣', en:'Mayfly',
+    desc:'你谈恋爱像把一天过成一生。不太在意天长地久，更在意此刻心跳得够不够响。你的字典里没有“将就”，每一次怦然心动，都是拼了命的认真。短，但浓得化不开。',
+    colors:['#ff6b6b','#ffa07a','#ffe4e1'],
+    keywords:['刹那','极致','纯粹','燃烧'],
+    proto:[3.4,3.0,3.4,2.67,3.26,3.92,2.08,3.99]
+  },
+  {
+    id:'default', animal:'💕', title:'凡星', en:'Ordinary Star',
+    desc:'你身上没有特别扎眼的棱角，却有一种让人放松的温度。你爱人的方式不抢镜，但很扎实。也许你常觉得自己平平无奇，可在对的人眼里，你就是那个刚刚好、不必费力相处的人。',
+    colors:['#95a5a6','#bdc3c7','#ecf0f1'],
+    keywords:['刚好','真实','自在','日常'],
+    proto:[3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0]
+  }
+];
+
+// 维度类型（1-5 轴，标签方向与选项分一致）
+const DIM_TYPES = {
+  attach: {
+    secure:  {name:'安全型',  range:[1,2.4],   desc:'你在关系里有底气，能自在地表达需求，也信得过对方，不容易被一点风吹草动牵着走。'},
+    anxious: {name:'焦虑型',  range:[2.4,3.4], desc:'你很看重连接，也常常需要一点确认。对方的语气和回应快慢，你都接收得很灵敏。'},
+    fearful: {name:'高敏型',  range:[3.4,5.01],desc:'你又渴望靠近又怕受伤，心里常有拉扯。越在乎，越容易胡思乱想。'}
+  },
+  love: {
+    words:  {name:'言语肯定',dom:[4],desc:'一句真诚的“我爱你”和走心的夸奖，最能戳中你。'},
+    acts:   {name:'服务行动',dom:[2],desc:'对方默默替你把事做了，比说一百句都管用。'},
+    gifts:  {name:'接受礼物',dom:[5],desc:'一份记着你心意的小礼物，会让你觉得被放在心上。'},
+    quality:{name:'优质时光',dom:[3],desc:'一段不被打扰、专心待在一起的时间，是你最在意的。'},
+    touch:  {name:'身体接触',dom:[1],desc:'一个拥抱、一次牵手，比千言万语更让你安心。'}
+  },
+  comm: {
+    reserved:{name:'内敛型',  range:[1,2.4],   desc:'你习惯先自己消化，话不多，很多情绪默默就过去了。'},
+    balanced:{name:'平衡型',  range:[2.4,3.4], desc:'该说的会说，也留得住一些自己的空间，分寸拿捏得不错。'},
+    open:    {name:'开放型',  range:[3.4,5.01],desc:'你坦诚直接，心里有事愿意摊开来讲，不太喜欢猜来猜去。'}
+  },
+  conflict: {
+    avoidant:    {name:'回避型',range:[1,2.4],   desc:'你不爱正面冲突，常用沉默或退让先把场面压下去。'},
+    adaptive:    {name:'适应型',range:[2.4,3.4], desc:'你能看情况调整，有时争一争，有时也愿意先放一放。'},
+    constructive:{name:'建设型',range:[3.4,5.01],desc:'你把吵架当成把话说清楚的机会，对事不对人，吵完关系反而更近。'}
+  },
+  intimacy: {
+    independent:{name:'独立型',range:[1,2.4],   desc:'再亲密你也要留一块自己的天地，距离感让你更自在。'},
+    connected:  {name:'连接型',range:[2.4,3.4], desc:'你在“黏一点”和“各自精彩”之间找到了挺舒服的平衡。'},
+    enmeshed:   {name:'融合型',range:[3.4,5.01],desc:'你享受高度交融，恨不得把世界缩小到两个人。'}
+  },
+  emotion: {
+    reserved:  {name:'内敛型',range:[1,2.4],   desc:'你不太外露情绪，再多的波澜也大多压在心里。'},
+    moderate:  {name:'温和型',range:[2.4,3.4], desc:'你的情绪表达适度而真诚，不冷也不烫。'},
+    expressive:{name:'丰沛型',range:[3.4,5.01],desc:'你的情绪写在脸上，容易被打动，也舍得把心里的暖说出来。'}
+  },
+  commit: {
+    flexible: {name:'自由型',range:[1,2.4],   desc:'你对关系持开放态度，更顺其自然，不喜欢被框住。'},
+    committed:{name:'稳健型',range:[2.4,3.4], desc:'你认真但也理性，愿意投入，也会留一份清醒。'},
+    devoted:  {name:'笃定型',range:[3.4,5.01],desc:'一旦认定就想走到最后，认真到把对方写进未来。'}
+  },
+  romance: {
+    grounded: {name:'务实型',  range:[1,2.4],   desc:'比起花样，你更看重柴米油盐里那份踏实。'},
+    pragmatic:{name:'务实浪漫型',range:[2.4,3.4],desc:'你欣赏浪漫，但脚也踩在地上，两样都要。'},
+    hopeless: {name:'浪漫主义者',range:[3.4,5.01],desc:'你相信爱情值得被认真对待，仪式感和心动一样都不能少。'}
+  }
+};
+
+// ═══════ STATE ═══════
+let cur = 0;
+let ans = new Array(Q.length).fill(null);
+
+// ═══════ QUIZ ═══════
+function startQuiz() {
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  document.getElementById('qTotal').textContent = Q.length;
+  renderQ();
+}
+
+function renderQ() {
+  const q = Q[cur];
+  const dim = DIMENSIONS[q.d];
+  document.getElementById('qNum').textContent = cur + 1;
+  document.getElementById('progressPct').textContent = Math.round(cur / Q.length * 100) + '%';
+  document.getElementById('progressFill').style.width = (cur / Q.length * 100) + '%';
+  const dl = document.getElementById('dimLabel');
+  // 隐藏维度名称，防止作弊
+  const partLabels = ['第一部分','第二部分','第三部分','第四部分','第五部分','第六部分','第七部分','第八部分'];
+  const dimOrder = ['attach','love','comm','conflict','intimacy','emotion','commit','romance'];
+  const partIdx = dimOrder.indexOf(q.d);
+  dl.textContent = partLabels[partIdx] || '';
+  dl.style.background = 'oklch(0.92 0.04 30)';
+  dl.style.color = 'oklch(0.4 0.02 30)';
+  document.getElementById('qContext').textContent = q.r ? '💡 反向计分题' : '';
+  document.getElementById('qText').textContent = `Q${cur+1}. ${q.q}`;
+  const opts = document.getElementById('options');
+  opts.innerHTML = '';
+  q.o.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn' + (ans[cur] === i ? ' selected' : '');
+    btn.innerHTML = `<span class="opt-marker">${String.fromCharCode(65+i)}</span><span class="opt-text">${opt.t}</span>`;
+    btn.onclick = () => selectOpt(i);
+    opts.appendChild(btn);
+  });
+  document.getElementById('btnPrev').disabled = cur === 0;
+  document.getElementById('btnNext').disabled = ans[cur] === null;
+  document.getElementById('btnNext').textContent = cur === Q.length - 1 ? '查看结果 →' : '下一题 →';
+}
+
+function selectOpt(i) {
+  ans[cur] = i;
+  document.querySelectorAll('.option-btn').forEach((b, j) => b.classList.toggle('selected', j === i));
+  document.getElementById('btnNext').disabled = false;
+  setTimeout(() => { if (cur < Q.length - 1) nextQ(); }, 350);
+}
+
+function nextQ() {
+  if (ans[cur] === null) return;
+  if (cur < Q.length - 1) { cur++; renderQ(); window.scrollTo({top:0,behavior:'smooth'}); }
+  else showResults();
+}
+
+function prevQ() {
+  if (cur > 0) { cur--; renderQ(); window.scrollTo({top:0,behavior:'smooth'}); }
+}
+
+// ═══════ SCORING ═══════
+function calcScores() {
+  const acc = {};
+  for (const d of Object.keys(DIMENSIONS)) acc[d] = [];
+  Q.forEach((q, i) => {
+    if (ans[i] === null) return;
+    let lo = Infinity, hi = -Infinity;
+    for (const o of q.o) { if (o.s < lo) lo = o.s; if (o.s > hi) hi = o.s; }
+    let v = hi > lo ? (q.o[ans[i]].s - lo) / (hi - lo) : 0.5;
+    if (q.r) v = 1 - v;
+    acc[q.d].push(v);
+  });
+  const norm = {};
+  for (const d of Object.keys(acc)) {
+    const a = acc[d];
+    norm[d] = a.length ? 1 + 4 * (a.reduce((x, y) => x + y, 0) / a.length) : 3;
+  }
+  return norm;
+}
+
+function getType(dim, score) {
+  const types = DIM_TYPES[dim];
+  for (const [k, v] of Object.entries(types)) {
+    if (score >= v.range[0] && score < v.range[1]) return {key:k,...v};
+  }
+  return {key:Object.keys(types).pop(), ...Object.values(types).pop()};
+}
+
+function getLoveLang() {
+  const ls = {words:0,acts:0,gifts:0,quality:0,touch:0};
+  Q.forEach((q, i) => {
+    if (q.d !== 'love' || ans[i] === null) return;
+    const s = q.o[ans[i]].s;
+    if (s===5) ls.gifts+=2; else if (s===4) ls.words+=2;
+    else if (s===3) ls.quality+=2; else if (s===2) ls.acts+=2;
+    else if (s===1) ls.touch+=2;
+  });
+  let mk='quality',mv=0;
+  for (const [k,v] of Object.entries(ls)) if(v>mv){mv=v;mk=k;}
+  return {key:mk,...DIM_TYPES.love[mk]};
+}
+
+// 最近原型向量匹配：任意 8 维分向量都会归到几何上最近的人格，
+// 全空间无缝覆盖，且每个人格都经蒙特卡洛模拟验证可达。
+const PROTO_DIMS = ['attach','love','comm','conflict','intimacy','emotion','commit','romance'];
+const PROTO_W = [1,0.5,1,1,1,1,1,1];
+function getPersona(scores) {
+  const v = PROTO_DIMS.map(d => scores[d]);
+  let best = PERSONA_TYPES[PERSONA_TYPES.length - 1], bd = Infinity;
+  for (const p of PERSONA_TYPES) {
+    let d = 0;
+    for (let k = 0; k < 8; k++) { const diff = v[k] - p.proto[k]; d += PROTO_W[k] * diff * diff; }
+    if (d < bd) { bd = d; best = p; }
+  }
+  return best;
+}
+
+// ═══════ RESULTS ═══════
+function showResults() {
+  const scores = calcScores();
+  const types = {};
+  for (const d of Object.keys(DIMENSIONS)) types[d] = d === 'love' ? getLoveLang() : getType(d, scores);
+  const persona = getPersona(scores);
+
+  document.getElementById('quiz').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+
+  // Persona card
+  const pc = document.getElementById('personaCard');
+  pc.style.cssText = `border-top: 6px solid ${persona.colors[0]}`;
+  pc.innerHTML = `
+    <img class="persona-img" src="img/persona/${persona.id}.webp" alt="${persona.title}" loading="lazy" onerror="this.style.display='none';var e=document.getElementById('personaEmoji');if(e)e.style.display='block'">
+    <span class="persona-animal" id="personaEmoji" style="display:none">${persona.animal}</span>
+    <h1 class="persona-title" style="color:${persona.colors[0]}">${persona.title}</h1>
+    <p class="persona-subtitle">${persona.en}</p>
+    <p class="persona-tagline">${persona.desc}</p>
+    <div class="persona-color-bar">
+      ${persona.colors.map(c => `<div style="flex:1;background:${c}"></div>`).join('')}
+    </div>
+    <div class="persona-keywords">
+      ${persona.keywords.map((k,i) => `<span style="background:${persona.colors[i%persona.colors.length]}22;color:${persona.colors[i%persona.colors.length]}">${k}</span>`).join('')}
+    </div>
+  `;
+
+  // Share card (8 dimensions summary)
+  const sc = document.getElementById('shareCard');
+  sc.innerHTML = `<h3>📊 八维度速览</h3><div class="share-grid">`;
+  for (const d of Object.keys(DIMENSIONS)) {
+    const dim = DIMENSIONS[d];
+    const t = types[d];
+    const pct = ((scores[d]-1)/4*100).toFixed(0);
+    sc.innerHTML += `
+      <div class="share-item">
+        <span class="share-icon">${dim.icon}</span>
+        <div class="share-label">${dim.name}</div>
+        <div class="share-value" style="color:${dim.color}">${t.name}</div>
+        <div class="share-label">${pct}%</div>
+      </div>`;
+  }
+  sc.innerHTML += '</div>';
+
+  // Radar
+  drawRadar(scores);
+
+  // Dimension cards
+  const dr = document.getElementById('dimResults');
+  dr.innerHTML = '';
+  for (const d of Object.keys(DIMENSIONS)) {
+    const dim = DIMENSIONS[d];
+    const t = types[d];
+    const pct = ((scores[d]-1)/4*100).toFixed(0);
+    dr.innerHTML += `
+      <div class="dim-card">
+        <div class="dim-card-header"><h3>${dim.icon} ${dim.name}</h3><span class="dim-score">${pct}%</span></div>
+        <div class="dim-bar"><div class="dim-bar-fill" style="width:${pct}%;background:${dim.color}"></div></div>
+        <span class="dim-type-badge" style="background:${dim.color.replace(')', ' / 0.12)')};color:${dim.color}">${t.name}</span>
+        <p class="dim-label">${t.desc}</p>
+      </div>`;
+  }
+
+  renderCompat(types, scores);
+  renderAdvice(types, scores);
+  window.scrollTo({top:0,behavior:'smooth'});
+  window._result = {scores, types, persona};
+}
+
+function drawRadar(scores) {
+  const c = document.getElementById('radarChart');
+  const ctx = c.getContext('2d');
+  const W=c.width, H=c.height, cx=W/2, cy=H/2, R=Math.min(W,H)*0.36;
+  ctx.clearRect(0,0,W,H);
+  const dims = Object.keys(DIMENSIONS), n=dims.length, step=2*Math.PI/n;
+  for (let r=1;r<=5;r++) {
+    const rr=R*r/5;
+    ctx.beginPath();
+    for (let i=0;i<=n;i++) { const a=-Math.PI/2+i*step; const x=cx+rr*Math.cos(a), y=cy+rr*Math.sin(a); i?ctx.lineTo(x,y):ctx.moveTo(x,y); }
+    ctx.closePath(); ctx.strokeStyle='oklch(0.88 0.02 30)'; ctx.lineWidth=1; ctx.stroke();
+  }
+  ctx.font='12px "Noto Sans SC"'; ctx.fillStyle='oklch(0.4 0.02 30)'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  dims.forEach((d,i) => {
+    const a=-Math.PI/2+i*step;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+R*Math.cos(a),cy+R*Math.sin(a)); ctx.strokeStyle='oklch(0.9 0.02 30)'; ctx.stroke();
+    ctx.fillText(DIMENSIONS[d].icon+DIMENSIONS[d].name, cx+(R+22)*Math.cos(a), cy+(R+22)*Math.sin(a));
+  });
+  ctx.beginPath();
+  dims.forEach((d,i) => { const a=-Math.PI/2+i*step, r=R*(scores[d]-1)/4; const x=cx+r*Math.cos(a),y=cy+r*Math.sin(a); i?ctx.lineTo(x,y):ctx.moveTo(x,y); });
+  ctx.closePath(); ctx.fillStyle='oklch(0.65 0.18 15 / 0.15)'; ctx.fill(); ctx.strokeStyle='oklch(0.65 0.18 15)'; ctx.lineWidth=2; ctx.stroke();
+  dims.forEach((d,i) => { const a=-Math.PI/2+i*step, r=R*(scores[d]-1)/4; ctx.beginPath(); ctx.arc(cx+r*Math.cos(a),cy+r*Math.sin(a),4,0,2*Math.PI); ctx.fillStyle='oklch(0.65 0.18 15)'; ctx.fill(); ctx.strokeStyle='white'; ctx.lineWidth=2; ctx.stroke(); });
+}
+
+function renderCompat(types, scores) {
+  const s = document.getElementById('compatSection');
+  const at = types.attach.key;
+  const cd = {secure:{secure:95,anxious:78,fearful:72},anxious:{secure:80,anxious:62,fearful:52},fearful:{secure:74,anxious:54,fearful:50}};
+  const tn={secure:'安全型',anxious:'焦虑型',fearful:'高敏型'};
+  const ti={secure:'🛡️',anxious:'🌊',fearful:'🌪️'};
+  const co=s=>s>=75?'oklch(0.7 0.15 150)':s>=60?'oklch(0.75 0.14 80)':s>=45?'oklch(0.7 0.12 50)':'oklch(0.65 0.15 15)';
+  const cmp=cd[at]||cd.secure;
+  let h='<h3>💕 兼容性分析</h3><div class="compat-grid">';
+  for (const [t,sc] of Object.entries(cmp)) h+=`<div class="compat-item" style="background:${co(sc).replace(')', ' / 0.1)')}"><div class="compat-type">${ti[t]} ${tn[t]}</div><div class="compat-score" style="color:${co(sc)}">${sc}%</div><div class="compat-desc">${sc>=75?'高度兼容':sc>=60?'良好兼容':sc>=45?'需要磨合':'挑战较大'}</div></div>`;
+  s.innerHTML=h+'</div>';
+}
+
+function renderAdvice(types, scores) {
+  const s = document.getElementById('adviceSection');
+  const adv = {
+    secure:['继续保持这份坦诚，它比你以为的更难得','在对方需要时稳稳地在，就够了','别光顾着照顾对方，也记得问问自己想要什么','可以试着把你的安全感“借”给更慌的那个人','偶尔给关系做个“体检”，聊聊彼此最近的感受'],
+    anxious:['焦虑上来时，先别急着发消息，给自己十分钟','把日子过厚一点——你的爱好越多，悬着的心越少','用“我感觉…”代替“你总是…”，对方会更听得进去','留意自己最容易慌的那个瞬间，提前跟对方说好','靠近一个稳定的人，安全感是会传染的'],
+    fearful:['想推开对方的时候，试着先说出口而不是直接消失','给情绪起个名字，“我现在是怕，不是不爱”','在足够安全的关系里，一点一点地练习示弱','提醒自己：你值得被好好爱，这不是奢求','慢慢来，没人催你立刻交出全部的信任']
+  };
+  const a=adv[types.attach.key]||adv.secure;
+  s.innerHTML=`<h3>💡 成长建议</h3><ul>${a.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+}
+
+function exportResult() {
+  const {scores,types,persona}=window._result;
+  let md=`# 💕 恋人人格测试结果\n\n测试时间：${new Date().toLocaleString('zh-CN')}\n\n`;
+  md+=`## 我的恋爱人格：${persona.animal} ${persona.title}\n\n**${persona.en}**\n\n${persona.desc}\n\n`;
+  md+=`**关键词**：${persona.keywords.join(' · ')}\n\n`;
+  md+=`## 八维度分析\n\n`;
+  for (const d of Object.keys(DIMENSIONS)) {
+    const dim=DIMENSIONS[d], t=types[d], pct=((scores[d]-1)/4*100).toFixed(0);
+    md+=`### ${dim.icon} ${dim.name}：${t.name} (${pct}%)\n${t.desc}\n\n`;
+  }
+  md+=`## 详细作答记录\n\n`;
+  Q.forEach((q,i) => { const a=ans[i]!==null?q.o[ans[i]].t:'未作答'; md+=`${i+1}. [${DIMENSIONS[q.d].name}] ${q.q}\n   → ${a}\n`; });
+  const blob=new Blob([md],{type:'text/markdown'});
+  const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='恋人人格测试结果.md'; a.click(); URL.revokeObjectURL(url);
+}
+
+function copyForAI() {
+  const {scores,types,persona}=window._result;
+  let t=`我刚做了恋人人格测试！\n\n我的恋爱人格是：${persona.animal} ${persona.title}（${persona.en}）\n\n${persona.desc}\n\n关键词：${persona.keywords.join(' · ')}\n\n各维度：\n`;
+  for (const d of Object.keys(DIMENSIONS)) t+=`- ${DIMENSIONS[d].name}：${types[d].name} (${((scores[d]-1)/4*100).toFixed(0)}%)\n`;
+  t+='\n请帮我深度分析这个人格类型在恋爱中的优势、劣势和建议。\n\n详细作答：\n';
+  Q.forEach((q,i) => { t+=`${i+1}. ${q.q} → ${ans[i]!==null?q.o[ans[i]].t:'未作答'}\n`; });
+  navigator.clipboard.writeText(t).then(()=>alert('已复制！粘贴给AI即可获得深度分析。')).catch(()=>{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('已复制！');});
+}
+
+function restart() {
+  cur=0; ans=new Array(Q.length).fill(null);
+  document.getElementById('results').style.display='none';
+  document.getElementById('landing').style.display='flex';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Chatbot API
+window.LoverTest = {
+  getResult: () => window._result || null,
+  restart,
+  getQuestions: () => Q.map((q,i) => ({id:i,dim:q.d,question:q.q,options:q.o.map(o=>o.t)})),
+  submitAnswer: (qi,oi) => { if(qi>=0&&qi<Q.length&&oi>=0&&oi<Q[qi].o.length){ans[qi]=oi;return true;}return false; },
+  getPersona: () => { const s=calcScores(); return getPersona(s); }
+};
+</script>
+</body>
+</html>

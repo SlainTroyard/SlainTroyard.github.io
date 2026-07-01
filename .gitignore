@@ -1,0 +1,13 @@
+# 本地图像生成小工具：含 API key、venv、原图，均不上传。
+# 生成的成品图会被拷贝到 love-test/img/persona/（那个目录不在忽略之列，正常部署）。
+tools/persona-image-gen/
+
+# 抓取/改造过程中的临时文件
+tmp.html
+tmp_*.py
+tmp_*.js
+
+# OMC 本地工具状态（不属于站点内容）
+.omc/
+
+.DS_Store
