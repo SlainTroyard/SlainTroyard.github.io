@@ -307,8 +307,8 @@ body {
     <div class="options" id="options"></div>
   </div>
   <div class="quiz-nav">
-    <button class="btn-nav" id="btnPrev" onclick="prevQuestion()" disabled>← 上一题</button>
-    <button class="btn-nav primary" id="btnNext" onclick="nextQuestion()" disabled>下一题 →</button>
+    <button class="btn-nav" id="btnPrev" onclick="prevQ()" disabled>← 上一题</button>
+    <button class="btn-nav primary" id="btnNext" onclick="nextQ()" disabled>下一题 →</button>
   </div>
 </section>
 
@@ -350,11 +350,11 @@ const DIMENSIONS = {
 };
 
 const S7 = [
-  {text:'非常不同意',score:1},{text:'不同意',score:2},{text:'有些不同意',score:3},
-  {text:'中立',score:4},{text:'有些同意',score:5},{text:'同意',score:6},{text:'非常同意',score:7}
+  {t:'非常不同意',s:1},{t:'不同意',s:2},{t:'有些不同意',s:3},
+  {t:'中立',s:4},{t:'有些同意',s:5},{t:'同意',s:6},{t:'非常同意',s:7}
 ];
 const S5F = [
-  {text:'从不',score:1},{text:'很少',score:2},{text:'有时',score:3},{text:'经常',score:4},{text:'总是',score:5}
+  {t:'从不',s:1},{t:'很少',s:2},{t:'有时',s:3},{t:'经常',s:4},{t:'总是',s:5}
 ];
 
 // ═══════ 200+ QUESTIONS ═══════
