@@ -141,10 +141,14 @@ body {
 .persona-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
 }
-\1\n.persona-card .persona-img { width: 210px; height: 210px; object-fit: cover; border-radius: 26px; display: block; margin: 0 auto 0.6rem; box-shadow: 0 12px 34px oklch(0.6 0.12 15 / 0.28); }
+.persona-card .persona-img { width: 210px; height: 210px; object-fit: cover; border-radius: 26px; display: block; margin: 0 auto 0.6rem; box-shadow: 0 12px 34px oklch(0.6 0.12 15 / 0.28); }
 .persona-card .persona-title {
   font-family: 'Noto Serif SC', serif; font-size: clamp(1.8rem, 4vw, 2.6rem);
   font-weight: 900; margin-bottom: 0.3rem; line-height: 1.3;
+}
+.persona-card .persona-motto {
+  font-family: 'Noto Serif SC', serif; font-size: 1.15rem; letter-spacing: 0.22em;
+  font-weight: 700; margin: 0 0 0.5rem;
 }
 .persona-card .persona-subtitle {
   font-family: 'Noto Serif SC', serif; font-size: 1rem; color: var(--ink-faint);
@@ -247,7 +251,7 @@ body {
   .quiz-nav { padding: 0 0.5rem; }
   .btn-nav { padding: 0.6rem 1.2rem; font-size: 0.82rem; }
   .persona-card { padding: 1.8rem 1rem; }
-  \1 .persona-card .persona-img { width: 150px; height: 150px; }
+  .persona-card .persona-img { width: 150px; height: 150px; }
   .persona-card .persona-title { font-size: 1.6rem; }
   .share-card .share-grid { grid-template-columns: repeat(2, 1fr); }
   .dim-card { padding: 1.1rem; }
@@ -956,112 +960,128 @@ const Q = [
 const PERSONA_TYPES = [
   {
     id:'kite', animal:'🪁', title:'赤鸢', en:'Scarlet Kite',
-    desc:'你爱起来是会烧到自己的那种。喜欢一个人，整颗心就全押上去，不留退路，也不算后账。有人劝你悠着点，可你心里清楚——温吞吞的喜欢，在你这儿根本不成立。要么不爱，要爱就爱到指尖发烫。',
+    motto:'自焚取暖',
+    desc:'赤鸢爱起来是烫手的。整颗心全押上去，不留退路，也不算后账。有人劝他/她悠着点，也不是不听——是收不住。要么烧透，要么熄干净，温吞水一样的东西，在他/她这儿不成立。',
     colors:['#c0392b','#e67e22','#f39c12'],
     keywords:['炽热','赤诚','奋不顾身','浓烈'],
     proto:[3.79,3.0,3.66,2.47,3.66,4.06,3.79,3.92]
   },
   {
     id:'watchman', animal:'🕯️', title:'守夜人', en:'The Night Watch',
-    desc:'你很少把“爱”挂在嘴上，但你做的事都算数。约好的事一定办到，记住的细节从不出错，对方半夜醒来，你这盏灯还亮着。浪漫不是你的强项，可真要论谁靠得住，名单第一个写的是你。',
+    motto:'应许之物',
+    desc:'守夜人话是不多说的。甜言蜜语总像隔着一层什么，说不出口。但应下的事，一件也没落过。半夜醒来，他/她那边灯还亮着。浪漫不是他/她的本事，可靠是。',
     colors:['#2c3e50','#f39c12','#bdc3c7'],
     keywords:['沉默','守候','笃定','长情'],
     proto:[2.54,2.34,2.34,3.26,2.74,2.34,4.06,2.34]
   },
   {
     id:'mooncat', animal:'🌙', title:'月下客', en:'Moonlit Wanderer',
-    desc:'你像只夜里独自爬上屋顶的猫——亲近你可以，圈养你不行。再喜欢一个人，你也得留一块谁都进不来的地方，那是你喘气的地方。你的疏离不是装出来的清高，是你确实要独处，才活得舒展。',
+    motto:'不圈养',
+    desc:'月下客像只夜里独自上屋顶的猫。亲近的时候蹭蹭手心，但要关在屋里养，绝无可能。再喜欢谁，心里也留着一块谁都进不来的地方。那地方是喘气用的，不是清高。',
     colors:['#2c3e50','#8e44ad','#ecf0f1'],
     keywords:['独行','自在','清冷','留白'],
     proto:[2.47,2.74,2.74,3.0,1.94,2.74,2.6,2.93]
   },
   {
     id:'reflection', animal:'🪷', title:'照水', en:'Still Water',
-    desc:'吵架的时候，先冷静下来的总是你。不是不在意，恰恰是太在意，舍不得把话说狠。你信大部分的刺抱一抱就软了，大部分的伤交给时间就好了。和你在一起的人，会慢慢松开攥紧的拳头。',
+    motto:'不忍割伤',
+    desc:'吵架的时候，先软下来的总是照水。不是没脾气，是舍不得把话说狠。他/她信多数时候抱一抱刺就软了，搁一搁伤就淡了。和照水在一起，攥紧的拳头会慢慢松开。',
     colors:['#3498db','#f5f5dc','#a8d8ea'],
     keywords:['温润','包容','治愈','沉静'],
     proto:[2.47,3.0,3.4,4.06,3.13,3.0,3.53,3.0]
   },
   {
     id:'poet', animal:'📜', title:'游吟诗人', en:'The Wandering Poet',
-    desc:'别人觉得肉麻的事，你做起来理直气壮。一张电影票根你能留三年，一句随口的情话你记一辈子。你打心底相信，爱情值得被郑重其事地歌颂，而你乐意当那个写诗的人。',
+    motto:'以琐碎为诗',
+    desc:'别人眼里的废纸——一张票根、一句随口的话——游吟诗人收着，当宝贝。有人说他/她肉麻，他/她也不在乎。日子是碎的，他/她偏要从碎里拣金子。两个人之间的事，他/她觉得就该郑重。',
     colors:['#e91e63','#9c27b0','#ffd700'],
     keywords:['诗意','深情','细腻','梦幻'],
     proto:[3.26,3.66,3.53,3.26,3.26,4.06,3.53,4.19]
   },
   {
     id:'windweaver', animal:'🪶', title:'裁风者', en:'Wind Weaver',
-    desc:'恋爱里你像个手感很好的棋手，什么时候进、什么时候退、什么时候该闭嘴，心里都有数。你不太靠一时上头，更信自己的判断。和你在一起省心，因为分寸感这种稀缺东西，你像是天生就带着。',
+    motto:'进退知机',
+    desc:'恋爱在裁风者手里像一局安静的棋。什么时候进，什么时候停，心里一清二楚。不太靠上头，更信自己的判断。和裁风者相处省心——分寸这种东西，他/她像是天生就带着。',
     colors:['#1abc9c','#bdc3c7','#f0f0f0'],
     keywords:['分寸','从容','清醒','自在'],
     proto:[2.34,3.0,3.0,3.66,2.87,3.0,3.0,2.87]
   },
   {
     id:'timekeeper', animal:'⏳', title:'拾光者', en:'Timekeeper',
-    desc:'你记得第一次牵手那天在下雨，记得对方随口说过想吃什么。在你眼里，感情是由一地别人看不见的碎片拼起来的。你舍不得扔掉任何一片，因为每一片都是“我们存在过”的证据。',
+    motto:'集尘为念',
+    desc:'拾光者什么都记得。第一次牵手那天的雨，对方随口说过的点心。爱情在他/她这儿是满地碎片，每一片都写着“我们”。那人早忘了，他/她还守着旧箱子，偶尔翻出来看看。',
     colors:['#d4a574','#8b7355','#ffd700'],
     keywords:['念旧','细腻','珍重','入微'],
     proto:[3.0,3.0,3.0,3.26,3.13,3.13,3.79,3.46]
   },
   {
     id:'sunflower', animal:'🌻', title:'向阳花', en:'Sunflower',
-    desc:'你不太会说漂亮话，但你往那一站，周围的空气都甜了几分。你表达爱的方式很朴素——让你在乎的人，每天都觉得活着挺好的。这份明亮不费劲，像是从你骨头缝里自己长出来的。',
+    motto:'自生暖意',
+    desc:'向阳花没什么花哨的本事。不会说漂亮话，也不会搞惊喜。可人在那儿，周围就觉得今天是个好日子。这份明亮不费劲，像是从骨头缝里自己长出来的。',
     colors:['#f1c40f','#27ae60','#87ceeb'],
     keywords:['明朗','治愈','元气','暖意'],
     proto:[2.47,2.01,3.92,3.66,3.4,4.06,3.13,3.13]
   },
   {
     id:'navigator', animal:'🌌', title:'夜航者', en:'Night Navigator',
-    desc:'你的爱像深海，表面不起波澜，底下却暗流汹涌。你不轻易开口说爱，却在没人看见的地方默默做了很多。不是不热烈，是你把热烈沉到了更深的地方，只留给真正靠近的人。',
+    motto:'沉热',
+    desc:'夜航者表面不起波澜，底下有暗流。不轻易开口，却在没人看见的地方做了很多。不是不热烈，是把热烈沉到了最底下。像夜间独自航行的船，只亮一盏灯，安静，但方向笃定。',
     colors:['#1a1a2e','#16213e','#e2e2e2'],
     keywords:['深沉','内敛','持久','厚重'],
     proto:[2.74,2.47,2.21,3.0,2.47,2.21,3.86,2.87]
   },
   {
     id:'mountain', animal:'🏔️', title:'孤山', en:'Solitary Peak',
-    desc:'你不靠对方的回应来证明自己爱不爱。你站在那儿，本身就是答案。撒娇和甜话不是你的语言，但你给的那种安全感，是打了地基、盖到一半也塌不了的那种。',
+    motto:'沉默的答案',
+    desc:'孤山不靠对方的回应来证明自己。站在那儿，就是答案。撒娇和甜话不是他/她的语言，但给的安全感是打了地基的——房子盖到一半，也塌不了。',
     colors:['#5d6d7e','#27ae60','#ecf0f1'],
     keywords:['沉稳','可靠','独立','不动声色'],
     proto:[2.08,2.47,2.14,3.13,2.01,2.21,3.53,2.47]
   },
   {
     id:'tide', animal:'🌊', title:'潮汐', en:'Tide',
-    desc:'你的爱有涨有落。靠近时倾尽所有，退开时也不是变心，只是你停不下来。这让人有点抓不住你，可偏偏是这份抓不住，叫人上瘾。你自己未必想这样，但海哪有不退潮的。',
+    motto:'潮起潮落',
+    desc:'潮汐靠近时倾尽所有，退开时也不是薄情，只是自己止不住。让人抓不牢，偏又叫人上瘾。未必想这样，但海哪有不退潮的。',
     colors:['#2980b9','#6dd5fa','#c3cfe2'],
     keywords:['起伏','自由','迷人','无常'],
     proto:[3.92,3.0,3.0,2.6,2.47,3.2,2.34,3.2]
   },
   {
     id:'lighthouse', animal:'🔦', title:'灯塔', en:'Lighthouse',
-    desc:'你是关系里方向感最稳的那个。对方在外头怎么飘，一回头，你还在原地亮着。你不追也不闹，只是稳稳守着，信那个人终会自己找回来。这份不动声色的笃定，本身就是一种温柔。',
+    motto:'矗立的光',
+    desc:'灯塔从不去追。待在原地，做一件事——亮着。旁人怎么飘零兜转，他/她不管，信那个人会自己找回来。这年月肯等的人不多了，他/她还亮着。',
     colors:['#f39c12','#2c3e50','#ecf0f1'],
     keywords:['笃定','指引','安静','永恒'],
     proto:[2.27,2.34,2.67,3.73,2.87,2.67,4.06,2.87]
   },
   {
     id:'origami', animal:'🕊️', title:'折纸', en:'Origami',
-    desc:'你把每段感情都当成一件手作来对待。在意细节，在意那些别人嫌麻烦的仪式，连道歉都要琢磨怎么让对方真的好受些。你的爱是一折一折叠出来的，慢，但每一道折痕都很认真。',
+    motto:'折痕即诚意',
+    desc:'折纸把感情当手作，一折一折叠出来。在意那些别人嫌麻烦的细节，连道歉都要琢磨怎么让对方好受些。慢，但每一道折痕的力道都不敷衍。',
     colors:['#e8b4b8','#d4a5a5','#f5e6cc'],
     keywords:['匠心','仪式','精琢','有心'],
     proto:[2.87,3.99,3.0,3.53,3.13,3.2,3.66,3.99]
   },
   {
     id:'dusk', animal:'🌅', title:'暮归', en:'Dusk Return',
-    desc:'你爱得不快，可一旦认定就不回头。你要的不是惊天动地，是黄昏时有人对你说一句“走，回家”。你的浪漫不在情诗里，在一日三餐熬到最后、还愿意一起吃的那个人身上。',
+    motto:'伴着暮色同归',
+    desc:'暮归不稀罕轰轰烈烈。要的东西简单——天擦黑的时候，有人站在门口，或者自己等也行。爱到最后，不过是一天三顿饭，还愿意坐在一起吃。',
     colors:['#e67e22','#c0392b','#2c3e50'],
     keywords:['踏实','归处','绵长','不移'],
     proto:[2.41,2.34,3.0,3.53,3.33,2.87,4.06,2.6]
   },
   {
     id:'mayfly', animal:'✨', title:'蜉蝣', en:'Mayfly',
-    desc:'你谈恋爱像把一天过成一生。不太在意天长地久，更在意此刻心跳得够不够响。你的字典里没有“将就”，每一次怦然心动，都是拼了命的认真。短，但浓得化不开。',
+    motto:'朝生暮死',
+    desc:'蜉蝣谈恋爱是把一天当一生来过的。不去想天长地久，要紧的是这一刻心跳够不够响。字典里没有将就，每次动心都拼了命地认真。短，但浓得化不开。',
     colors:['#ff6b6b','#ffa07a','#ffe4e1'],
     keywords:['刹那','极致','纯粹','燃烧'],
     proto:[3.4,3.0,3.4,2.67,3.26,3.92,2.08,3.99]
   },
   {
     id:'default', animal:'💕', title:'凡星', en:'Ordinary Star',
-    desc:'你身上没有特别扎眼的棱角，却有一种让人放松的温度。你爱人的方式不抢镜，但很扎实。也许你常觉得自己平平无奇，可在对的人眼里，你就是那个刚刚好、不必费力相处的人。',
+    motto:'刚好',
+    desc:'凡星觉得自己普通。没有刺眼的锋芒，也没有叫人一见钟情的本事。可爱他/她的人，爱的就是这份平常。在一起不累。刚好，就好。',
     colors:['#95a5a6','#bdc3c7','#ecf0f1'],
     keywords:['刚好','真实','自在','日常'],
     proto:[3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0]
@@ -1247,6 +1267,7 @@ function showResults() {
     <img class="persona-img" src="img/persona/${persona.id}.webp" alt="${persona.title}" loading="lazy" onerror="this.style.display='none';var e=document.getElementById('personaEmoji');if(e)e.style.display='block'">
     <span class="persona-animal" id="personaEmoji" style="display:none">${persona.animal}</span>
     <h1 class="persona-title" style="color:${persona.colors[0]}">${persona.title}</h1>
+    <p class="persona-motto" style="color:${persona.colors[0]}">「${persona.motto}」</p>
     <p class="persona-subtitle">${persona.en}</p>
     <p class="persona-tagline">${persona.desc}</p>
     <div class="persona-color-bar">
